@@ -1,0 +1,194 @@
+.why {
+	.introduction {
+		@include gs-span(l,all);
+		background:$turquoise;
+		color:$off-white;
+		text-align:center;
+		@include margin-top(-1 * $a-scale-7);
+		@include padding-top($a-scale-7);
+		@include padding-bottom($a-scale-2);
+		.intro-text {
+			@include gs-span(l,4,9);
+		}
+	}
+	.internal-nav {
+		@include gs-span(l,all);
+		clear:left;
+		padding:0;
+		li {
+			list-style:none;
+			margin:0;
+		}
+		a {
+			display:block;
+			color:$off-white;
+
+		}
+	}
+	.reason-section-holder {
+		padding:0;
+	}
+	.reason-section {
+		&:nth-child(odd){
+			@include box-shadow-standard();
+			border-bottom:$grey5 1px solid;
+			border-top:$grey5 1px solid;
+		}
+		
+		@include gs-span(l, all);
+		position:relative;
+		clear:left;
+		@include padding-bottom($a-scale-4);
+	}
+	.reason-section-inner {
+		@include padding-top($a-scale-4);
+		@include gs-span(l, all);
+	}
+	.time {
+		.time-saving-comparison {
+			padding:0;
+			@include gs-span(l,5,10);
+			clear:left;
+			li {
+				margin:0;
+				position:relative;
+				width:100%;
+				clear:left;
+				float:left;
+				@include margin-bottom($a-scale-3);
+				.text {
+					@include gs-span(l,5,8,(5,10));
+				}
+				.manual {
+					position:absolute;
+					@include gs-span(l,5,6,(5,10));
+					display:block;
+					
+					left:-1 * (29.20962% + 6.18556701%);
+					top:0;
+					text-align:center;
+					color:$grey40;
+					h4 {
+						background: url(#{$img-path}time1-manual.png) bottom center no-repeat;
+						@include padding-bottom($a-scale-5);
+						background-size: auto 80%;
+					}
+					p {
+						color:$pink;
+					}
+
+				}
+				.string {
+					
+					@include gs-span(l,9,10,(5,10));
+					color:$grey40;
+					
+					text-align:center;
+					h4 {
+						background: url(#{$img-path}time1-string.png) bottom center no-repeat;
+						@include padding-bottom($a-scale-5);
+						background-size: auto 80%;
+					}
+					p {
+						color:$turquoise;
+					}
+					
+				}
+				&.time2 {
+					.manual h4 {
+						background-image: url(#{$img-path}time2-manual.png);
+					}
+					.string h4 {
+						background-image: url(#{$img-path}time2-string.png);
+					}
+				}
+				&.time3 {
+					.manual h4 {
+						background-image: url(#{$img-path}time3-manual.png);
+					}
+					.string h4 {
+						background-image: url(#{$img-path}time3-string.png);
+					}
+				}
+				&.time4 {
+					.manual h4 {
+						background-image: url(#{$img-path}time4-manual.png);
+					}
+					.string h4 {
+						background-image: url(#{$img-path}time4-string.png);
+					}
+				}
+				&.time5 {
+					.manual h4 {
+						background-image: url(#{$img-path}time5-manual.png);
+					}
+					.string h4 {
+						background-image: url(#{$img-path}time5-string.png);
+					}
+				}
+			}
+		}
+		.fig-holder {
+			@include gs-span(l,2,11);
+			clear:both;
+		}
+		.time-saving {
+			.img-holder {
+				@include gs-span(l,4,6,(2,11));
+				clear:left;
+			}
+			.text-holder {
+				@include gs-span(l,7,11,(2,11));
+				.time-saved {
+					@include font-size($a-scale-3);
+					color:$green;
+					line-height: 1;
+				}
+			}
+		}
+	}
+	.report-block {
+		@include gs-span(l,3,11);
+		clear:left;
+		@include margin-bottom($a-scale-3);
+		.screenshot-holder {
+			@include gs-span(l,3,8,(3,11));
+			img {
+				@include box-shadow-standard();
+				border:$grey5 1px solid;
+			}
+		}
+		.text-holder {
+			@include gs-span(l,9,11,(3,11));
+		}
+	}
+	.suppliers {
+		background:url(#{$img-path}supplier-graphic.png) right 20% no-repeat;
+		background-size:30% auto;
+		li {
+			list-style:none;
+			@include margin-top($a-scale-3);
+		}
+		ul {
+			padding:0;
+		}
+		h3 {
+			color:$success-color;
+		}
+	}
+	.answers {
+		h3 {
+			@extend .uppercase;
+			@include font-size($a-scale);
+		}
+		.not-s3-fig, .using-s3-fig {
+			@include gs-span(l,all);
+			clear:left;
+			text-align:center;
+		}
+		.explanation {
+			
+		}
+	}
+
+}

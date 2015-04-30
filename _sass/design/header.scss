@@ -1,0 +1,55 @@
+.header {
+	position:fixed;
+	background:rgba($off-white,0.8);
+	@include box-shadow-standard();
+	width:100%;
+	display:block;
+	z-index:$top;
+	p {
+		margin-bottom:0;
+	}
+	a {
+		border-bottom:0;
+	}
+	.menu-toggle {
+		position:absolute;
+		right:0;
+		top:0;
+		@include padding($a-scale);
+		display:block;
+	}
+	.exposed {
+		
+		@extend .uppercase;
+		position:absolute;
+		right:95px;
+		top:0;
+		li {
+			@include font-size($size-small);
+			display:inline-block;
+			a {
+				@include padding($a-scale);
+				display:block;
+				line-height:($base-line-height*$size-p) / $size-small;
+			}
+		}
+	}
+	.logo-holder {
+		@include width($a-scale-3);
+		@include height($a-scale-3);
+		display:block;
+		float:left;
+		@include margin-left($a-scale);
+		@include margin-top($b-scale / 2);
+		@include margin-bottom($b-scale / 2);
+	}
+	.title {
+		float:left;
+		@extend .uppercase;
+		a {
+			color:$text-color;
+			@include padding($a-scale);
+			display:block;
+		}
+	}
+}

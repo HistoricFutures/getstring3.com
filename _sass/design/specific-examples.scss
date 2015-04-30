@@ -1,0 +1,28 @@
+// Specific examples
+
+
+$examples: (
+  cotton, 
+  tantalum,
+  'gold',
+  timber
+);
+
+  @each $example, $map in $examples {
+    .#{$example} {
+      .question-step {
+		background: url(#{$img-path}#{$example}-question-step.png) bottom right no-repeat;
+		background-size:40% auto;
+		}
+		.enquiry-step {
+			background: url(#{$img-path}#{$example}-enquiry-step.png) bottom right no-repeat;
+			background-size:40% auto;
+		}
+		.suppliers-step {
+			background: url(#{$img-path}#{$example}-suppliers-step.png) bottom right no-repeat;
+			background-size:40% auto;
+		}
+	}
+}
+
+

@@ -1,0 +1,350 @@
+---
+layout: default
+---
+
+<div class="introduction">
+	<div class="logo-holder">
+		<div class="s3-logo-mark">
+		</div>
+	</div>
+	<div class="intro-holder">
+		<h1 class="uppercase">String3</h1>
+		{% capture intro %}{% include content/intro-sentence.markdown %}{% endcapture %}
+		{{ intro | markdownify }}
+	</div>
+	<div class="find-out-holder">
+		<p class="large">Find out where your products come from</p>
+		<a href="#step1" class="down-arrow">Next section</a>
+	</div>
+
+
+	<div class="example-selector">
+		<div class="title-segment">
+			<h2>View example:</h2>
+		</div>
+		<ul>
+			{% if page.example1 == page.pagename %}
+			<li class="active"><span>{{ page.example1 }}</span></li>
+			{% else %}
+			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1 }}</a></li>
+			{% endif %}
+
+			{% if page.example2 == page.pagename %}
+			<li class="active"><span>{{ page.example2 }}</span></li>
+			{% else %}
+			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2 }}</a></li>
+			{% endif %}
+			
+			{% if page.example3 == page.pagename %}
+			<li class="active"><span>{{ page.example3 }}</span></li>
+			{% else %}
+			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3 }}</a></li>
+			{% endif %}
+		</ul>
+		<div class="link-segment">
+		<p><a href="/materials">See other available materials</a></p>
+		</div>
+	</div>
+</div>
+
+<ol class="example {{ page.pagename | downcase }}">
+	<li class="example-step question-step step1" id="step1">
+		<div class="step-holder">
+			<div class="step-description">
+				<p class="large">Using our simple question builder, you create a question that you want to send to your supplier</p>
+			</div>
+			<div class="link">
+				<p><a href="#">How does String3 make sending questions up your supply chain better for you?</a></p>
+			</div>
+		</div>
+		<div class="s3-container">
+			<h2>Your question</h2>
+			<b class="s3-logo-query"></b>
+		</div>
+		<div class="question-elements">
+			<div class="question-element element1">
+				<p>Your product:</p>
+				<p class="large">{{ page.product }}</p>
+				<p>{{ page.context }}</p>
+			</div>
+			<div class="question-element element2">
+				<p>Your supplier:</p>
+				<p class="large">{{ page.supplierContact }} @ {{ page.supplierOrg }}</p>
+			</div>
+			<div class="question-element element3">
+				<p>The question you want to ask:</p>
+				<p class="large">{{ page.question }}</p>
+			</div>
+		</div>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="active"><span>{{ page.stage1 }}</span></li>
+				<li><a href="#step2">{{ page.stage2 }}</a></li>
+				<li><a href="#step3">{{ page.stage3 }}</a></li>
+				{% if page.stage5 %}
+				<li><a href="#step4">{{ page.stage4 }}</a></li>
+				<li><a href="#step5"><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</a></li>
+				{% else %}
+				<li><a href="#step4"><i class="fa fa-crosshairs"></i> {{ page.stage4 }}</a></li>
+				{% endif %}
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="#step2" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	<li class="example-step enquiry-step step2" id="step2">
+		<div class="step-holder">
+			<p class="large">{{ page.supplierContact }} at {{ page.supplierOrg }} receives the enquiry and is then asked a series of questions based on the question you made</p>
+		</div>
+		<div class="s3-container">
+			<h2>Your supplier's enquiry</h2>
+			<b class="s3-logo-query"></b>
+		</div>
+		<div class="enquiry-elements">
+			<div class="enquiry-element element1">
+				<p>Did you make or source the {{ page.product | downcase }} your customer is asking about?</p>
+				<p class="button--selected">
+					Made
+				</p>
+				<p class="button--deactivated" aria-hidden="true">
+					Sourced
+				</p>
+			</div>
+			<div class="enquiry-element element2">
+				<p>Did you make or source the {{ page.stage2 | downcase }} you used to make the {{ page.product | downcase }}?</p>
+				<p class="button--deactivated" aria-hidden="true">
+					Made
+				</p>
+				<p class="button--selected">
+					Sourced
+				</p>
+			</div>
+			<div class="enquiry-element element3">
+				<p>Who did you source it from?</p>
+				<ul class="supplier-list">
+					<li>{{ page.stage2Supplier1 }}</li>
+					<li>{{ page.stage2Supplier2 }}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="done"><a href="#step1">{{ page.stage1 }}</a></li>
+				<li class="active"><span>{{ page.stage2 }}</span></li>
+				<li><a href="#step3">{{ page.stage3 }}</a></li>
+				{% if page.stage5 %}
+				<li><a href="#step4">{{ page.stage4 }}</a></li>
+				<li><a href="#step5"><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</a></li>
+				{% else %}
+				<li><a href="#step4"><i class="fa fa-crosshairs"></i> {{ page.stage4 }}</a></li>
+				{% endif %}
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="#step3" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	<li class="example-step suppliers-step step3" id="step3">
+		<div class="step-holder">
+			<div class="step-description">
+				<p class="large">Your supplier's suppliers then receive the enquiry and route it to their suppliers</p>
+			</div>
+			<div class="link">
+				<p><a href="#">Why is String3 great for suppliers too?</a></p>
+			</div>
+		</div>
+		<div class="supplier-1">
+			<div class="s3-container">
+				<h2 class="s3-logo-query">Enquiry to supplier</h2>
+			</div>
+			<div class="enquiry-element">
+				<p><span class="button--selected">Made</span> {{ page.stage2 | downcase }}</p>
+				<p><span class="button--selected">Sourced</span> {{ page.stage3 | downcase }}</p>
+			</div>
+		</div>
+		<div class="supplier-2">
+			<div class="s3-container">
+				<h2 class="s3-logo-query">Enquiry to supplier</h2>
+			</div>
+			<div class="enquiry-element">
+				<p><span class="button--selected">Made</span> {{ page.stage2 | downcase }}</p>
+				<p><span class="button--selected">Sourced</span> {{ page.stage3 | downcase }}</p>
+			</div>
+		</div>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="done"><a href="#step1">{{ page.stage1 }}</a></li>
+				<li class="done"><a href="#step2">{{ page.stage2 }}</a></li>
+				<li class="active"><span>{{ page.stage3 }}</span></li>
+				{% if page.stage5 %}
+				<li><a href="#step4">{{ page.stage4 }}</a></li>
+				<li><a href="#step5"><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</a></li>
+				{% else %}
+				<li><a href="#step4"><i class="fa fa-crosshairs"></i> {{ page.stage4 }}</a></li>
+				{% endif %}
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="#step4" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	{% if page.stage5 %}
+	<li class="example-step routing-step step4" id="step4">
+		<div class="step-holder">
+			<div class="step-description">
+				<p class="large">And their suppliers receive the enquiry and pass it on to their suppliers</p>
+			</div>
+			<div class="link">
+				<p><a href="#">How can you be sure your data is safe in String3?</a></p>
+			</div>
+		</div>
+		<div class="suppliers">
+			<i class="fa fa-lock"></i>
+			<div class="supplier-1">
+				<div class="s3-container">
+					<h2 class="s3-logo-query">Enquiry to supplier</h2>
+				</div>
+			</div>
+			<div class="supplier-2">
+				<div class="s3-container">
+					<h2 class="s3-logo-query">Enquiry to supplier</h2>
+				</div>
+			</div>
+			<div class="supplier-3">
+				<div class="s3-container">
+					<h2 class="s3-logo-query">Enquiry to supplier</h2>
+				</div>
+			</div>
+			<div class="supplier-4">
+				<div class="s3-container">
+					<h2 class="s3-logo-query">Enquiry to supplier</h2>
+				</div>
+			</div>
+			<div class="supplier-5">
+				<div class="s3-container">
+					<h2 class="s3-logo-query">Enquiry to supplier</h2>
+				</div>
+			</div>
+		</div>
+		<div class="information-holder">
+			<p>Suppliers can enter their details into string with the confidence that their information won’t be shared with anyone else in the supply chain. String3 takes the security of their data very seriously and is covered by an ISO27001 certified Information Security Management System.</p>
+		</div>
+		<b class="line-helper--1"></b>
+		<b class="line-helper--2"></b>
+		<b class="line-helper--3"></b>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="done"><a href="#step1">{{ page.stage1 }}</a></li>
+				<li class="done"><a href="#step2">{{ page.stage2 }}</a></li>
+				<li class="done"><a href="#step3">{{ page.stage3 }}</a></li>
+				<li class="active"><span>{{ page.stage4 }}</span></li>
+				<li><a href="#step5"><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</a></li>
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="#step5" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	{% endif %}
+	<li class="example-step map-step {% if page.stage5 %}step5{% else %}step4{% endif %}" id="{% if page.stage5 %}step5{% else %}step4{% endif %}">
+		<div class="step-holder">
+			{% if page.stage5 %}
+			<p class="large">Until you reach the people that actually know the answer to your question</p>
+			{% else %}
+			<div class="step-description">
+				<p class="large">Until you reach the people that actually know the answer to your question</p>
+			</div>
+			<div class="link">
+				<p><a href="#">How can you be sure your data is safe in String3?</a></p>
+			</div>
+			{% endif %}
+		</div>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="done"><a href="#step1">{{ page.stage1 }}</a></li>
+				<li class="done"><a href="#step2">{{ page.stage2 }}</a></li>
+				<li class="done"><a href="#step3">{{ page.stage3 }}</a></li>
+				{% if page.stage5 %}
+				<li class="done"><a href="#step4">{{ page.stage4 }}</a></li>
+				<li class="active"><span><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</span></li>
+				{% else %}
+				<li class="active"><span><i class="fa fa-crosshairs"></i> {{ page.stage4 }}</span></li>
+				{% endif %}
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="{% if page.stage5 %}#step6{% else %}#step5{% endif %}" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	<li class="example-step results-step {% if page.stage5 %}step6{% else %}step5{% endif %}" id="{% if page.stage5 %}step6{% else %}step5{% endif %}">
+		<div class="step-holder">
+			<div class="step-description">
+				<p class="large">You receive a report in String3, showing the answers to your question, without having to know all the details of your supply chain yourself</p>
+			</div>
+			<div class="link">
+				<p><a href="#">How does String3 make reporting simple?</a></p>
+			</div>
+		</div>
+		<div class="s3-container">
+			<h2 class="s3-logo">
+				String
+			</h2>
+		</div>
+		<div class="results">
+			<div class="summary">
+				<p><span class="circle">{{ page.factsFound }}</span> {{ page.questionFact }} found</p>
+			</div>
+			<table>
+				<caption>Table of {{ page.questionFact }} found</caption>
+				<thead>
+					<tr>
+						<th scope="col">Country</th>
+						<th scope="col">Number of suppliers</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{ page.content }}
+				</tbody>
+			</table>
+		</div>
+		<div class="process-stage" aria-hidden="true">
+			<h3>Stage of the process</h3>
+			<ol>
+				<li class="done"><a href="#step1">{{ page.stage1 }}</a></li>
+				<li class="done"><a href="#step2">{{ page.stage2 }}</a></li>
+				<li class="done"><a href="#step3">{{ page.stage3 }}</a></li>
+				{% if page.stage5 %}
+				<li class="done"><a href="#step4">{{ page.stage4 }}</a></li>
+				<li class="done"><a href="#step5"><i class="fa fa-crosshairs"></i> {{ page.stage5 }}</a></li>
+				{% else %}
+				<li class="done"><a href="#step4"><i class="fa fa-crosshairs"></i> {{ page.stage4 }}</a></li>
+				{% endif %}
+			</ol>
+		</div>
+		<div class="next-holder">
+			<a href="{% if page.stage5 %}#step7{% else %}#step6{% endif %}" class="down-arrow">Next section</a>
+		</div>
+	</li>
+	<li class="example-step register-step {% if page.stage5 %}step7{% else %}step6{% endif %}" id="{% if page.stage5 %}step7{% else %}step6{% endif %}">
+		<div class="step-holder">
+			<p class="large">Next time you need to send a question, String3 stores all the information you need to make it simpler, and over time you start to build up the big picture of your supply chain.</p>
+		</div>
+		<div class="register-holder">
+			<h2>Need visibility of your organisation’s supply chains?</h2>
+			<p>Why not try a free month's trial of String3? No credit card is needed and there's no obligation.</p>
+			<p class="button"><a href="/register">Register for String3</a></p>
+		</div>
+	</li>
+</ol>
+
+
+
+
+
+

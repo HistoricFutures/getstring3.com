@@ -1,0 +1,166 @@
+.free-trial {
+	@include gs-span(l,3,10);
+	border-top:1px solid $grey10;
+	border-bottom:1px solid $grey10;
+	clear:left;
+	@include padding-top($a-scale);
+	@include padding-bottom($a-scale);
+	@include margin-bottom($a-scale-3);
+	.icon-holder {
+		@include gs-span(l,3,3,(3,10));
+		color:$lightturquoise;
+		@include font-size($b-scale-5);
+		line-height:0.8;
+	}
+	.text-holder {
+		@include gs-span(l,4,7,(3,10));
+		@include padding-top($a-scale);
+		p {
+			margin-bottom:0;
+		}
+	}
+	.button-holder {
+		@include gs-span(l,8,10,(3,10));
+		@include padding-top($a-scale);
+	}
+}
+
+.standard .free-trial { // used on Register
+	@include gs-span(l,3,8,(3,8));
+	.icon-holder {
+		@include gs-span(l,3,3,(3,8));
+	}
+	.text-holder {
+		@include gs-span(l,4,8,(3,8));
+	}
+}
+
+.pricing-top {
+	@include gs-span(l,3,10);
+	clear:left;
+	text-align:center;
+	position:relative;
+	.premium {
+		background:$turquoise;
+		width:33.33%;
+		color:$off-white;
+		position:absolute;
+		bottom:0;
+		@include box-shadow-standard();
+		display:block;
+		border-bottom:0;
+	}
+	.corporate {
+		background:$grey80;
+		width:33.33%;
+		color:$off-white;
+		float:left;
+		margin-left:33.33%;
+		@include box-shadow-standard();
+		display:block;
+		border-bottom:0;
+	}
+	.enterprise {
+		background:$turquoise;
+		width:33.33%;
+		color:$off-white;
+		position:absolute;
+		bottom:0;
+		right:0;
+		@include box-shadow-standard();
+		display:block;
+		border-bottom:0;
+	}
+	.title {
+		@include padding($a-scale);
+		border-bottom: 1px solid rgba($off-white,0.3);
+		h2 {
+			@extend .uppercase;
+			@include font-size($a-scale);
+			margin-bottom:0;
+		}
+	}
+
+	.price {
+		@include padding($a-scale);
+		p {
+			margin:0;
+		}
+	}
+	.questions {
+		@include padding($a-scale);
+	}
+	.choose {
+		
+			display:block;
+			color:$turquoise;
+			background:mix($turquoise, $off-white, 20%);
+			
+			@include padding($a-scale);
+			@include transition($link-transition);
+			
+		
+	}
+	a:hover, a:focus {
+		.choose {
+			background:$link-color-hover;
+			color:$off-white;
+			@include transition($link-transition);
+		}
+	}
+
+	.corporate .choose {
+
+			color:$off-white;
+			background:$turquoise;
+			
+	}
+
+	
+
+	.promo {
+		color:$pink;
+		p {
+			margin:0;
+		}
+	}
+}
+.sr-only {
+	display:none;
+}
+
+.pricing-bottom {
+	@include gs-span(l,1,10);
+	clear:left;
+	table {
+		margin-bottom:3px;
+	}
+	thead {
+		display:none;
+	}
+	caption {
+		display:none;
+	}
+	td {
+		width:26.43%;
+		text-align:center;
+		border-bottom:1px solid $grey10;
+		@include padding($b-scale-2);
+	}
+	tr {
+		background:none;
+		border-bottom:none;
+		@include padding($b-scale-2);
+	}
+	th {
+		width:20.72%;
+		text-align:right;
+		text-transform:none;
+		letter-spacing: normal;
+		@include font-size($a-scale);
+	}
+	i {
+		color:$turquoise;
+	}
+
+}

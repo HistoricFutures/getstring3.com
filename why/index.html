@@ -1,0 +1,36 @@
+---
+layout: default
+title:  "Why use String3?"
+intro: "You may already have a process you use to ask your suppliers for information about your products. Why would String3 be better?"
+---
+<div class="why">
+<div class="introduction">
+	<div class="intro-text">
+		<h1>{{ page.title }}</h1>
+		<p class="large">{{ page.intro }}</p>
+	</div>
+<ul class="internal-nav">
+{% assign sections = site.why | sort: 'order' %}
+{% for section in sections %}
+      <li><a href="#{{ section.name }}">{{ section.title }}</a></li>
+{% endfor %}
+</ul>
+</div>
+
+<ol class="reason-section-holder">
+{% for section in sections %}
+<li id="{{ section.name }}" class="{{ section.name }} reason-section">
+	<div id="reason{{ section.order }}" class="reason-section-inner">
+	<div class="standard-holder">
+		<h2>{{ section.title }}</h2>
+	</div>
+	{{ section.content }}
+	<div class="next-holder">
+		<a href="#reason{{ forloop.index | plus:'1' }}" class="down-arrow">Next section</a>
+	</div>
+</div>
+</li>
+{% endfor %}
+</ol>
+</div>
+

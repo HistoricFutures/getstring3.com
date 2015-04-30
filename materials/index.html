@@ -1,0 +1,28 @@
+---
+layout: default
+title:  "Which materials will String3 work for?"
+---
+
+<div class="standard-intro">
+	<h1>{{ page.title }}</h1>
+	<p class="large">String3 has the scope to work for any industry and any material. The materials and questions we have built processes for so far are listed below. If what you’re looking for isn’t there, <a href="/contact">get in touch with us</a> to talk about building a process that works for you.</p>
+</div>
+<div class="materials">
+	<ul>
+{% assign materials = site.materials | sort: 'title' %}
+{% for material in materials %}
+      <li>
+      	<span class="material-name">{{ material.title }}</span>
+      	<span class="material-information">{{ material.content }}</span>
+      </li>
+{% endfor %}
+</div>
+<div class="standard register">
+	<h3>Not sure if it will work for your organsiation?</h3>
+	<p>Why not try it out on a month’s free trial? No credit card is needed, and there is no obligation to continue.</p>
+	<p class="button register-button">
+		<a href="/register">
+			Register for String3
+		</a>
+	</p>
+</div>

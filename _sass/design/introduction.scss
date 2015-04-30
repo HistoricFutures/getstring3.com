@@ -1,0 +1,128 @@
+// basic layout
+
+.introduction {
+	@include gs-span(l, all);
+	.logo-holder {
+		@include gs-span(l,3,5);
+	}
+	.intro-holder {
+		@include gs-span(l,7,10);
+		@include padding-top($a-scale-3);
+	}
+	.find-out-holder {
+		@include gs-span(l,4,9);
+		text-align:center;
+		clear:both;
+		@include margin-top($a-scale-2);
+		@include padding-top($a-scale);
+		@include padding-bottom($a-scale-2);
+		position:relative;
+			&:after {
+			content:"";
+			position:absolute;
+			top:70px;
+			left:50%;
+			width:1px;
+			bottom:-50px;
+			border-left:1px dashed rgba($turquoise,0.5);
+			display:block;
+			z-index:$bottom;
+		}
+	}
+	.example-selector {
+		
+		@include gs-span(l,all);
+		clear:both;
+		background:$turquoise;
+		color:$off-white;
+		text-align:center;
+		@include padding-top($a-scale);
+		@include padding-bottom($a-scale);
+		.title-segment {
+			@include gs-span(l,2,3);
+			text-align:right;
+		}
+		.link-segment {
+			@include gs-span(l,10,11);
+			text-align:left;
+			@include padding-top($b-scale);
+			p { 
+				margin-bottom:0;
+				line-height:$small-line-height;
+			}
+			a, a:visited {
+				color:$off-white;
+				border-color:$off-white;
+				@include font-size($size-small);
+				&:hover, &:focus {
+					color:$text-color;
+					border-color:$text-color;
+				}
+			}
+		}
+		h2 {
+			@include font-size($size-p);
+			display:inline-block;
+			margin:0;
+			@include padding-top($a-scale);
+			line-height:$base-line-height;
+		}
+		ul {
+			padding-left:0;
+			display:inline-block;
+			@include gs-span(l,4,9);
+			margin-bottom:0;
+		}
+		li {
+			list-style:none;
+			text-align:center;
+			display:inline-block;
+			margin-bottom:0;
+			@include margin-left($a-scale--2);
+			&:first-child {
+				margin-left:0;
+			}
+			a {
+				display:inline-block;
+				border:1px solid $grey70;
+				@include border-radius(5%);
+				@include padding($a-scale);
+				color:$off-white;
+				@include min-width($a-scale-5);
+				@include box-shadow-standard();
+				&:hover {
+					background:$active-color;
+					border-color:$active-color;
+				}
+			}
+			&.active span {
+				display:inline-block;
+				border:1px solid $active-color;
+				@include border-radius(5%);
+				@include padding($a-scale);
+				color:$off-white;
+				background:$active-color;
+				@include min-width($a-scale-5);
+				@include box-shadow-standard();
+			}
+		}
+	}
+
+}
+
+.down-arrow {
+	background: url(#{$img-path}down-arrow.svg) center center no-repeat;
+	background-size:contain;
+	@include width($a-scale-5);
+	text-indent:-9999em;
+	overflow:hidden;
+	display:block;
+	@include height($a-scale-2);
+	margin-left:auto;
+	margin-right:auto;
+	border-bottom:0;
+	&:hover {
+		background: url(#{$img-path}down-arrow--hover.svg) center center no-repeat;
+		background-size:contain; 
+	}
+}

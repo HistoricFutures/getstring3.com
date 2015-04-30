@@ -1,0 +1,193 @@
+/* ====================================================
+buttons.scss
+
+Notes: Form buttons and faux button styling
+==================================================== */
+
+
+/* == Form buttons == */
+
+input[type='submit'], [class*=button] a, [class*=button] a:visited, button, [class*=button] span {
+	display:block;
+	font-family:$base-font;
+	@include font-size($size-p);
+	@include padding($b-scale);
+	@include box-sizing();
+	@include margin-bottom($margin-p);
+	
+	background-color:$link-color;
+	@include linear-gradient();
+	border:1px solid $link-color;
+	@include border-radius(3px);
+	@include box-shadow(0 2 0 0 $off-white inset, 0 1 2 0 rgba(0,0,0,0.1));
+	text-transform:uppercase;
+	letter-spacing:$letter-spacing;
+	line-height:$base-line-height;
+	color:$off-white;
+	@include transition($link-transition);
+	white-space:normal;
+	text-align:center;
+	-webkit-appearance:none;
+	&:hover, &:focus {
+		background-color:$link-color-hover;
+		border-color:$link-color-hover;
+		color:$off-white;
+		@include linear-gradient();
+		cursor:pointer;
+		@include transition($link-transition);
+	}
+	&:active {
+		background-color:$success-color;
+		border-color:$success-color;
+		@include linear-gradient();
+	}
+	&::-moz-focus-inner { // attempt to fix discrepancies in button height in Firefox (http://davidwalsh.name/firefox-buttons)
+		border: 0;
+		padding: 0;
+
+	}
+}
+
+
+input[type='submit'].button--large {
+	@include padding($b-scale-2);
+	@include font-size($b-scale-2);
+}
+
+
+
+
+.button--error a{
+	background-color:$error-color;
+	border-color:$error-color;
+	@include linear-gradient();
+}
+
+.button--disabled {
+	a, span {
+		background:$grey40;
+		border-color:$grey40;
+		
+		&:hover {
+			background:$grey40;
+			border-color:$grey40;
+			cursor:not-allowed;
+
+		}
+	}
+}
+
+.button--deemphasised {
+	a, span {
+		background-color:$grey10;
+		border-color:$grey10;
+		color:$text-color;
+		
+		&:hover {
+			background-color:$grey20;
+			border-color:$grey20;
+			
+
+		}
+	}
+}
+
+.button--inline {
+	display:inline-block;
+	@include margin-right($b-scale);
+	a {
+		display:inline-block;
+		margin-bottom:0;
+	}
+}
+
+
+
+
+
+/* == Faux buttons == */
+
+[class*=faux-button] a {
+	@include box-sizing();
+	@include padding($a-scale);
+	@include font-size($size-p);
+	border:2px solid $link-color;
+	color:$link-color;
+	@include border-radius(6px);
+	text-transform:uppercase;
+	letter-spacing:$letter-spacing;
+	display:block;
+	text-align:center;
+	background:transparent;
+	@include transition(all 1s ease);
+	&:hover {
+		background:$grey10;
+		@include transition(all 1s ease);
+	}
+	&:active {
+		background:$success-color;
+		@include transition(all 1s ease);
+	}
+}
+
+
+.faux-button--error a {
+	border-color:$error-color;
+	color:$error-color;
+}
+
+
+/* == Faux links == */
+// Fixed now!
+.faux-link {
+	&, &:hover {
+	    border: none;
+		border-radius: 0px;
+		
+	    background: none repeat scroll 0% 0% transparent;
+	    color: $link-color;
+	    
+	    text-transform: none;
+	    letter-spacing: 0;
+		padding: 0;
+		margin: 0;
+		display:inline;
+		line-height:normal; // this is the fix for the pesky gap above the border-bottom
+		text-align:left;
+		box-sizing:content-box;
+		height:auto;
+		overflow:visible;
+		padding-bottom:1px;
+		span {
+			border-bottom: $link-border;
+		}
+		
+	}
+	&:hover {
+		color:$link-color-hover;
+		span{
+			border-color:$link-color-hover;
+		}
+		
+	}
+}
+
+
+.button--link{
+	display:inline-block;
+	a {
+	background:none !important;
+	color:$link-color;
+	display:inline-block;
+	text-transform:none;
+	letter-spacing:0px;
+	border:none;
+	padding-left:0px;
+	&:hover {
+		color:$link-color-hover;
+	}
+}
+	} 
+
+
+

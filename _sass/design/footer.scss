@@ -1,0 +1,112 @@
+//footer-layout
+.footer {
+	@include padding-top($a-scale-4);
+	@include padding-bottom($a-scale-7);
+	@include box-shadow-standard();
+	.primary {
+		@include gs-span(l,3,5);
+		.logo-holder {
+			@include gs-span(l,3,3,(3,5));
+		}
+	}
+	.secondary {
+		@include gs-span(l,7,8);
+	}
+	.hf {
+		@include gs-span(l,9,10);
+		.logo-holder {
+			@include width($a-scale-2);
+			@include height($a-scale-2);
+			display:inline-block;
+		}
+		text-align:right;
+		@include font-size($b-scale);
+	}
+}
+
+// common styles between footer and sidebar
+.main-nav {
+	li {
+		clear:left;
+		@include margin-bottom($a-scale-2);
+	}
+	a, a:visited {
+		border-bottom:0;
+		color:$text-color;
+		position:relative;
+		&:before {
+				content: "\f054";
+				display: inline-block;
+				font: normal normal normal 14px/1 FontAwesome;
+				font-size: inherit;
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				position:absolute;
+				left:-20px;
+				bottom:2px;
+				opacity:0;
+				@include transition(opacity 0.5s ease);
+				
+			}
+		&:hover, &:focus {
+			color:$link-color-hover;
+			&:before {
+				opacity:1;
+				@include transition(opacity 0.5s ease);
+			}
+		}
+
+	}
+	.active {
+		a, a:visited {
+			color:$active-color;
+			position:relative;
+			&:before {
+				
+				opacity:1;
+
+			}
+		}
+	}
+	.primary {
+		padding-left:0;
+	}
+	.secondary {
+		padding-left:0;
+		li {
+			@include font-size($b-scale);
+		}
+		
+	}
+	.get-started {
+		text-align:center;
+		a, a:visited {
+			background:$link-color;
+			display:block;
+			@include padding($b-scale);
+			@include box-shadow-standard();
+			@extend .uppercase;
+			color:$off-white;
+			@include font-size($b-scale);
+			@include margin-top($a-scale-3);
+			&:hover, &:focus {
+				background-color:$link-color-hover;
+			}
+			&:before {
+				display:none;
+			}
+		}
+
+	}
+	.logo-holder {
+		@include margin-bottom($a-scale-3);
+	}
+	.login {
+		@extend .uppercase;
+		@include font-size($b-scale);
+		a, a:visited {
+			color:$link-color;
+		}
+	}
+}

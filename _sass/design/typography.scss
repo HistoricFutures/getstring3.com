@@ -1,0 +1,123 @@
+/* ====================================================
+typography.scss
+
+Notes: Basic typography styles (no classes)
+==================================================== */
+
+/* == Set up bases on body == */
+
+body {
+	font-family:$base-font;
+	font-weight:$base-font-weight;
+	@include font-size($size-p);
+	line-height:$base-line-height;
+	color:$text-color;
+}
+
+/* == Heading styling == */
+// Note margins only included on bottom of elements to keep consistency
+
+h1 {
+	@include font-size($size-h1);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h1);
+	font-weight:$base-font-weight;
+}
+
+h2 {
+	@include font-size($size-h2);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h2);
+	font-weight:$base-font-weight;
+}
+
+h3 {
+	@include font-size($size-h3);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h3);
+	font-weight:$base-font-weight;
+}
+
+h4 {
+	@include font-size($size-h4);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h4);
+	font-weight:$base-font-weight;
+	@extend .uppercase;
+}
+
+/* == Paragraphs == */
+
+p {
+	font-size:inherit;
+	line-height:$base-line-height;
+	@include margin-bottom($margin-p);
+}
+
+p.large {
+	@include font-size($b-scale-2);
+}
+
+p.small {
+	@include font-size($b-scale);
+}
+
+/* == Lists == */
+
+li {
+	@include margin-bottom($margin-li);
+	font-size:inherit;
+	line-height:$base-line-height;
+	list-style-position: outside;
+}
+
+ol, ul {
+	@include margin-bottom($margin-ul);
+	@include padding-left($padding-ul);
+}
+
+/* == Blockquotes == */
+blockquote {
+	@include padding-left($a-scale-2);
+	border-left:6px solid $grey10;
+	display:block;
+	footer p {
+		font-style:italic;
+		@include font-size($b-scale);
+	}
+}
+
+
+abbr[title] {
+	border-bottom:none;
+}
+
+
+::selection {
+	background:lighten($lightturquoise,10%);
+}
+
+
+/* Responsive */
+
+@include gs-media(s,max) {
+	h1 {
+		@include font-size($size-h2);
+	}
+
+	h2 {
+		@include font-size($size-h3);
+	}
+}
+
+/* Additional classes */
+.uppercase {
+	text-transform:uppercase;
+	letter-spacing:$letter-spacing;
+}
+
+.no-uppercase {
+	text-transform:none !important;
+	letter-spacing:normal !important;
+}
+

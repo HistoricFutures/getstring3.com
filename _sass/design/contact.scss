@@ -1,0 +1,28 @@
+.contact-details {
+	.email a{
+		@include font-size($b-scale-5);
+		border-bottom:0;
+	}
+	.tel a {
+		@include font-size($b-scale-3);
+		border-bottom:0;
+		color:$text-color;
+	}
+	.twitter a {
+		@include font-size($b-scale-3);
+		border-bottom:0;
+	}
+	dt {
+		clear:left;
+		float:left;
+		color:$grey20;
+		margin-left:-50px;
+		.fa {@include margin-top($a-scale--2);}
+		.fa-envelope-o {@include margin-top($a-scale-3);}
+	}
+	dd {
+		float:left;
+		@include margin-bottom($a-scale-4);
+		line-height:1;
+	}
+}

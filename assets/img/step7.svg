@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="69px" height="69px" viewBox="0 0 69 69" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>Imported Layers</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Desktop-HD" sketch:type="MSArtboardGroup" transform="translate(-23.000000, -7059.000000)">
+            <g id="Group" sketch:type="MSLayerGroup" transform="translate(-398.000000, 877.000000)">
+                <g transform="translate(0.000000, 6119.000000)" id="Imported-Layers" sketch:type="MSShapeGroup">
+                    <g transform="translate(421.500000, 63.000000)">
+                        <path d="M34.027,0.896 C23.267,0.896 13.681,5.9 7.451,13.702 L34.027,34.896 L34.027,0.896" id="Fill-1" fill="#953D64"></path>
+                        <path d="M7.445,13.697 C0.736,22.11 -1.328,32.725 0.887,42.46 L34.027,34.896 L7.445,13.697" id="Fill-2" fill="#A7436F"></path>
+                        <path d="M0.88,42.461 C3.274,52.952 10.286,61.184 19.278,65.522 L34.027,34.896 L0.88,42.461" id="Fill-3" fill="#B8487A"></path>
+                        <path d="M19.275,65.528 C28.97,70.197 39.778,69.848 48.776,65.522 L34.027,34.896 L19.275,65.528" id="Fill-4" fill="#CA4D85"></path>
+                        <path d="M67.167,42.46 L34.027,34.896 L48.779,65.528 C58.474,60.859 64.939,52.192 67.167,42.46" id="Fill-5" fill="#CF5F90"></path>
+                        <path d="M67.174,42.461 C69.569,31.971 66.823,21.512 60.603,13.702 L34.027,34.896 L67.174,42.461" id="Fill-6" fill="#D5709B"></path>
+                        <path d="M60.609,13.697 C53.9,5.284 44.011,0.91 34.027,0.903 L34.027,34.896 L60.609,13.697" id="Fill-7" fill="#DA82A7"></path>
+                        <path d="M55.034,34.897 C55.034,46.496 45.631,55.898 34.034,55.898 C22.435,55.898 13.034,46.496 13.034,34.897 C13.034,23.3 22.435,13.897 34.034,13.897 C45.631,13.897 55.034,23.3 55.034,34.897" id="Fill-8" fill="#FFFCF6"></path>
+                        <path d="M39.007,27.618 L39.007,28.551 L32.998,42.178 L31.091,42.178 L37.038,29.105 L29.061,29.105 L29.061,27.618 L39.007,27.618" id="Fill-9" fill="#191918"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

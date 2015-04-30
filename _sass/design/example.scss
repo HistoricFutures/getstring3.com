@@ -1,0 +1,471 @@
+.example {
+	padding-left:0;
+	margin:0;
+}
+.example-step {
+	&:nth-child(odd){
+		@include box-shadow-standard();
+		border-bottom:$grey5 1px solid;
+		border-top:$grey5 1px solid;
+	}
+	position:relative;
+	min-height:600px;
+	@include gs-span(l,all);
+	@include padding-top($a-scale-4);
+	@include padding-bottom($a-scale-3);
+	list-style:none;
+	margin:0;
+	.step-holder {
+		background:$grey90;
+		color:$off-white;
+		@include gs-span(l,1,8);
+		@include margin-bottom($a-scale-3);
+		@include padding($a-scale);
+		@include padding-left($a-scale-5);
+		@include box-sizing();
+		position:relative;
+		p {
+			margin-bottom:0;
+		}
+		a {
+			color:$lightturquoise;
+			border-color:$lightturquoise;
+		}
+		.step-description {
+			@include gs-span(l,1,5,(1,8));
+		}
+		.link {
+			@include gs-span(l,6,8,(1,8));
+		}
+		&:before {
+			content:"";
+			display:block;
+			background:url(#{$img-path}step1.svg) top left no-repeat;
+			background-size:auto 63px;
+			@include width($a-scale-4);
+			@include height($a-scale-4);
+			position:absolute;
+			@include top($a-scale);
+			@include left($a-scale);
+		}
+	}
+	.question-elements, .enquiry-elements {
+		@include gs-span(l,2,5);
+		clear:none;
+	}
+	.question-element, .enquiry-element {
+		@include box-sizing();
+		@include box-shadow-standard();
+		@include padding($a-scale);
+		@include margin-bottom($a-scale);
+		p {
+			margin-bottom:0;
+		}
+
+	}
+	.process-stage {
+		width: 1% * gs-width(l,11,12);
+		position:absolute;
+		@include top($a-scale-4);
+		right:0;
+		h3 {
+			@include font-size($b-scale);
+		}
+		ol {
+			padding:0;
+			margin:0;
+			@include box-shadow-standard();
+			background: rgba($off-white,0.8);
+			li {
+				list-style: none;
+				margin:0;
+				a, span {
+				border-bottom:1px solid $grey5;
+				color:$grey60;
+				display:block;
+				@include padding($b-scale);
+				@include padding-left(2 * $b-scale);
+				@include box-sizing();
+				
+				@include font-size($b-scale);
+				line-height:$small-line-height;
+				position:relative;
+				&:before {
+					content:"";
+					@include width($b-scale);
+					height:100%;
+					top:0;
+					left:0;
+					bottom:0;
+					background:$grey5;
+					display:block;
+					position:absolute;
+					border:1px solid $grey10;
+					@include transition($link-transition);
+				}
+				&:hover {
+					color:$active-color;
+					&:before {
+						background-color: $active-color;
+						border-color:darken($active-color,5);
+						@include transition($link-transition);
+					}
+				}
+				}
+				&.active {
+					
+					a, span {color:$active-color;
+					&:before {
+						background-color: $active-color;
+						border-color:darken($active-color,5);
+					}}
+
+				}
+				&.done {
+					a, span {color:$success-color;
+					&:before {
+						background-color: $success-color;
+						border-color:darken($success-color,5);
+					}
+				&:hover {
+					color:$active-color;
+					&:before {
+						background-color: $active-color;
+						border-color:darken($active-color,5);
+						@include transition($link-transition);
+					}
+				}}
+				}
+			}
+		}
+	}
+	.s3-container {
+		@include gs-span(l,6,7);
+		clear:left;
+		text-align:center;
+		background:$off-white;
+		@include padding-top($b-scale);
+		h2 {
+			@extend .uppercase;
+			@include font-size($size-p);
+			margin-bottom:0;
+			color:$turquoise;
+		}
+	}
+
+	.supplier-1 {
+		@include gs-span(l,2,4);
+		clear:left;
+		background:$off-white;
+		@include margin-top($a-scale-4);
+		.s3-container {
+			@include gs-span(l,2,3,(2,4));
+			padding-top:0;
+		}
+		.enquiry-element {
+			@include gs-span(l,all);
+			clear:left;
+		}
+	}
+	.supplier-2 {
+		@include gs-span(l,6,8);
+		background:$off-white;
+		@include margin-top($a-scale-4);
+		.s3-container {
+			@include gs-span(l,6,7,(6,8));
+			padding-top:0;
+		}
+		.enquiry-element {
+			@include gs-span(l,all);
+			clear:left;
+		}
+	}
+	
+	.results {
+		@include gs-span(l,2,5);
+	}
+
+	.register-holder {
+		@include gs-span(l,5,8);
+		clear:left;
+		text-align:center;
+		background:rgba($off-white,0.8);
+		@include box-shadow-standard();
+		@include padding($a-scale);
+		@include box-sizing();
+	}
+	.information-holder {
+		@include gs-span(l,2,7);
+		clear:left;
+		@include box-shadow-standard();
+		@include box-sizing();
+		@include padding($a-scale);
+		@include padding-bottom($a-scale - $margin-p);
+		background:rgba($off-white,0.8);
+		@include margin-top($a-scale-3);
+	}
+
+
+	// DOTTED LINES
+	&:before {
+		content:"";
+		position:absolute;
+		top:0;
+		left:50%;
+		width:1px;
+		bottom:0px;
+		border-left:1px dashed rgba($turquoise,0.5);
+		display:block;
+		z-index:$bottom;
+	}
+
+
+}
+
+// Specific steps
+
+.suppliers-step {
+	&:after {
+		content:"";
+		position:absolute;
+		top:220px;
+		left:16%;
+		width:34%;
+		bottom:0px;
+		border-left:1px dashed rgba($turquoise,0.5);
+		border-top:1px dashed rgba($turquoise,0.5);
+		display:block;
+		z-index:$bottom;
+	}	
+}
+
+.map-step {
+	background:$off-white;
+}
+
+.routing-step {
+	&:after {
+		content:"";
+		position:absolute;
+		top:220px;
+		left:16%;
+		width:18%;
+		bottom:0px;
+		border-right:1px dashed rgba($turquoise,0.5);
+		border-top:1px dashed rgba($turquoise,0.5);
+		display:block;
+		z-index:$bottom;
+	}
+	.line-helper--1 {
+		position:absolute;
+		top:0;
+		left:16%;
+		
+		bottom:0px;
+		border-left:1px dashed rgba($turquoise,0.5);
+		
+		display:block;
+		z-index:$bottom;
+	}
+
+	.line-helper--2 {
+		position:absolute;
+		top:220px;
+		left:50%;
+		width:17%;
+		bottom:0px;
+		border-right:1px dashed rgba($turquoise,0.5);
+		border-top:1px dashed rgba($turquoise,0.5);
+		display:block;
+		z-index:$bottom;
+	}
+	.line-helper--3 {
+		position:absolute;
+		top:220px;
+		left:67%;
+		width:16.5%;
+		bottom:0px;
+		border-right:1px dashed rgba($turquoise,0.5);
+		border-top:1px dashed rgba($turquoise,0.5);
+		display:block;
+		z-index:$bottom;
+	}
+
+	.s3-container {
+		width:100%;
+		margin:0;
+		padding-top:0;
+	}
+	.suppliers {
+		border:2px solid $pink;
+		@include gs-span(l,2,11);
+		clear:left;
+		@include padding($a-scale);
+		@include box-sizing();
+		@include margin-top($a-scale-3);
+		position:relative;
+		i.fa {
+			position:absolute;
+			color:$pink;
+			bottom:-30px;
+			@include font-size($a-scale-3);
+			left:50%;
+			@include transform(rotate(-25deg));
+			margin-left:-10px;
+		}
+	}
+	.supplier-1 {
+		@include gs-span(l,2,3,(2,11));
+		margin-top:0;
+		.s3-container {
+			width:100%;
+		}
+	}
+	.supplier-2 {
+		@include gs-span(l,4,5,(2,11));
+		margin-top:0;
+			.s3-container {
+			width:100%;
+		}
+	}
+	.supplier-3 {
+		@include gs-span(l,6,7,(2,11));
+
+	}
+	.supplier-4 {
+		@include gs-span(l,8,9,(2,11));
+
+	}
+	.supplier-5 {
+		@include gs-span(l,10,11,(2,11));
+
+	}
+
+	
+}
+
+.results-step {
+	.summary {
+		background:$success-color;
+		@include padding($b-scale);
+		color:$off-white;
+		@include margin-bottom($a-scale);
+		p {
+			margin-bottom:0;
+		}
+	}
+	table {
+		caption, thead {
+			display:none;
+		}
+		.flag-icon {
+			@include font-size($a-scale-2);
+		}
+	}
+}
+
+.register-step {
+	background: url(#{$img-path}connections.png) center center no-repeat;
+	background-size:cover;
+}
+
+// Reusable elements 
+.button--selected {
+	display:inline-block;
+	border:1px solid $active-color;
+	@include border-radius(5%);
+	@include padding($b-scale);
+	color:$off-white;
+	background:$active-color;
+	@include box-shadow-standard();
+	@include margin-top($b-scale);
+}
+
+.button--deactivated {
+	display:inline-block;
+	border:1px solid $grey20;
+	@include border-radius(5%);
+	@include padding($b-scale);
+	color:$grey40;
+	@include box-shadow-standard();
+}
+
+.supplier-list {
+	padding:0;
+	li {
+		list-style:none;
+		background:$turquoise;
+		color:$off-white;
+		@include padding($b-scale);
+		margin-bottom:0;
+		@include margin-top($b-scale);
+	}
+}
+
+.circle {
+	display:inline-block;
+	@include border-radius(50%);
+	background:$off-white;
+	@include width($a-scale-3);
+	@include height($a-scale-3);
+	text-align:center;
+	vertical-align:middle;
+	@include font-size($b-scale-2);
+	line-height:$a-scale-3 / $b-scale-2;
+	color:$success-color;
+}
+
+.next-holder {
+		@include gs-span(l,all);
+		clear:both;
+		
+		position:absolute;
+		@include bottom($a-scale);
+		left:0;
+	}
+
+
+// Step numbers
+
+.step2 {
+	.step-holder:before {
+		background: url(#{$img-path}step2.svg) top left no-repeat;
+		background-size: 63px auto; 
+	}
+}
+
+.step3 {
+	.step-holder:before {
+		background: url(#{$img-path}step3.svg) top left no-repeat;
+		background-size: 63px auto; 
+	}
+}
+
+.step4 {
+	.step-holder:before {
+		background: url(#{$img-path}step4.svg) top left no-repeat;
+		background-size: contain; 
+	}
+}
+
+.step5 {
+	.step-holder:before {
+		background: url(#{$img-path}step5.svg) top left no-repeat;
+		background-size: contain; 
+	}
+}
+
+.step6 {
+	.step-holder:before {
+		background: url(#{$img-path}step6.svg) top left no-repeat;
+		background-size: contain; 
+	}
+}
+
+.step7 {
+	.step-holder:before {
+		background: url(#{$img-path}step7.svg) top left no-repeat;
+		background-size: contain; 
+	}
+}
+

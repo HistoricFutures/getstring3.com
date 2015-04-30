@@ -1,0 +1,84 @@
+body {
+	background:$background-color;
+}
+
+img {
+	width:100%;
+}
+
+.clearfix:before, .clearfix:after {
+content: " ";
+display: table;
+height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.wrapper {
+	@include gs-span(l, all);
+}
+
+.main {
+	@include gs-span(l,all);
+	@include padding-top($a-scale-5);
+}
+
+.footer {
+	@include gs-span(l,all);
+	clear:both;
+	
+}
+
+.full {
+	@include gs-span(l,all);
+	clear:both;
+}
+
+.standard {
+	@include gs-span(l,3,8);
+	@include margin-bottom($a-scale-4);
+	clear:left;
+	.register-button {
+		@include gs-span(l,3,6,(3,8));
+	}
+}
+
+.standard-full {
+	@include gs-span(l,3,11);
+	clear:left;
+}
+
+.standard-intro, .standard-holder {
+	@include gs-span(l,3,8);
+	clear:left;
+	
+}
+
+.standard-intro {
+	@include margin-bottom($a-scale-3);
+}
+
+.small-left {
+	@include gs-span(l,3,5);
+	clear:left;
+}
+
+.standard-right {
+	@include gs-span(l,6,10);
+	@include margin-bottom($a-scale-3);
+}
+
+.small-right {
+	@include gs-span(l,10,11);
+}
+
+.full-right {
+	@include gs-span(l,5,12);
+	clear:left;
+}
+
+// Margins 
+
+.margin--footer {
+	@include margin-bottom($a-scale-4);
+}
