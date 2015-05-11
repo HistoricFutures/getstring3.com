@@ -44,6 +44,9 @@ a, a:visited {
 	}
 
 }
+.borderless {
+	border-bottom:none;
+}
 
 .action-link--primary, a.action-link--primary {
 	background-color:$grey5;

@@ -20,7 +20,7 @@
 			&:after {
 			content:"";
 			position:absolute;
-			top:70px;
+			height:90px;
 			left:50%;
 			width:1px;
 			bottom:-50px;
@@ -124,5 +124,60 @@
 	&:hover {
 		background: url(#{$img-path}down-arrow--hover.svg) center center no-repeat;
 		background-size:contain; 
+	}
+}
+
+@include gs-media(s,max) {
+	.introduction {
+		@include gs-span(s,all);
+		text-align:center;
+		.logo-holder {
+			@include gs-span(s,3,4);
+		}
+		.intro-holder, .find-out-holder {
+			@include gs-span(s,2,5);
+			clear:left;
+		}
+		.find-out-holder:after {
+
+		}
+		.example-selector {
+			@include gs-span(s,all);
+			clear:left;
+			.title-segment {
+				@include gs-span(s,all);
+				@include gs-pad(s, padinfull);
+				text-align:left;
+
+			}
+			h2 {
+				padding-top:0;
+			}
+			.link-segment {
+				@include gs-span(s,all);
+				@include gs-pad(s, padinfull);
+				clear:left;
+			}
+			ul {
+				@include gs-span(s,all);
+				@include gs-pad(s, padinfull);
+				clear:left;
+				li {
+					@include gs-span(s,1,2);
+					a, &.active span {
+						width:100%;
+						@include box-sizing();
+						@include padding($b-scale);
+					}
+				}
+				li+li {
+					@include gs-span(s,3,4);
+				}
+				li+li+li {
+					@include gs-span(s,5,6);
+				}
+
+			}
+		}
 	}
 }

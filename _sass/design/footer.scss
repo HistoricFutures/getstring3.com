@@ -110,3 +110,27 @@
 		}
 	}
 }
+
+
+@include gs-media(s,max) {
+	.footer {
+		.primary {
+			@include gs-span(s,2,5);
+			
+			clear:left;
+		.logo-holder {
+			@include gs-span(s,1,2);
+			clear:left;
+		}
+	}
+	.secondary {
+		@include gs-span(s,2,5);
+		clear:left;
+	}
+	.hf {
+		@include gs-span(s,2,5);
+		clear:left;
+		
+	}
+}
+}

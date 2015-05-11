@@ -6,8 +6,8 @@ defaults:
     scope:
       path: ""
     values:
-      example1: "Viscose"
-      example2: "Timber"
+      example1: "Cotton"
+      example2: "Viscose"
       example3: "Tantalum"
 collections:
   why:
