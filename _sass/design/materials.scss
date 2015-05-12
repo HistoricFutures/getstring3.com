@@ -45,3 +45,19 @@
 	border-top: 1px solid $grey10;
 	@include padding-top($a-scale-2);
 }
+
+@include gs-media(s,max){
+	.materials {
+		@include gs-span(s,all);
+		@include gs-pad(s,padinfull);
+		ul li {
+			.material-name {
+				@include gs-span(s,1,2);
+				@include font-size($a-scale);
+			}
+			.material-information {
+				@include gs-span(s,3,6);
+			}
+		}
+	}
+}

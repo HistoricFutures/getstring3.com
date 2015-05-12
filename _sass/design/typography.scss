@@ -1,7 +1,7 @@
 /* ====================================================
 typography.scss
 
-Notes: Basic typography styles (no classes)
+
 ==================================================== */
 
 /* == Set up bases on body == */
@@ -121,3 +121,12 @@ abbr[title] {
 	letter-spacing:normal !important;
 }
 
+//// Article typography 
+
+.article {
+	h2 {
+		@include margin-top($a-scale-4);
+		@include margin-bottom($b-scale);
+		
+	}
+}

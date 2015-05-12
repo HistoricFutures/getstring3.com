@@ -2,6 +2,8 @@
 layout: standard
 title:  "Terms & Conditions"
 date:   2015-03-31 09:37:12
+nextText: "View our privacy policy"
+nextLink: "/privacy"
 ---
 
 This page (taken with the documents and pages it refers to) tells you the terms of use which you agree to when you use String3. String3 is managed by Historic Futures Ltd.

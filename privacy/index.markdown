@@ -1,6 +1,8 @@
 ---
 layout: standard
 title:  "Privacy"
+nextText: "Will my data be safe in String3?"
+nextLink: "/security"
 ---
 
 Historic Futures Ltd (We) collect certain information or data about you when you use String3.

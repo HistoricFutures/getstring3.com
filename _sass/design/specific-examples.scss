@@ -22,6 +22,10 @@ $examples: (
 			background: url(#{$img-path}#{$example}-suppliers-step.png) bottom right no-repeat;
 			background-size:40% auto;
 		}
+		.map-step {
+			background: $off-white url(#{$img-path}#{$example}-map-step.png) bottom center no-repeat;
+			background-size:contain;
+		}
 	}
 }
 

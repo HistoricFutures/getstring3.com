@@ -26,3 +26,68 @@
 		line-height:1;
 	}
 }
+
+@media only screen and (max-width:1170px) {
+	.contact-details .email a {
+		@include font-size($a-scale-4);
+	}
+	.contact-details dt .fa-envelope-o {@include margin-top($a-scale-2);}
+}
+
+
+@media only screen and (max-width:930px) {
+	.contact-details .email a {
+		@include font-size($b-scale-4);
+	}
+}
+
+@include gs-media(s,max) {
+	.contact-details {
+		@include gs-span(s,2,6);
+		.email a {
+			@include font-size($a-scale-3);
+		}
+		dt .fa-envelope-o {@include margin-top($a-scale);}
+	}
+}
+
+@media only screen and (max-width:580px) {
+	.contact-details {
+		.email a {
+			@include font-size($b-scale-3);
+		}
+		.tel a {
+			@include font-size($a-scale-2);
+		}
+		.twitter a {
+			@include font-size($a-scale-2);
+		}
+		dt .fa {
+			@include margin-top($a-scale--4);
+		}
+		dt .fa-envelope-o {@include margin-top($a-scale--2);}
+
+	}
+}
+
+@media only screen and (max-width:470px) {
+	.contact-details {
+		.email a {
+			@include font-size($a-scale-2);
+		}
+		.tel a {
+			@include font-size($b-scale-2);
+			color:$link-color;
+			&:hover {
+				color:$link-color-hover;
+			}
+		}
+		.twitter a {
+			@include font-size($b-scale-2);
+		}
+		dt .fa {
+			margin-top:0;
+		}
+		dt .fa-envelope-o {@include margin-top($a-scale--4);}
+	}
+}

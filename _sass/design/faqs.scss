@@ -39,3 +39,12 @@
 		}
 	}
 }
+
+@include gs-media(s,max) {
+	.faqs {
+		.question-holder, .answer-holder {
+			@include gs-span(s,2,6);
+			@include gs-pad(s,padinfull);
+		}
+	}
+}

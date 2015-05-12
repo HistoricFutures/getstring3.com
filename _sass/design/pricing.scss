@@ -1,3 +1,5 @@
+
+
 .free-trial {
 	@include gs-span(l,3,10);
 	border-top:1px solid $grey10;
@@ -161,6 +163,28 @@
 	}
 	i {
 		color:$turquoise;
+	}
+
+}
+
+@include gs-media(s,max) {
+	.free-trial {
+		@include gs-span(s,all);
+		@include gs-pad(s,padinfull);
+		.icon-holder {
+			@include gs-span(s,1,1);
+			@include font-size($b-scale-4);
+			text-align:right;
+			@include padding-top($a-scale--2);
+		}
+		.text-holder {
+			@include gs-span(s,2,6);
+			@include padding-top($b-scale);
+		}
+		.button-holder {
+			@include gs-span(s,2,4);
+			clear:left;
+		}
 	}
 
 }

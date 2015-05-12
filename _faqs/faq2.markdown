@@ -1,7 +1,7 @@
 ---
-title:  "Is this the second frequently asked question I see here before me?"
-order: 1
+title:  "How can suppliers be sure that their customers never see who they have passed questions to? "
+order: 2
 ---
-This is the answer to a frequently asked question. 
+We know that disclosing customer or supplier information is not desirable business practice and we have designed String3 with this issue at its core. Connecting the supply chain up does not mean you will be able to see who everyone within it is. String3 works on the basis that you only see those organisations that you already do direct business with. Your direct suppliers can be certain that you, as the initiator of a question, only see the details of their business, not who they in turn source from. And likewise, suppliers suppliers will never know who the original question came from. String3 hides the connections from view only displaying responsiveness and the number (and location? tbc) of organisations that make up your product supply chain. We are confident that this will provide you with faster responses and better data as suppliers can be confident that information about who their own suppliers are will ever be shared with you. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus massa nisi. Sed commodo tellus sed odio dapibus scelerisque. Ut massa massa, mattis quis lacinia vitae, ornare in turpis. Aenean vel interdum quam. Nulla in nunc nec metus mattis suscipit.
+We take the security of your data very seriously in String3. This means that we never share your information with others, even in your own supply chain, without your permission and String3 is covered by an ISO27001 certified Information Security Management System. <a href="/security/" title="More information about security">Read more about security</a>.

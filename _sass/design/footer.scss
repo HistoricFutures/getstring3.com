@@ -2,7 +2,7 @@
 .footer {
 	@include padding-top($a-scale-4);
 	@include padding-bottom($a-scale-7);
-	@include box-shadow-standard();
+	
 	.primary {
 		@include gs-span(l,3,5);
 		.logo-holder {
@@ -21,6 +21,25 @@
 		}
 		text-align:right;
 		@include font-size($b-scale);
+	}
+}
+
+.next-page--holder {
+	@include gs-span(l,all);
+	clear:both;
+	text-align:right;
+	position:relative;
+	z-index:$middle;
+	@include padding-top($a-scale-3);
+	@include padding-bottom($a-scale-3);
+	@include font-size($b-scale-2);
+	@include box-shadow-standard();
+	background:$off-white;
+	.next-page--holder__inner {
+		@include gs-span(l,2,11);
+		a {
+			border:none;
+		}
 	}
 }
 
@@ -44,7 +63,7 @@
 				-moz-osx-font-smoothing: grayscale;
 				position:absolute;
 				left:-20px;
-				bottom:2px;
+				top:2px;
 				opacity:0;
 				@include transition(opacity 0.5s ease);
 				
@@ -118,19 +137,27 @@
 			@include gs-span(s,2,5);
 			
 			clear:left;
-		.logo-holder {
-			@include gs-span(s,1,2);
+			.logo-holder {
+				@include gs-span(s,1,2);
+				clear:left;
+			}
+		}
+		.secondary {
+			@include gs-span(s,2,5);
 			clear:left;
 		}
+		.hf {
+			@include gs-span(s,2,5);
+			clear:left;
+			
+		}
 	}
-	.secondary {
-		@include gs-span(s,2,5);
-		clear:left;
+	.next-page--holder {
+		@include gs-span(s,all);
+		.next-page--holder__inner{
+			@include gs-span(s,all);
+			@include gs-pad(s,padinfull);
+		}
 	}
-	.hf {
-		@include gs-span(s,2,5);
-		clear:left;
-		
-	}
-}
+
 }

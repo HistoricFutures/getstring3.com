@@ -346,6 +346,8 @@
 }
 
 .results-step {
+	background: url(#{$img-path}reporting-step-bg.png) bottom right no-repeat;
+	background-size:50% auto;
 	.summary {
 		background:$success-color;
 		@include padding($b-scale);

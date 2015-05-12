@@ -174,6 +174,19 @@
 		}
 		h3 {
 			color:$success-color;
+			position:relative;
+			&:before {
+				content: "\f058";
+				display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  @include font-size($b-scale-4);
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include left(-1 * $a-scale-4);
+  @include top(-1 * $a-scale);
+  position:absolute;
+			}
 		}
 	}
 	.answers {

@@ -7,7 +7,7 @@ defaults:
       path: ""
     values:
       example1: "Cotton"
-      example2: "Viscose"
+      example2: "Timber"
       example3: "Tantalum"
 collections:
   why:

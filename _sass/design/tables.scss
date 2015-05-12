@@ -21,6 +21,9 @@ tbody tr {
 
 	background:$grey5;
 	border-bottom:16px solid $background-color;
+	&:last-child {
+		border-bottom:none;
+	}
 
 
 	
