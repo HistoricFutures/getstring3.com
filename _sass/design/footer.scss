@@ -47,7 +47,7 @@
 .main-nav {
 	li {
 		clear:left;
-		@include margin-bottom($a-scale-2);
+		@include margin-bottom($b-scale-2);
 	}
 	a, a:visited {
 		border-bottom:0;
@@ -108,7 +108,7 @@
 			@extend .uppercase;
 			color:$off-white;
 			@include font-size($b-scale);
-			@include margin-top($a-scale-3);
+			@include margin-top($a-scale-2);
 			&:hover, &:focus {
 				background-color:$link-color-hover;
 			}
@@ -119,7 +119,7 @@
 
 	}
 	.logo-holder {
-		@include margin-bottom($a-scale-3);
+		@include margin-bottom($a-scale-2);
 	}
 	.login {
 		@extend .uppercase;

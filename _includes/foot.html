@@ -26,8 +26,23 @@
               <p class="copyright">&copy; <a href="http://historicfutures.com" title="Visit the Historic Futures website">Historic Futures</a> 2015</p>
             </div>
           </footer>
+        </div><!--/scroll area -->
         </div><!--/wrapper__inner-->
       </div><!--/wrapper-->
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script>
+      $( document ).ready(function() {
+        $( ".main-nav" ).clone().insertAfter( ".header" ).addClass("side-nav");
+    $( ".menu-toggle" ).click(function() {
 
+        $( ".header" ).toggleClass( "open" );
+        $( ".side-nav" ).toggleClass( "open" );
+        return false;
+
+      });
+});
+      
+
+      </script>
     </body>
 </html>
