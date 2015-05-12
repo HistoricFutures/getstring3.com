@@ -33,14 +33,48 @@
       <script>
       $( document ).ready(function() {
         $( ".main-nav" ).clone().insertAfter( ".header" ).addClass("side-nav");
-    $( ".menu-toggle" ).click(function() {
+        
+        $( ".menu-toggle" ).click(function() {
 
-        $( ".header" ).toggleClass( "open" );
-        $( ".side-nav" ).toggleClass( "open" );
-        return false;
+          $( ".header" ).toggleClass( "open" );
+          $( ".side-nav" ).toggleClass( "open" );
+          return false;
 
+        });
+    
+      var previousScroll = 0;
+
+      $(document).scroll(function(){
+        var currentScroll = $(this).scrollTop();
+         if ($(".header").hasClass("open")){
+
+         } else {
+           if (currentScroll > previousScroll){
+                $('.header').fadeOut();
+           } else {
+                $('.header').fadeIn();
+                $('.header').addClass('fixed');
+           };
+         };
+         previousScroll = currentScroll;
       });
-});
+    
+
+      $("#scroll-area").scroll(function(){
+        var currentScroll = $(this).scrollTop();
+         if ($(".header").hasClass("open")){
+
+         } else {
+           if (currentScroll > previousScroll){
+                $('.header').fadeOut();
+           } else {
+                $('.header').fadeIn();
+                $('.header').addClass('fixed');
+           };
+         };
+         previousScroll = currentScroll;
+      });
+    });
       
 
       </script>

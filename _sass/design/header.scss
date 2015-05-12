@@ -26,8 +26,8 @@
 		
 		@extend .uppercase;
 		position:absolute;
-		right:95px;
-		top:0;
+		right:110px;
+		top:1px;
 		li {
 			@include font-size($size-small);
 			display:inline-block;
