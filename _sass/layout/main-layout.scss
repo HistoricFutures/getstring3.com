@@ -97,3 +97,26 @@ height: 0;
 		clear:left;
 	}
 }
+
+
+/////// IE8 /////////
+.oldie {
+	body {
+		background:$subtle-color;
+	}
+
+	.wrapper {
+		position:relative;
+		margin-left:auto;
+		margin-right:auto;
+		width:1024px;
+		float:none;
+	}
+	.wrapper__inner {
+		@include gs-span(l,all,all,false, ie);
+		background:$background-color;
+		position:relative;
+		z-index:$below;
+		
+	}
+}

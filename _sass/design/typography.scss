@@ -130,3 +130,12 @@ abbr[title] {
 		
 	}
 }
+
+
+///// Fix text size in ios safari
+
+
+  body{
+    -webkit-text-size-adjust: none;
+  }
+

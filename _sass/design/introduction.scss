@@ -9,6 +9,11 @@
 		@include gs-span(l,7,10);
 		@include padding-top($a-scale-3);
 	}
+	@media only screen and (max-width:900px){
+		.intro-holder {
+			@include gs-span(l,7,11);
+		}
+	}
 	.find-out-holder {
 		@include gs-span(l,4,9);
 		text-align:center;
@@ -17,6 +22,7 @@
 		@include padding-top($a-scale);
 		@include padding-bottom($a-scale-2);
 		position:relative;
+		z-index:$low;
 			&:after {
 			content:"";
 			position:absolute;
@@ -24,13 +30,15 @@
 			left:50%;
 			width:1px;
 			bottom:-50px;
+			border-left:1px dashed $lightturquoise;
 			border-left:1px dashed rgba($turquoise,0.5);
 			display:block;
 			z-index:$bottom;
 		}
 	}
 	.example-selector {
-		
+		position:relative;
+		z-index:$secondlow;
 		@include gs-span(l,all);
 		clear:both;
 		background:$turquoise;
@@ -60,12 +68,18 @@
 				}
 			}
 		}
+		
 		h2 {
 			@include font-size($size-p);
 			display:inline-block;
 			margin:0;
 			@include padding-top($a-scale);
 			line-height:$base-line-height;
+		}
+		@media only screen and (max-width:788px) {
+			h2, .link-segment {
+				padding-top:0;
+			}
 		}
 		ul {
 			padding-left:0;
@@ -84,12 +98,14 @@
 			}
 			a {
 				display:inline-block;
-				border:1px solid $grey70;
+				
 				@include border-radius(5%);
 				@include padding($a-scale);
 				color:$off-white;
 				@include min-width($a-scale-5);
 				@include box-shadow-standard();
+				border:1px solid $grey70;
+				@include box-sizing();
 				&:hover {
 					background:$active-color;
 					border-color:$active-color;
@@ -97,21 +113,23 @@
 			}
 			&.active span {
 				display:inline-block;
-				border:1px solid $active-color;
+				
 				@include border-radius(5%);
 				@include padding($a-scale);
 				color:$off-white;
 				background:$active-color;
 				@include min-width($a-scale-5);
 				@include box-shadow-standard();
+				border:1px solid $active-color;
+				@include box-sizing();
 			}
 		}
 	}
 
 }
 
-.down-arrow {
-	background: url(#{$img-path}down-arrow.svg) center center no-repeat;
+.down-arrow, .down-arrow:visited {
+	background: url(#{$img-path}down-arrow.png) center center no-repeat;
 	background-size:contain;
 	@include width($a-scale-5);
 	text-indent:-9999em;
@@ -121,6 +139,15 @@
 	margin-left:auto;
 	margin-right:auto;
 	border-bottom:0;
+	&:hover {
+		background: url(#{$img-path}down-arrow--hover.png) center center no-repeat;
+		background-size:contain; 
+	}
+}
+
+.svg .down-arrow, .svg .down-arrow:visited {
+	background: url(#{$img-path}down-arrow.svg) center center no-repeat;
+	background-size:contain;
 	&:hover {
 		background: url(#{$img-path}down-arrow--hover.svg) center center no-repeat;
 		background-size:contain; 
@@ -164,10 +191,15 @@
 				clear:left;
 				li {
 					@include gs-span(s,1,2);
+					@include box-sizing();
 					a, &.active span {
 						width:100%;
 						@include box-sizing();
-						@include padding($b-scale);
+						@include padding-top($b-scale);
+						@include padding-bottom($b-scale);
+						padding-left:0;
+						padding-right:0;
+						min-width:0;
 					}
 				}
 				li+li {

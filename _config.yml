@@ -9,6 +9,7 @@ defaults:
       example1: "Cotton"
       example2: "Timber"
       example3: "Tantalum"
+      email: "hello@getstring3.com"
 collections:
   why:
     output: false

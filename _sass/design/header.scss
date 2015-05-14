@@ -6,6 +6,8 @@
 	display:block;
 	z-index:$secondtop;
 	@include transition(width 1s ease);
+	top:0;
+	left:0;
 	p {
 		margin-bottom:0;
 	}
@@ -156,11 +158,23 @@
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  //-webkit-overflow-scrolling: touch;
   box-sizing: border-box;
 }
 
 .open + #scroll-area {
 	overflow-y: hidden;
 }
+}
+
+.oldie {
+	.header {
+		background:$off-white;
+		.exposed li {
+			margin-left:20px;
+		}
+	}
+	.side-nav {
+		background:$off-white;
+	}
 }

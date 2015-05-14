@@ -1,7 +1,7 @@
 //footer-layout
 .footer {
 	@include padding-top($a-scale-4);
-	@include padding-bottom($a-scale-7);
+	
 	
 	.primary {
 		@include gs-span(l,3,5);
@@ -22,6 +22,24 @@
 		text-align:right;
 		@include font-size($b-scale);
 	}
+
+	.email {
+		@include gs-span(l,all);
+		clear:both;
+		@include margin-top($a-scale-2);
+		@include box-shadow-standard();
+		border-left:none;
+		border-right:none;
+		@include padding-top($a-scale);
+		@include padding-bottom($a-scale);
+		text-align: center;
+		.fa {
+			color:$grey40;
+		}
+		a, a:visited {
+			border:none;
+		}
+	}
 }
 
 .next-page--holder {
@@ -34,6 +52,8 @@
 	@include padding-bottom($a-scale-3);
 	@include font-size($b-scale-2);
 	@include box-shadow-standard();
+	border-left:none;
+	border-right:none;
 	background:$off-white;
 	.next-page--holder__inner {
 		@include gs-span(l,2,11);
@@ -130,6 +150,18 @@
 	}
 }
 
+.oldie {
+	.main-nav {
+		a, a:visited {
+			&:before {
+				display:none;
+			}
+			&:hover:before {
+				display:block;
+			}
+		}
+	}
+}
 
 @include gs-media(s,max) {
 	.footer {
@@ -151,6 +183,10 @@
 			clear:left;
 			
 		}
+		.email {
+			@include gs-span(s,all);
+			clear:both;
+		}
 	}
 	.next-page--holder {
 		@include gs-span(s,all);
@@ -159,5 +195,6 @@
 			@include gs-pad(s,padinfull);
 		}
 	}
+
 
 }

@@ -27,6 +27,19 @@
 	}
 }
 
+.oldie {
+	.contact-details {
+		.email a{
+			@include font-size($b-scale-4);
+		}
+		dt .fa-envelope-o {
+			@include margin-top($a-scale-2);
+		}
+	}
+	
+
+}
+
 @media only screen and (max-width:1170px) {
 	.contact-details .email a {
 		@include font-size($a-scale-4);

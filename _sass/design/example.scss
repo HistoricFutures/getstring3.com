@@ -5,8 +5,8 @@
 .example-step {
 	&:nth-child(odd){
 		@include box-shadow-standard();
-		border-bottom:$grey5 1px solid;
-		border-top:$grey5 1px solid;
+		border-left:0;
+		border-right:0;
 	}
 	position:relative;
 	min-height:600px;
@@ -18,6 +18,7 @@
 	.step-holder {
 		background:$grey90;
 		color:$off-white;
+		min-height:96px;
 		@include gs-span(l,1,8);
 		@include margin-bottom($a-scale-3);
 		@include padding($a-scale);
@@ -41,12 +42,22 @@
 			content:"";
 			display:block;
 			background:url(#{$img-path}step1.svg) top left no-repeat;
-			background-size:auto 63px;
+			background-size:contain;
 			@include width($a-scale-4);
 			@include height($a-scale-4);
 			position:absolute;
 			@include top($a-scale);
 			@include left($a-scale);
+		}
+	}
+	@media only screen and (max-width:990px) {
+		.step-holder {
+			.large {
+				@include font-size($a-scale);
+			}
+			.link {
+				@include font-size($b-scale);
+			}
 		}
 	}
 	.question-elements, .enquiry-elements {
@@ -140,6 +151,11 @@
 			}
 		}
 	}
+	@media only screen and (max-width:900px) {
+		.process-stage {
+			width: 1% * gs-width(l,10,12);
+		}
+	}
 	.s3-container {
 		@include gs-span(l,6,7);
 		clear:left;
@@ -162,10 +178,12 @@
 		.s3-container {
 			@include gs-span(l,2,3,(2,4));
 			padding-top:0;
+			
 		}
 		.enquiry-element {
 			@include gs-span(l,all);
 			clear:left;
+			@include margin-top($a-scale);
 		}
 	}
 	.supplier-2 {
@@ -175,10 +193,26 @@
 		.s3-container {
 			@include gs-span(l,6,7,(6,8));
 			padding-top:0;
+
 		}
 		.enquiry-element {
 			@include gs-span(l,all);
 			clear:left;
+			@include margin-top($a-scale);
+		}
+	}
+	@media only screen and (max-width:990px) {
+		.supplier-1 {
+			@include gs-span(l,2,5);
+			.s3-container {
+				@include gs-span(l,2,3,(2,5));
+			}
+		}
+		.supplier-2 {
+			@include gs-span(l,6,9);
+			.s3-container {
+				@include gs-span(l,6,7,(6,9));
+			}
 		}
 	}
 	
@@ -195,6 +229,12 @@
 		@include padding($a-scale);
 		@include box-sizing();
 	}
+	@media only screen and (max-width:990px) {
+		.register-holder {
+			@include gs-span(l,4,9);
+		}
+	}
+
 	.information-holder {
 		@include gs-span(l,2,7);
 		clear:left;
@@ -204,6 +244,13 @@
 		@include padding-bottom($a-scale - $margin-p);
 		background:rgba($off-white,0.8);
 		@include margin-top($a-scale-3);
+		@include margin-bottom($a-scale);
+	}
+
+	@media only screen and (max-width:990px) {
+		.information-holder {
+			@include gs-span(l,2,8);
+		}
 	}
 
 
@@ -233,6 +280,8 @@
 		left:16%;
 		width:34%;
 		bottom:0px;
+		border-left:1px dashed $lightturquoise;
+		border-top:1px dashed $lightturquoise;
 		border-left:1px dashed rgba($turquoise,0.5);
 		border-top:1px dashed rgba($turquoise,0.5);
 		display:block;
@@ -252,6 +301,8 @@
 		left:16%;
 		width:18%;
 		bottom:0px;
+		border-right:1px dashed $lightturquoise;
+		border-top:1px dashed $lightturquoise;
 		border-right:1px dashed rgba($turquoise,0.5);
 		border-top:1px dashed rgba($turquoise,0.5);
 		display:block;
@@ -259,10 +310,11 @@
 	}
 	.line-helper--1 {
 		position:absolute;
-		top:0;
+		top:0px;
 		left:16%;
 		
 		bottom:0px;
+		border-left:1px dashed $lightturquoise;
 		border-left:1px dashed rgba($turquoise,0.5);
 		
 		display:block;
@@ -275,6 +327,8 @@
 		left:50%;
 		width:17%;
 		bottom:0px;
+		border-right:1px dashed $lightturquoise;
+		border-top:1px dashed $lightturquoise;
 		border-right:1px dashed rgba($turquoise,0.5);
 		border-top:1px dashed rgba($turquoise,0.5);
 		display:block;
@@ -286,6 +340,8 @@
 		left:67%;
 		width:16.5%;
 		bottom:0px;
+		border-right:1px dashed $lightturquoise;
+		border-top:1px dashed $lightturquoise;
 		border-right:1px dashed rgba($turquoise,0.5);
 		border-top:1px dashed rgba($turquoise,0.5);
 		display:block;
@@ -375,22 +431,24 @@
 // Reusable elements 
 .button--selected {
 	display:inline-block;
+	@include box-shadow-standard();
 	border:1px solid $active-color;
 	@include border-radius(5%);
 	@include padding($b-scale);
 	color:$off-white;
 	background:$active-color;
-	@include box-shadow-standard();
+	
 	@include margin-top($b-scale);
 }
 
 .button--deactivated {
 	display:inline-block;
-	border:1px solid $grey20;
+	
 	@include border-radius(5%);
 	@include padding($b-scale);
 	color:$grey40;
 	@include box-shadow-standard();
+	border:1px solid $grey20;
 }
 
 .supplier-list {
@@ -430,45 +488,102 @@
 
 // Step numbers
 
+.step1 {
+	.step-holder:before {
+		background: url(#{$img-path}step1.png) top left no-repeat;
+		
+	}
+}
+
 .step2 {
 	.step-holder:before {
-		background: url(#{$img-path}step2.svg) top left no-repeat;
-		background-size: 63px auto; 
+		background: url(#{$img-path}step2.png) top left no-repeat;
+		
 	}
 }
 
 .step3 {
 	.step-holder:before {
-		background: url(#{$img-path}step3.svg) top left no-repeat;
-		background-size: 63px auto; 
+		background: url(#{$img-path}step3.png) top left no-repeat;
+		
 	}
 }
 
 .step4 {
 	.step-holder:before {
-		background: url(#{$img-path}step4.svg) top left no-repeat;
-		background-size: contain; 
+		background: url(#{$img-path}step4.png) top left no-repeat;
+		
 	}
 }
 
 .step5 {
 	.step-holder:before {
-		background: url(#{$img-path}step5.svg) top left no-repeat;
-		background-size: contain; 
+		background: url(#{$img-path}step5.png) top left no-repeat;
+		
 	}
 }
 
 .step6 {
 	.step-holder:before {
-		background: url(#{$img-path}step6.svg) top left no-repeat;
-		background-size: contain; 
+		background: url(#{$img-path}step6.png) top left no-repeat;
+		
 	}
 }
 
 .step7 {
 	.step-holder:before {
-		background: url(#{$img-path}step7.svg) top left no-repeat;
-		background-size: contain; 
+		background: url(#{$img-path}step7.png) top left no-repeat;
+		
+	}
+}
+
+.svg {
+	.step1 {
+		.step-holder:before {
+			background: url(#{$img-path}step1.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+	.step2 {
+		.step-holder:before {
+			background: url(#{$img-path}step2.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+
+	.step3 {
+		.step-holder:before {
+			background: url(#{$img-path}step3.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+
+	.step4 {
+		.step-holder:before {
+			background: url(#{$img-path}step4.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+
+	.step5 {
+		.step-holder:before {
+			background: url(#{$img-path}step5.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+
+	.step6 {
+		.step-holder:before {
+			background: url(#{$img-path}step6.svg) top left no-repeat;
+			background-size: contain; 
+		}
+	}
+
+	.step7 {
+		.step-holder:before {
+			background: url(#{$img-path}step7.svg) top left no-repeat;
+			background-size: contain; 
+		}
 	}
 }
 
@@ -518,7 +633,7 @@
 		.information-holder {
 			@include gs-span(s,2,5);
 			@include font-size($b-scale);
-			@include margin-bottom($a-scale);
+			
 		}
 		.results {
 			@include gs-span(s,2,5);
@@ -541,6 +656,8 @@
 			left:50%;
 			width:16.5%;
 			bottom:0px;
+			border-right:1px dashed $lightturquoise;
+			border-top:1px dashed $lightturquoise;
 			border-right:1px dashed rgba($turquoise,0.5);
 			border-top:1px dashed rgba($turquoise,0.5);
 			display:block;
@@ -600,6 +717,8 @@
 			left:16%;
 			width:16%;
 			bottom:0px;
+			border-right:1px dashed $lightturquoise;
+			border-top:1px dashed $lightturquoise;
 			border-right:1px dashed rgba($turquoise,0.5);
 			border-top:1px dashed rgba($turquoise,0.5);
 			display:block;
@@ -611,6 +730,7 @@
 			left:16%;
 			
 			bottom:0px;
+			border-left:1px dashed $lightturquoise;
 			border-left:1px dashed rgba($turquoise,0.5);
 			
 			display:block;
@@ -622,6 +742,7 @@
 			left:66.5%;
 			
 			bottom:0px;
+			border-left:1px dashed $lightturquoise;
 			border-left:1px dashed rgba($turquoise,0.5);
 			
 			display:block;
@@ -634,8 +755,10 @@
 			left:50%;
 			width:17%;
 			bottom:0px;
+			border-left:1px dashed $lightturquoise;
 			border-left:1px dashed rgba($turquoise,0.5);
 			border-right:none;
+			border-top:1px dashed $lightturquoise;
 			border-top:1px dashed rgba($turquoise,0.5);
 			display:block;
 			z-index:$bottom;
@@ -646,10 +769,42 @@
 			left:67%;
 			width:16.5%;
 			bottom:0px;
+			border-right:1px dashed $lightturquoise;
+			border-top:1px dashed $lightturquoise;
 			border-right:1px dashed rgba($turquoise,0.5);
 			border-top:1px dashed rgba($turquoise,0.5);
 			display:block;
 			z-index:$bottom;
 		}
 	}
+}
+
+
+/////// IE8 //////////
+.oldie {
+	.example-step {
+		border-bottom:1px solid $grey10;
+		&:before {
+			border-left:1px dashed $lightturquoise;
+		}
+		.question-element, .enquiry-element, .register-holder, .information-holder, .process-stage ol {
+			background:$off-white;
+		}
+
+	}
+	.results-step {
+		background: url(#{$img-path}reporting-step-bg--oldie.png) bottom right no-repeat;
+		.s3-logo {
+			background: url(#{$img-path}S3-logo--medium.png) center center no-repeat;
+		}
+
+	}
+	.map-step {
+		&:before {display:none;}
+	}
+	.register-step {
+		background: url(#{$img-path}connections--oldie.png) center center no-repeat;
+		&:before {display:none;}
+	}
+
 }
