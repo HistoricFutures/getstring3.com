@@ -5,9 +5,10 @@
                 <li class="logo-holder"><a class="s3-logo" href="/">String3</a></li>
                 <li{% if page.url == '/why/index.html' %} class="active"{% endif %}><a href="/why">Why use String3?</a></li>
                 <li{% if page.url == '/materials/index.html' %} class="active"{% endif %}><a href="/materials">Which materials will String3 work for?</a></li>
-                <li{% if page.url == '/pricing/index.html' %} class="active"{% endif %}><a href="/pricing">Pricing</a></li>
-                <li class="get-started{% if page.url == '/why/index.html' %} active{% endif %}"><a href="/register">Get started</a></li>
-                <li class="login"><a href="https://app.getstring3.com/account/login/" title="Log in to String3">Log in</a></li>
+                <!--<li{% if page.url == '/pricing/index.html' %} class="active"{% endif %}><a href="/pricing">Pricing</a></li>-->
+                <li class="get-started{% if page.url == '/signup/index.html' %} active{% endif %}"><a href="/signup">Get started</a></li>
+                <!--<li class="get-started{% if page.url == '/why/index.html' %} active{% endif %}"><a href="/register">Get started</a></li>
+                <li class="login"><a href="https://app.getstring3.com/account/login/" title="Log in to String3">Log in</a></li>-->
               </ul>
               <ul class="secondary">
                 <li{% if page.url == '/about_supply_chain_mapping/index.html' %} class="active"{% endif %}><a href="/about_supply_chain_mapping">About supply chain mapping</a></li>
@@ -15,7 +16,7 @@
                 <li{% if page.url == '/security/index.html' %} class="active"{% endif %}><a href="/security">Security</a></li>
                 <li{% if page.url == '/terms_and_conditions/index.html' %} class="active"{% endif %}><a href="/terms_and_conditions">Terms &amp; Conditions</a></li>
                 <li{% if page.url == '/privacy/index.html' %} class="active"{% endif %}><a href="/privacy">Privacy</a></li>
-                <li{% if page.url == '/support/index.html' %} class="active"{% endif %}><a href="/support">Support</a></li>
+                <!--<li{% if page.url == '/support/index.html' %} class="active"{% endif %}><a href="/support">Support</a></li>-->
                 <li{% if page.url == '/contact/index.html' %} class="active"{% endif %}><a href="/contact">Contact us</a></li>
               </ul>
             </nav> 
@@ -80,6 +81,21 @@
     });
       
 
+      </script>
+      <script>
+      $( document ).ready(function() {
+          if (!Modernizr.svg) {
+    var imgs = document.getElementsByTagName('img');
+    var svgExtension = /.*\.svg$/
+    var l = imgs.length;
+    for(var i = 0; i < l; i++) {
+        if(imgs[i].src.match(svgExtension)) {
+            imgs[i].src = imgs[i].src.slice(0, -3) + 'png';
+            console.log(imgs[i].src);
+        }
+    }
+}
+        });
       </script>
     </body>
 </html>

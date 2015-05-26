@@ -70,10 +70,37 @@
 		@include padding($a-scale);
 		@include margin-bottom($a-scale);
 		background:rgba($off-white,.8);
+		position:relative;
 		p {
 			margin-bottom:0;
 		}
 
+	}
+	.question-element {
+		background: rgba($off-white,.8) url(#{$img-path}right-arrow--black.svg) 95% center no-repeat;
+		background-size: auto 40px;
+		@include padding-right($a-scale-3);
+	}
+	.enquiry-element.element1 {
+		background: rgba($off-white,.8) url(#{$img-path}left-arrow--black.svg) 95% center no-repeat;
+		background-size: auto 40px;
+		@include padding-right($a-scale-3);
+		@include margin-bottom($a-scale-2);
+	}
+	.enquiry-element.element2 {
+		@include margin-bottom($a-scale-2);
+	}
+	.enquiry-element.element2:before, .enquiry-element.element3:before {
+		content:"";
+		display:block;
+		width:40px;
+		height:12px;
+		background: url(#{$img-path}down-arrow--black.svg) center center no-repeat;
+		background-size:100% auto;
+		position:absolute;
+		top:-20px;
+		left:50%;
+		margin-left:-20px;
 	}
 	.process-stage {
 		width: 1% * gs-width(l,11,12);
@@ -619,6 +646,11 @@
 		.question-elements, .enquiry-elements {
 			@include gs-span(s,2,5);
 			clear:left;
+
+		}
+		.question-element {
+			background: rgba($off-white,.8);
+			@include padding-right($a-scale);
 		}
 		.supplier-1 {
 			@include gs-span(s,1,3);

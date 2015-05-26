@@ -339,9 +339,8 @@ layout: default
 			<p class="large">Next time you need to send a question, String3 stores all the information you need to make it simpler, and over time you start to build up the big picture of your supply chain.</p>
 		</div>
 		<div class="register-holder">
-			<h2>Need visibility of your organisation’s supply chains?</h2>
-			<p>Why not try a free month's trial of String3? No credit card is needed and there's no obligation.</p>
-			<p class="button"><a href="/register">Register for String3</a></p>
+			{% capture regexample %}{% include content/signup-ctas/example.markdown %}{% endcapture %}
+			{{ regexample | markdownify }}
 		</div>
 	</li>
 </ol>
