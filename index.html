@@ -24,34 +24,56 @@ nextLink: "/why"
 	</div>
 
 
-	<div class="example-selector">
+	
+</div>
+
+<div class="exposition">
+	
+		<div class="text-holder-a">
+			<p class="large">Product supply chains are often vast networks of evolving and changeable supplier connections. </p>
+		</div>
+		<div class="text-holder-b">
+			<p>Not knowing where things come from at any point in time, or who to ask for a trusted response carries risk.</p>
+		</div>
+		<b class="background-helper"></b>
+		<div class="text-holder-c">
+			<p>String3 is a risk management tool that saves you time asking questions about where the products you sell come from. String3 links together the suppliers involved in making and moving your product whilst protecting both your identity and the identities of those supplier connections to get you the answers you need. Questions and responses traverse the product network via String3 technology, providing you with better and more accurate data.</p>
+		</div>
+	
+	<div class="find-out-holder">
+		<p class="large">How does String3 work?</p>
+		<a href="#step1" class="down-arrow">Next section</a>
+	</div>
+</div>
+
+
+<div class="example-selector">
 		<div class="title-segment">
 			<h2>View example:</h2>
 		</div>
 		<ul>
 			{% if page.example1 == example.pagename %}
-			<li class="active"><span>{{ page.example1 }}</span></li>
+			<li class="active"><span>{{ page.example1title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1 }}</a></li>
+			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1title }}</a></li>
 			{% endif %}
 
 			{% if page.example2 == example.pagename %}
-			<li class="active"><span>{{ page.example2 }}</span></li>
+			<li class="active"><span>{{ page.example2title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2 }}</a></li>
+			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
 			{% endif %}
 			
 			{% if page.example3 == example.pagename %}
-			<li class="active"><span>{{ page.example3 }}</span></li>
+			<li class="active"><span>{{ page.example3title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3 }}</a></li>
+			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3title }}</a></li>
 			{% endif %}
 		</ul>
 		<div class="link-segment">
-		<p><a href="/materials">See other available materials</a></p>
+		<p>String3 can work for any industry, <a href="/materials">find out more about materials</a>.</p>
 		</div>
 	</div>
-</div>
 
 <ol class="example {{ example.pagename | downcase }}">
 	<li class="example-step question-step step1" id="step1">

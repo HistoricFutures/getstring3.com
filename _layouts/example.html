@@ -24,21 +24,21 @@ layout: default
 		</div>
 		<ul>
 			{% if page.example1 == page.pagename %}
-			<li class="active"><span>{{ page.example1 }}</span></li>
+			<li class="active"><span>{{ page.example1title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1 }}</a></li>
+			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1title }}</a></li>
 			{% endif %}
 
 			{% if page.example2 == page.pagename %}
-			<li class="active"><span>{{ page.example2 }}</span></li>
+			<li class="active"><span>{{ page.example2title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2 }}</a></li>
+			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
 			{% endif %}
 			
 			{% if page.example3 == page.pagename %}
-			<li class="active"><span>{{ page.example3 }}</span></li>
+			<li class="active"><span>{{ page.example3title }}</span></li>
 			{% else %}
-			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3 }}</a></li>
+			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3title }}</a></li>
 			{% endif %}
 		</ul>
 		<div class="link-segment">

@@ -2,10 +2,10 @@
 
 
 $examples: (
-  cotton, 
-  tantalum,
+  textiles, 
+  mining,
   'gold',
-  timber
+  forestry
 );
 
   @each $example, $map in $examples {

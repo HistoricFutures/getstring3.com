@@ -14,7 +14,12 @@
 			@include gs-span(l,7,11);
 		}
 	}
-	.find-out-holder {
+	
+	
+
+}
+
+.find-out-holder {
 		@include gs-span(l,4,9);
 		text-align:center;
 		clear:both;
@@ -26,17 +31,18 @@
 			&:after {
 			content:"";
 			position:absolute;
-			height:90px;
+			height:50px;
 			left:50%;
 			width:1px;
-			bottom:-50px;
+			bottom:0px;
 			border-left:1px dashed $lightturquoise;
 			border-left:1px dashed rgba($turquoise,0.5);
 			display:block;
 			z-index:$bottom;
 		}
 	}
-	.example-selector {
+
+.example-selector {
 		position:relative;
 		z-index:$secondlow;
 		@include gs-span(l,all);
@@ -47,21 +53,23 @@
 		@include padding-top($a-scale);
 		@include padding-bottom($a-scale);
 		.title-segment {
-			@include gs-span(l,2,3);
+			@include gs-span(l,1,2);
 			text-align:right;
 		}
 		.link-segment {
-			@include gs-span(l,10,11);
+			@include gs-span(l,3,11);
 			text-align:left;
+			clear:left;
 			@include padding-top($b-scale);
 			p { 
 				margin-bottom:0;
 				line-height:$small-line-height;
+				@include font-size($size-small);
 			}
 			a, a:visited {
 				color:$off-white;
 				border-color:$off-white;
-				@include font-size($size-small);
+				
 				&:hover, &:focus {
 					color:$text-color;
 					border-color:$text-color;
@@ -84,7 +92,7 @@
 		ul {
 			padding-left:0;
 			display:inline-block;
-			@include gs-span(l,4,9);
+			@include gs-span(l,3,11);
 			margin-bottom:0;
 		}
 		li {
@@ -92,14 +100,15 @@
 			text-align:center;
 			display:inline-block;
 			margin-bottom:0;
-			@include margin-left($a-scale--2);
+			@include gs-span(l,3,5,(3,11));
 			&:first-child {
 				margin-left:0;
 			}
+
 			a {
-				display:inline-block;
+				display:block;
 				
-				@include border-radius(5%);
+				@include border-radius(5px);
 				@include padding($a-scale);
 				color:$off-white;
 				@include min-width($a-scale-5);
@@ -109,12 +118,12 @@
 				&:hover {
 					background:$active-color;
 					border-color:$active-color;
+					color:$off-white;
 				}
 			}
 			&.active span {
-				display:inline-block;
-				
-				@include border-radius(5%);
+				display:block;
+				@include border-radius(5px);
 				@include padding($a-scale);
 				color:$off-white;
 				background:$active-color;
@@ -124,9 +133,13 @@
 				@include box-sizing();
 			}
 		}
+		li+li {
+			@include gs-span(l,6,8,(3,11));
+		}
+		li+li+li {
+			@include gs-span(l,9,11,(3,11));
+		}
 	}
-
-}
 
 .down-arrow, .down-arrow:visited {
 	background: url(#{$img-path}down-arrow.png) center center no-repeat;
@@ -161,14 +174,18 @@
 		.logo-holder {
 			@include gs-span(s,3,4);
 		}
-		.intro-holder, .find-out-holder {
+		.intro-holder {
 			@include gs-span(s,2,5);
 			clear:left;
 		}
-		.find-out-holder:after {
-
+		
+		
+	}
+	.find-out-holder {
+			@include gs-span(s,2,5);
+			clear:left;
 		}
-		.example-selector {
+	.example-selector {
 			@include gs-span(s,all);
 			clear:left;
 			.title-segment {
@@ -184,6 +201,7 @@
 				@include gs-span(s,all);
 				@include gs-pad(s, padinfull);
 				clear:left;
+				@include padding-top($b-scale);
 			}
 			ul {
 				@include gs-span(s,all);
@@ -211,5 +229,4 @@
 
 			}
 		}
-	}
 }

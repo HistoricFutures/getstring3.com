@@ -6,9 +6,12 @@ defaults:
     scope:
       path: ""
     values:
-      example1: "Cotton"
-      example2: "Timber"
-      example3: "Tantalum"
+      example1: "Textiles"
+      example1title: "Textiles"
+      example2: "Forestry"
+      example2title: "Forestry"
+      example3: "Mining"
+      example3title: "Mining and minerals"
       email: "hello@getstring3.com"
 collections:
   why:
