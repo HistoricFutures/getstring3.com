@@ -26,8 +26,9 @@
 	.reason-section {
 		&:nth-child(odd){
 			@include box-shadow-standard();
-			border-bottom:$grey5 1px solid;
-			border-top:$grey5 1px solid;
+			border-left:none;
+			border-right:none;
+			
 		}
 		
 		@include gs-span(l, all);
