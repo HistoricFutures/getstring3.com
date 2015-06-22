@@ -1,5 +1,11 @@
 .why {
-	
+	.intro-why {
+		@include gs-span(l,all);
+		background:url(#{$img-path}why-intro.png) center bottom no-repeat;
+		margin-bottom:0;
+		@include padding-bottom($a-scale-3);
+		
+	}
 	.internal-nav {
 		@include gs-span(l,all);
 		clear:left;
@@ -41,10 +47,15 @@
 		}
 	}
 	.risk {
-		background:url(#{$img-path}bars.svg) bottom center no-repeat;
-		background-size:100% auto;
+		background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom right no-repeat;
+		background-size:100% auto, 30% auto;
 		margin-bottom:0;
 		padding-bottom:10%;
+	}
+
+	.visibility {
+		background:url(#{$img-path}layers.png) right 68px no-repeat;
+		background-size:30% auto;
 	}
 	/*
 	.time {
