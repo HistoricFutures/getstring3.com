@@ -33,6 +33,20 @@
 		@include padding-top($a-scale-4);
 		@include gs-span(l, all);
 	}
+	.simplicity {
+		background:url(#{$img-path}simplicity.png) left 16px no-repeat;
+		background-size:95% auto;
+		h2 {
+			padding-bottom:40%;
+		}
+	}
+	.risk {
+		background:url(#{$img-path}bars.svg) bottom center no-repeat;
+		background-size:100% auto;
+		margin-bottom:0;
+		padding-bottom:10%;
+	}
+	/*
 	.time {
 		.time-saving-comparison {
 			padding:0;
@@ -135,8 +149,8 @@
 				}
 			}
 		}
-	}
-	.report-block {
+	}*/
+	/*.report-block {
 		@include gs-span(l,3,11);
 		clear:left;
 		@include margin-bottom($a-scale-3);
@@ -150,7 +164,7 @@
 		.text-holder {
 			@include gs-span(l,9,11,(3,11));
 		}
-	}
+	}*/
 	.suppliers {
 		background:url(#{$img-path}supplier-graphic.png) right 20% no-repeat;
 		background-size:30% auto;
@@ -178,7 +192,7 @@
 			}
 		}
 	}
-	.answers {
+	/*.answers {
 		h3 {
 			@extend .uppercase;
 			@include font-size($a-scale);
@@ -191,6 +205,6 @@
 		.explanation {
 			
 		}
-	}
+	}*/
 
 }

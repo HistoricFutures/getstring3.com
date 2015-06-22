@@ -10,13 +10,7 @@ nextLink: "/about_supply_chain_mapping"
 	
 		<h1>{{ page.title }}</h1>
 		
-	
-<!--<ul class="internal-nav">
-{% assign sections = site.why | sort: 'order' %}
-{% for section in sections %}
-      <li><a href="#{{ section.name }}">{{ section.title }}</a></li>
-{% endfor %}
-</ul>-->
+
 </div>
 
 <ol class="reason-section-holder">
@@ -27,9 +21,11 @@ nextLink: "/about_supply_chain_mapping"
 		<h2>{{ section.title }}</h2>
 	</div>
 	{{ section.content }}
+	{% unless forloop.last %}
 	<div class="next-holder">
 		<a href="#reason{{ forloop.index | plus:'1' }}" class="down-arrow">Next section</a>
 	</div>
+	{% endunless %}
 </div>
 </li>
 {% endfor %}
