@@ -1,16 +1,5 @@
 .why {
-	.introduction {
-		@include gs-span(l,all);
-		background:$turquoise;
-		color:$off-white;
-		text-align:center;
-		@include margin-top(-1 * $a-scale-7);
-		@include padding-top($a-scale-7);
-		@include padding-bottom($a-scale-2);
-		.intro-text {
-			@include gs-span(l,4,9);
-		}
-	}
+	
 	.internal-nav {
 		@include gs-span(l,all);
 		clear:left;
