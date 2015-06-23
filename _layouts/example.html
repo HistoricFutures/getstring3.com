@@ -14,38 +14,62 @@ layout: default
 	</div>
 	<div class="find-out-holder">
 		<p class="large">Find out where your products come from</p>
+		<a href="#exposition" class="down-arrow">Next section</a>
+	</div>
+
+	<b class="tri-1"></b>
+	<b class="tri-2"></b>
+	<b class="tri-3"></b>
+	<b class="tri-4"></b>
+	<b class="tri-5"></b>
+	<b class="tri-6"></b>
+	<b class="tri-7"></b>
+	<b class="tri-8"></b>
+	<b class="tri-9"></b>
+	<b class="tri-10"></b>
+	
+</div>
+
+<div class="exposition" id="exposition">
+	
+		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}
+		{{ exposition | markdownify }}
+	
+	<div class="find-out-holder">
+		<p class="large">How does String3 work?</p>
 		<a href="#step1" class="down-arrow">Next section</a>
 	</div>
+</div>
 
 
-	<div class="example-selector">
-		<div class="title-segment">
-			<h2>View example:</h2>
-		</div>
-		<ul>
-			{% if page.example1 == page.pagename %}
-			<li class="active"><span>{{ page.example1title }}</span></li>
-			{% else %}
-			<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1title }}</a></li>
-			{% endif %}
+<div class="example-selector">
+	<div class="title-segment">
+		<h2>View example:</h2>
+	</div>
+	<ul>
+		{% if page.example1 == page.pagename %}
+		<li class="active"><span>{{ page.example1title }}</span></li>
+		{% else %}
+		<li><a href="/examples/{{ page.example1 | downcase }}.html#step1">{{ page.example1title }}</a></li>
+		{% endif %}
 
-			{% if page.example2 == page.pagename %}
-			<li class="active"><span>{{ page.example2title }}</span></li>
-			{% else %}
-			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
-			{% endif %}
-			
-			{% if page.example3 == page.pagename %}
-			<li class="active"><span>{{ page.example3title }}</span></li>
-			{% else %}
-			<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3title }}</a></li>
-			{% endif %}
-		</ul>
-		<div class="link-segment">
-		<p><a href="/materials">See other available materials</a></p>
-		</div>
+		{% if page.example2 == page.pagename %}
+		<li class="active"><span>{{ page.example2title }}</span></li>
+		{% else %}
+		<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
+		{% endif %}
+		
+		{% if page.example3 == page.pagename %}
+		<li class="active"><span>{{ page.example3title }}</span></li>
+		{% else %}
+		<li><a href="/examples/{{ page.example3 | downcase }}.html#step1">{{ page.example3title }}</a></li>
+		{% endif %}
+	</ul>
+	<div class="link-segment">
+	<p><a href="/materials">See other available materials</a></p>
 	</div>
 </div>
+
 
 <ol class="example {{ page.pagename | downcase }}">
 	<li class="example-step question-step step1" id="step1">
@@ -104,18 +128,18 @@ layout: default
 		</div>
 		<div class="enquiry-elements">
 			<div class="enquiry-element element1">
-				<p>Did you make or source the {{ page.product | downcase }} your customer is asking about?</p>
+				<p>Did you {{ page.stage1Verb }} or source the {{ page.product | downcase }} your customer is asking about?</p>
 				<p class="button--selected">
-					Made
+					{{ page.stage1PastVerb }}
 				</p>
 				<p class="button--deactivated" aria-hidden="true">
 					Sourced
 				</p>
 			</div>
 			<div class="enquiry-element element2">
-				<p>Did you make or source the {{ page.stage2 | downcase }} you used to make the {{ page.product | downcase }}?</p>
+				<p>Did you {{ page.stage2Verb }} or source the {{ page.stage2 | downcase }} you used to make the {{ page.product | downcase }}?</p>
 				<p class="button--deactivated" aria-hidden="true">
-					Made
+					{{ page.stage2PastVerb }}
 				</p>
 				<p class="button--selected">
 					Sourced
@@ -162,8 +186,8 @@ layout: default
 			</div>
 			<div class="enquiry-element">
 				<p>{{ page.stage2Supplier1 }}:</p>
-				<p><span class="button--selected">Made</span> {{ page.stage2 | downcase }}</p>
-				<p><span class="button--selected">Sourced</span> {{ page.stage3 | downcase }}</p>
+				<p><span class="button--selected">{{ page.stage2PastVerb }}</span> {{ page.stage2 }}</p>
+				<p><span class="button--selected">Sourced</span> {{ page.stage3 }}</p>
 			</div>
 		</div>
 		<div class="supplier-2">
@@ -172,8 +196,8 @@ layout: default
 			</div>
 			<div class="enquiry-element">
 				<p>{{ page.stage2Supplier2 }}:</p>
-				<p><span class="button--selected">Made</span> {{ page.stage2 | downcase }}</p>
-				<p><span class="button--selected">Sourced</span> {{ page.stage3 | downcase }}</p>
+				<p><span class="button--selected">{{ page.stage2PastVerb }}</span> {{ page.stage2 }}</p>
+				<p><span class="button--selected">Sourced</span> {{ page.stage3 }}</p>
 			</div>
 		</div>
 		<b class="line-helper--1"></b>
