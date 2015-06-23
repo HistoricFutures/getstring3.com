@@ -5,7 +5,7 @@
 	border-left:0;
 	border-right:0;
 	@include padding-top($a-scale-4);
-	background:url(#{$img-path}exposition.svg) center 20% no-repeat;
+	background:url(#{$img-path}exposition.png) center 40% no-repeat;
 	background-size:100% auto;
 	
 	.text-holder-a {
@@ -22,10 +22,16 @@
 	}
 }
 
+////// SVG ////////
+.svg .exposition {
+	background:url(#{$img-path}exposition.svg) center 40% no-repeat;
+	background-size:100% auto;
+}
+
 @include gs-media(s,max) {
 	.exposition {
 		@include gs-span(s,all);
-		background:none;
+		background:none !important;
 		.text-holder-a, .text-holder-b, .text-holder-c {
 			@include gs-span(s,all);
 			@include gs-pad(s,padinfull);

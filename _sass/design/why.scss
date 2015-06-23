@@ -82,7 +82,7 @@
 		background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom right no-repeat;
 		background-size:100% auto, 30% auto;
 		margin-bottom:0;
-		padding-bottom:10%;
+		padding-bottom:15%;
 	}
 
 	.visibility {
@@ -301,5 +301,20 @@ p {
 				background:url(#{$img-path}processes.png) left top no-repeat;
 			}
 		}
+		.risk {
+			background:url(#{$img-path}report-small.png) bottom right no-repeat;
+		}
+		.suppliers {
+			background:url(#{$img-path}supplier-graphic-small.png) right 20% no-repeat;
+		}
+	}
+	.speech-bubble {
+		&:before, &:after {
+			display:none;
+		}
+
+	}
+	.speech-bubble > :first-child:after {
+		display:none;
 	}
 }

@@ -95,7 +95,11 @@ height: 0;
 		@include gs-span(s,all);
 		@include gs-pad(s, padinfull);
 		clear:left;
+		.register-button {
+			@include gs-span(s,all);
+		}
 	}
+
 }
 
 
