@@ -6,6 +6,7 @@
 		@include padding-bottom($a-scale-3);
 		
 	}
+
 	.internal-nav {
 		@include gs-span(l,all);
 		clear:left;
@@ -24,6 +25,16 @@
 		padding:0;
 	}
 	.reason-section {
+		.standard-holder {
+			clear:none;
+		}
+		.number-holder {
+		@include gs-span(l,1,2);
+		color:$grey40;
+		text-align:right;
+		@include padding-top($a-scale--4);
+		
+	}
 		&:nth-child(odd){
 			@include box-shadow-standard();
 			border-left:none;
@@ -41,11 +52,29 @@
 		@include gs-span(l, all);
 	}
 	.simplicity {
-		background:url(#{$img-path}simplicity.png) left 16px no-repeat;
-		background-size:95% auto;
-		h2 {
-			padding-bottom:40%;
+		.image-holder {
+			@include gs-span(l,1,7);
+			height:0;
+			padding-bottom:30%;
+			background:url(#{$img-path}processes.svg) left top no-repeat;
+			background-size:100% auto;
 		}
+		.s3-holder {
+			@include gs-span(l,9,11);
+			margin-top:7%;
+		}
+		.logo-holder {
+			@include gs-span(l,9,9,(9,11));
+			@include margin-top($a-scale-4);
+		}
+		.standard-intro {
+			margin-top:-5%;
+		}
+		.speech-bubble-holder {
+			@include gs-span(l,10,11,(9,11));
+		}
+		
+		
 	}
 	.risk {
 		background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom right no-repeat;
@@ -58,125 +87,7 @@
 		background:url(#{$img-path}layers.png) right 68px no-repeat;
 		background-size:30% auto;
 	}
-	/*
-	.time {
-		.time-saving-comparison {
-			padding:0;
-			@include gs-span(l,5,10);
-			clear:left;
-			li {
-				margin:0;
-				position:relative;
-				width:100%;
-				clear:left;
-				float:left;
-				@include margin-bottom($a-scale-3);
-				.text {
-					@include gs-span(l,5,8,(5,10));
-				}
-				.manual {
-					position:absolute;
-					@include gs-span(l,5,6,(5,10));
-					display:block;
-					
-					left:-1 * (29.20962% + 6.18556701%);
-					top:0;
-					text-align:center;
-					color:$grey40;
-					h4 {
-						background: url(#{$img-path}time1-manual.png) bottom center no-repeat;
-						@include padding-bottom($a-scale-5);
-						background-size: auto 80%;
-					}
-					p {
-						color:$pink;
-					}
 
-				}
-				.string {
-					
-					@include gs-span(l,9,10,(5,10));
-					color:$grey40;
-					
-					text-align:center;
-					h4 {
-						background: url(#{$img-path}time1-string.png) bottom center no-repeat;
-						@include padding-bottom($a-scale-5);
-						background-size: auto 80%;
-					}
-					p {
-						color:$turquoise;
-					}
-					
-				}
-				&.time2 {
-					.manual h4 {
-						background-image: url(#{$img-path}time2-manual.png);
-					}
-					.string h4 {
-						background-image: url(#{$img-path}time2-string.png);
-					}
-				}
-				&.time3 {
-					.manual h4 {
-						background-image: url(#{$img-path}time3-manual.png);
-					}
-					.string h4 {
-						background-image: url(#{$img-path}time3-string.png);
-					}
-				}
-				&.time4 {
-					.manual h4 {
-						background-image: url(#{$img-path}time4-manual.png);
-					}
-					.string h4 {
-						background-image: url(#{$img-path}time4-string.png);
-					}
-				}
-				&.time5 {
-					.manual h4 {
-						background-image: url(#{$img-path}time5-manual.png);
-					}
-					.string h4 {
-						background-image: url(#{$img-path}time5-string.png);
-					}
-				}
-			}
-		}
-		.fig-holder {
-			@include gs-span(l,2,11);
-			clear:both;
-		}
-		.time-saving {
-			.img-holder {
-				@include gs-span(l,4,6,(2,11));
-				clear:left;
-			}
-			.text-holder {
-				@include gs-span(l,7,11,(2,11));
-				.time-saved {
-					@include font-size($a-scale-3);
-					color:$green;
-					line-height: 1;
-				}
-			}
-		}
-	}*/
-	/*.report-block {
-		@include gs-span(l,3,11);
-		clear:left;
-		@include margin-bottom($a-scale-3);
-		.screenshot-holder {
-			@include gs-span(l,3,8,(3,11));
-			img {
-				@include box-shadow-standard();
-				border:$grey5 1px solid;
-			}
-		}
-		.text-holder {
-			@include gs-span(l,9,11,(3,11));
-		}
-	}*/
 	.suppliers {
 		background:url(#{$img-path}supplier-graphic.png) right 20% no-repeat;
 		background-size:30% auto;
@@ -187,6 +98,7 @@
 		ul {
 			padding:0;
 		}
+		
 		h3 {
 			color:$success-color;
 			position:relative;
@@ -219,4 +131,133 @@
 		}
 	}*/
 
+}
+
+.speech-bubble {
+	/* Method adjusted from  http://nicolasgallagher.com/pure-css-speech-bubbles/demo/ */
+	@include padding($a-scale);
+	border: 1px solid $grey10;
+	@include border-radius(10px);
+	position:relative;
+	@include font-size($b-scale);
+	&:after {
+		content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: -30px;
+  right: 70%;
+  width: 20px;
+  height: 31px;
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  border-color: $grey10;
+  margin-right: 20px;
+  background: transparent;
+  -webkit-border-bottom-right-radius: 40px 50px;
+  -moz-border-radius-bottomright: 40px 50px;
+  border-bottom-right-radius: 40px 50px;
+  display: block;
+	}
+	&:before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: -30px;
+  right: 70%;
+  width: 50px;
+  height: 30px;
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  border-color: $grey10;
+  margin-right: -10px;
+  background: transparent;
+  -webkit-border-bottom-right-radius: 80px 50px;
+  -moz-border-radius-bottomright: 80px 50px;
+  border-bottom-right-radius: 80px 50px;
+  display: block;
+  
+}
+p {
+  	margin-bottom:0;
+
+  }
+
+}
+.speech-bubble > :first-child:after {
+  content:"";
+  position:absolute;
+  z-index:1;
+  bottom:-10px;
+  right:70%;
+  width:30px;
+  height:15px;
+  margin-right:-10px;
+  background:$off-white;
+}
+
+
+///////// Small screen styles
+
+@include gs-media(s,max) {
+	.why {
+		.reason-section {
+
+			.number-holder {
+				@include gs-span(s,all);
+				@include gs-pad(s,padinfull);
+				text-align:left;
+			}
+			.standard-holder {
+				clear:left;
+			}
+		}
+		.reason-section-inner {
+			@include padding-top($a-scale-2);
+		}
+		
+		.simplicity {
+			.image-holder {
+				@include gs-span(s,1,5);
+				clear:left;
+				padding-bottom:50%;
+			}
+			.s3-holder {
+				@include gs-span(s,3,6);
+				clear:left;
+				margin-top:-20%;
+				@include padding-bottom($a-scale-2);
+			}
+			.logo-holder {
+				@include gs-span(l,3,3,(3,6));
+				@include margin-top($a-scale-4);
+			}
+			.standard-intro {
+				margin-top:0;
+			}
+			.speech-bubble-holder {
+				@include gs-span(s,4,6,(3,6));
+				@include gs-pad(s,padinfull);
+			}
+		}
+
+		.risk {
+			background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom center no-repeat;
+			background-size: 100% auto, 70% auto;
+			padding-bottom:55%;
+		}
+
+		.visibility {
+			background:none;
+			.standard-intro {
+				background:url(#{$img-path}layers.png) bottom center no-repeat;
+				background-size:70% auto;
+				padding-bottom:80%;
+				margin-bottom:none;
+			}
+			
+
+		}
+
+
+	}
 }

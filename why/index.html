@@ -21,7 +21,11 @@ nextLink: "/about_supply_chain_mapping"
 <ol class="reason-section-holder">
 {% for section in sections %}
 <li id="{{ section.name }}" class="{{ section.name }} reason-section">
+
 	<div id="reason{{ section.order }}" class="reason-section-inner">
+		<div class="number-holder">
+	<p class="reason-number">Reason #{{ forloop.index }}</p>
+</div>
 	<div class="standard-holder">
 		<h2>{{ section.title }}</h2>
 	</div>
