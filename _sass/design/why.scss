@@ -25,6 +25,7 @@
 		padding:0;
 	}
 	.reason-section {
+
 		.standard-holder {
 			clear:none;
 		}
@@ -50,6 +51,7 @@
 	.reason-section-inner {
 		@include padding-top($a-scale-4);
 		@include gs-span(l, all);
+		@include margin-bottom(-1 * $a-scale-4);
 	}
 	.simplicity {
 		.image-holder {
@@ -243,7 +245,8 @@ p {
 		.risk {
 			background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom center no-repeat;
 			background-size: 100% auto, 70% auto;
-			padding-bottom:55%;
+			padding-bottom:70%;
+			margin-bottom:0;
 		}
 
 		.visibility {
@@ -257,7 +260,46 @@ p {
 			
 
 		}
+		.suppliers {
+			background:none;
+			h3 {
+				@include margin-left($a-scale-2);
+				&:before {
+					content: "\f058";
+					display: inline-block;
+					font: normal normal normal 14px/1 FontAwesome;
+					@include font-size($b-scale-2);
+					text-rendering: auto;
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+					@include left(-1 * $a-scale-2);
+					top:0;
+					position:absolute;
+				}
+			}
+			
+		}
 
 
+	}
+}
+
+
+/////// IE8 //////////
+.oldie {
+	.why {
+		.reason-section {
+			border-top:$grey10 1px solid;
+			
+		}
+		.visibility {
+
+				background:url(#{$img-path}layers-small.png) right 48px no-repeat;
+		}
+		.simplicity {
+			.image-holder {
+				background:url(#{$img-path}processes.png) left top no-repeat;
+			}
+		}
 	}
 }
