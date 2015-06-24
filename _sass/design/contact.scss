@@ -12,6 +12,11 @@
 		@include font-size($b-scale-3);
 		border-bottom:0;
 	}
+	dl {
+		width:100%;
+		display:block;
+		float:left;
+	}
 	dt {
 		clear:left;
 		float:left;
@@ -24,6 +29,7 @@
 		float:left;
 		@include margin-bottom($a-scale-4);
 		line-height:1;
+		width:100%;
 	}
 }
 

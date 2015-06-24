@@ -12,7 +12,7 @@ defaults:
       example2title: "Forestry"
       example3: "Mining"
       example3title: "Mining and minerals"
-      email: "hello@getstring3.com"
+      email: "info@historicfutures.com"
 collections:
   why:
     output: false
