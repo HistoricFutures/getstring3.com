@@ -702,6 +702,12 @@
 			display:block;
 		}
 	}
+	.map-step {
+		min-height:0px;
+		.step-holder {
+			margin-bottom:45%;
+		}
+	}
 	.routing-step {
 		.suppliers {
 			width:92%;
