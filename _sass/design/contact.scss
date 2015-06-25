@@ -1,6 +1,9 @@
+// Starting font size for email address for large screens
+$email-large-size: $a-scale-4;
+
 .contact-details {
 	.email a{
-		@include font-size($b-scale-5);
+		@include font-size($email-large-size);
 		border-bottom:0;
 	}
 	.tel a {
@@ -36,7 +39,7 @@
 .oldie {
 	.contact-details {
 		.email a{
-			@include font-size($b-scale-4);
+			@include font-size($b-scale-4 / $b-scale-5 * $email-large-size);
 		}
 		dt .fa-envelope-o {
 			@include margin-top($a-scale-2);
@@ -48,7 +51,7 @@
 
 @media only screen and (max-width:1170px) {
 	.contact-details .email a {
-		@include font-size($a-scale-4);
+		@include font-size($a-scale-4 / $b-scale-5 * $email-large-size);
 	}
 	.contact-details dt .fa-envelope-o {@include margin-top($a-scale-2);}
 }
@@ -56,7 +59,7 @@
 
 @media only screen and (max-width:930px) {
 	.contact-details .email a {
-		@include font-size($b-scale-4);
+		@include font-size($b-scale-4 / $b-scale-5 * $email-large-size);
 	}
 }
 
@@ -64,7 +67,7 @@
 	.contact-details {
 		@include gs-span(s,2,6);
 		.email a {
-			@include font-size($a-scale-3);
+			@include font-size($a-scale-3 / $b-scale-5 * $email-large-size);
 		}
 		dt .fa-envelope-o {@include margin-top($a-scale);}
 	}
@@ -73,7 +76,7 @@
 @media only screen and (max-width:580px) {
 	.contact-details {
 		.email a {
-			@include font-size($b-scale-3);
+			@include font-size($b-scale-3 / $b-scale-5 * $email-large-size);
 		}
 		.tel a {
 			@include font-size($a-scale-2);
@@ -92,7 +95,7 @@
 @media only screen and (max-width:470px) {
 	.contact-details {
 		.email a {
-			@include font-size($a-scale-2);
+			@include font-size($a-scale-2 / $b-scale-5 * $email-large-size);
 		}
 		.tel a {
 			@include font-size($b-scale-2);

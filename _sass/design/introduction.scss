@@ -352,6 +352,7 @@
 			display:inline-block;
 			margin-bottom:0;
 			@include gs-span(l,3,5,(3,11));
+			line-height: $heading-line-height;
 			&:first-child {
 				margin-left:0;
 			}
@@ -443,6 +444,7 @@
 				@include gs-span(s,all);
 				@include gs-pad(s, padinfull);
 				text-align:left;
+				@include margin-bottom($a-scale--2);
 
 			}
 			h2 {
@@ -458,16 +460,16 @@
 				@include gs-span(s,all);
 				@include gs-pad(s, padinfull);
 				clear:left;
+				
 				li {
 					@include gs-span(s,1,2);
+					
 					@include box-sizing();
 					a, &.active span {
 						width:100%;
 						@include box-sizing();
-						@include padding-top($b-scale);
-						@include padding-bottom($b-scale);
-						padding-left:0;
-						padding-right:0;
+						@include padding($b-scale);
+						
 						min-width:0;
 					}
 				}

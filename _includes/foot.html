@@ -34,73 +34,8 @@
         </div><!--/wrapper__inner-->
       </div><!--/wrapper-->
       <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="/assets/jquery/vendor/jquery.fittext.js"></script>
-        <script>
-          jQuery("#fit-text").fitText();
-        </script>
-      <script>
-      $( document ).ready(function() {
-        $( ".main-nav" ).clone().insertAfter( ".header" ).addClass("side-nav");
         
-        $( ".menu-toggle" ).click(function() {
-
-          $( ".header" ).toggleClass( "open" );
-          $( ".side-nav" ).toggleClass( "open" );
-          return false;
-
-        });
-    
-      var previousScroll = 0;
-
-      $(document).scroll(function(){
-        var currentScroll = $(this).scrollTop();
-         if ($(".header").hasClass("open")){
-
-         } else {
-           if (currentScroll > previousScroll){
-                $('.header').fadeOut();
-           } else {
-                $('.header').fadeIn();
-                $('.header').addClass('fixed');
-           };
-         };
-         previousScroll = currentScroll;
-      });
-    
-
-      $("#scroll-area").scroll(function(){
-        var currentScroll = $(this).scrollTop();
-         if ($(".header").hasClass("open")){
-
-         } else {
-           if (currentScroll > previousScroll){
-                $('.header').fadeOut();
-           } else {
-                $('.header').fadeIn();
-                $('.header').addClass('fixed');
-           };
-         };
-         previousScroll = currentScroll;
-      });
-    });
-      
-
-      </script>
-      <script>
-      $( document ).ready(function() {
-          if (!Modernizr.svg) {
-    var imgs = document.getElementsByTagName('img');
-    var svgExtension = /.*\.svg$/
-    var l = imgs.length;
-    for(var i = 0; i < l; i++) {
-        if(imgs[i].src.match(svgExtension)) {
-            imgs[i].src = imgs[i].src.slice(0, -3) + 'png';
-            console.log(imgs[i].src);
-        }
-    }
-}
-        });
-      </script>
+      <script src="/assets/jquery/jquery.main.js"></script>
       <!-- Google Analytics -->
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

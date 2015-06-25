@@ -679,17 +679,26 @@
 		}
 
 	}
+	.enquiry-step {
+		.enquiry-element.element1 {
+			background: rgba($off-white,.8);
+		}
+	}
 	.suppliers-step {
 		&:before {
 			height:220px;
 			top:0px;
 			bottom:auto;
 		}
+		&:after {
+			left:12%;
+			width:38%;
+		}
 		.line-helper--1 {
 			position:absolute;
 			top:220px;
 			left:50%;
-			width:16.5%;
+			width:14%;
 			bottom:0px;
 			border-right:1px dashed $lightturquoise;
 			border-top:1px dashed $lightturquoise;
@@ -698,6 +707,7 @@
 			display:block;
 			z-index:$bottom;
 		}
+		
 		.button--selected {
 			display:block;
 		}
