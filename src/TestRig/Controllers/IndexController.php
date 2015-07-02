@@ -7,8 +7,8 @@
 
 namespace TestRig\Controllers
 {
-    use Symfony\Component\HttpFoundation\Request;
     use Silex\Application;
+    use Symfony\Component\HttpFoundation\Request;
 
     /** 
      * @class
@@ -21,7 +21,7 @@ namespace TestRig\Controllers
          */
         public function get(Request $request, Application $app)
         {
-            return "Test Rig";
+            return $app['twig']->render("index.html");
         }
     }   
 }

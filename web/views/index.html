@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Test Rig</title>
+  </head>
+
+  <body>
+    <heading>
+      <nav>
+        <ul class="nav-links nav-links--primary">
+          <li><a href="/">Index</a></li>
+          <li><a href="/data">Datasets</a></li>
+        </ul>
+        {% block nav_links__secondary %}{% endblock %}
+      </nav>
+    </heading>
+    <article>
+      <h1>Test Rig{% if title is defined %}: {{ title }}{% endif %}</h1>
+    </article>
+  </body>
+</html>
