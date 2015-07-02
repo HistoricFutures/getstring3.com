@@ -10,6 +10,7 @@ namespace TestRig\Controllers
     use Symfony\Component\HttpFoundation\Request;
     use Silex\Application;
     use TestRig\Controllers\BaseController;
+    use TestRig\Models\Dataset;
 
     /**
      * @class
@@ -65,7 +66,12 @@ namespace TestRig\Controllers
          */
         public function index(Request $request, Application $app)
         {
-            return $this->render($app, array("title" => "datasets"));
+            $this->template = "datasets_listing.html";
+            $dataset = new Dataset();
+            return $this->render(
+                $app,
+                array("title" => "datasets", "datasets" => $dataset->index())
+            );
         }
     }
 }

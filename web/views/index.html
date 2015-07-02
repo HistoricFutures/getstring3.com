@@ -15,6 +15,7 @@
     </heading>
     <article>
       <h1>Test Rig{% if title is defined %}: {{ title }}{% endif %}</h1>
+      <div id="content">{% block content %}{% endblock %}</div>
     </article>
   </body>
 </html>

@@ -1,0 +1,11 @@
+{% extends "datasets.html" %}
+
+{% block content %}
+{% if datasets %}
+<ul>
+  {% for dataset in datasets %}
+  <li><a href="/data/{{ dataset }}">{{ dataset }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

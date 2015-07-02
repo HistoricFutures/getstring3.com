@@ -41,5 +41,19 @@ namespace TestRig\Models
         public function delete()
         {
         }
+
+        /**
+         * Index of datasets.
+         */
+        public function index()
+        {
+            $paths = glob("$this->dir/*");
+            $datasets = array();
+            foreach ($paths as $path)
+            {
+              $datasets[] = str_replace($this->dir . "/", "", $path);
+            }
+            return $datasets;
+        }
     }
 }

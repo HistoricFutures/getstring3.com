@@ -26,7 +26,9 @@ $routes = array(
     array('/data',        'get',  'TestRig\\Controllers\\DataController::index'),
     array('/data/new',    'get',  'TestRig\\Controllers\\DataController::createForm'),
     array('/data/create', 'post', 'TestRig\\Controllers\\DataController::createSubmit'),
+    array('/data/{path}', 'get', 'TestRig\\Controllers\\DataController::read'),
 );
+
 
 foreach ($routes as $route)
 {
