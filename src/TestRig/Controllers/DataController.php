@@ -9,22 +9,23 @@ namespace TestRig\Controllers
 {
     use Symfony\Component\HttpFoundation\Request;
     use Silex\Application;
+    use TestRig\Controllers\BaseController;
 
     /**
      * @class
      * Controller to handle data generation CR*Di methods.
      */
-    class DataController
+    class DataController extends BaseController
     {
+        // Default template for rendering.
+        protected $template = "datasets.html";
+
         /**
          * Handles GET method: CR*Di:Create.
          */
         public function createForm(Request $request, Application $app)
         {
-            return $app['twig']->render(
-                "datasets.html",
-                array("title" => "create new dataset")
-            );
+            return $this->render($app, array("title" => "create new dataset"));
         }
 
         /**
@@ -40,10 +41,7 @@ namespace TestRig\Controllers
          */
         public function read(Request $request, Application $app)
         {
-            return $app['twig']->render(
-                "datasets.html",
-                array("title" => "view dataset")
-            );
+            return $this->render($app, array("title" => "view dataset"));
         }
 
         /**
@@ -51,10 +49,7 @@ namespace TestRig\Controllers
          */
         public function deleteForm(Request $request, Application $app)
         {
-            return $app['twig']->render(
-                "datasets.html",
-                array("title" => "delete dataset")
-            );
+            return $this->render($app, array("title" => "delete dataset"));
         }
 
         /**
@@ -70,10 +65,7 @@ namespace TestRig\Controllers
          */
         public function index(Request $request, Application $app)
         {
-            return $app['twig']->render(
-                "datasets.html",
-                array("title" => "datasets")
-            );
+            return $this->render($app, array("title" => "datasets"));
         }
     }
 }

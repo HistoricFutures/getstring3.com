@@ -22,15 +22,15 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 // Routing.
 $routes = array(
-    '/' => array('get', 'TestRig\\Controllers\\IndexController::get'),
-    '/data' => array('get', 'TestRig\\Controllers\\DataController::index'),
-    '/data/new' => array('get', 'TestRig\\Controllers\\DataController::createForm'),
-    '/data/create' => array('post', 'TestRig\\Controllers\\DataController::createSubmit'),
+    array('/',            'get',  'TestRig\\Controllers\\IndexController::get'),
+    array('/data',        'get',  'TestRig\\Controllers\\DataController::index'),
+    array('/data/new',    'get',  'TestRig\\Controllers\\DataController::createForm'),
+    array('/data/create', 'post', 'TestRig\\Controllers\\DataController::createSubmit'),
 );
 
-foreach ($routes as $route_path => $route_method)
+foreach ($routes as $route)
 {
-    $app->{$route_method[0]}($route_path, $route_method[1]);
+    $app->{$route[1]}($route[0], $route[2]);
 }
 
 // Run the Silex app.

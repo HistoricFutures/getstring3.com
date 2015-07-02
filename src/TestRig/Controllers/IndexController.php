@@ -9,19 +9,20 @@ namespace TestRig\Controllers
 {
     use Silex\Application;
     use Symfony\Component\HttpFoundation\Request;
+    use TestRig\Controllers\BaseController;
 
     /** 
      * @class
      * Controller to handle the homepage index.
      */
-    class IndexController
+    class IndexController extends BaseController
     {   
         /**
          * Handles GET method.
          */
         public function get(Request $request, Application $app)
         {
-            return $app['twig']->render("index.html");
+            return $this->render($app);
         }
     }   
 }
