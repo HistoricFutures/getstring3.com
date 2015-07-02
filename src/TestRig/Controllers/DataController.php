@@ -41,15 +41,12 @@ namespace TestRig\Controllers
                 ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => TRUE))
                 ->getForm();
             $form->handleRequest($request);
-            var_dump($_POST);
 
             // If form is submitted and (hence) valid, handle file.
             if ($form->isValid())
             {
-              // Pass file to model layer.
-              var_dump($form['attachment']);
-              var_dump($form['attachment']->getPathname());
-              exit;
+                // Pass file to model layer.
+                $this->model->create($form['attachment']->getData());
             }
 
             $this->template = "datasets_form.html";
