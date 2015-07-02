@@ -32,19 +32,31 @@ namespace TestRig\Controllers
         }
 
         /**
-         * Handles GET method: CR*Di:Create.
+         * Handles GET/POST method: CR*Di:Create.
          */
-        public function createForm(Request $request, Application $app)
+        public function form(Request $request, Application $app)
         {
-            return $this->render($app, array("title" => "create new dataset"));
-        }
+            // Create a form with just an upload widget.
+            $form = $app['form.factory']->createBuilder('form')
+                ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => TRUE))
+                ->getForm();
+            $form->handleRequest($request);
+            var_dump($_POST);
 
-        /**
-         * Handles POST method: CR*Di:Create.
-         */
-        public function createSubmit(Request $request, Application $app)
-        {
-            return "Create new dataset (submit)";
+            // If form is submitted and (hence) valid, handle file.
+            if ($form->isValid())
+            {
+              // Pass file to model layer.
+              var_dump($form['attachment']);
+              var_dump($form['attachment']->getPathname());
+              exit;
+            }
+
+            $this->template = "datasets_form.html";
+            return $this->render(
+                $app,
+                array("title" => "create new dataset", "form" => $form->createView())
+            );
         }
 
         /**

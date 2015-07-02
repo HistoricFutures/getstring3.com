@@ -3,7 +3,10 @@
         "silex/silex": "~1.3",
         "symfony/twig-bridge": "~2.3",
         "twig/twig": ">=1.8,<2.0-dev",
-        "vlucas/phpdotenv": "^2.0"
+        "vlucas/phpdotenv": "^2.0",
+        "symfony/form": "^2.7",
+        "symfony/security-csrf": "^2.7",
+        "symfony/translation": "^2.7"
     },
     "autoload": {
         "psr-4": {"TestRig\\": "src/TestRig/"}

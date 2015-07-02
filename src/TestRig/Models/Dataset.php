@@ -7,6 +7,9 @@
 
 namespace TestRig\Models
 {
+
+    use Symfony\Component\HttpFoundation\File\UploadedFile;
+
     /**
      * @class
      * Represent a dataset on disk.
@@ -24,8 +27,17 @@ namespace TestRig\Models
         /**
          * Create a dataset.
          */
-        public function create()
+        public function create(UploadedFile $file)
         {
+            // Directory name based on the current date/time.
+            $dataset_dir = date("c");
+            mkdir($this->dir . "/$dataset_dir");
+            // Readme and BOP frmo the UploadedFile.
+            file_put_contents($this->dir . "/$dataset_dir/readme.txt", "Readme");
+            $file->move($this->dir . "/$dataset_dir", "bop.yaml");
+
+            // Return directory name as a marker.
+            return $dataset_dir;
         }
 
         /**

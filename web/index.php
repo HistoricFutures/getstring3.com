@@ -20,16 +20,19 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/views',
 ));
 
+// Translator provider: we don't need it, but form rendering does.
+$app->register(new Silex\Provider\TranslationServiceProvider());
+
+// Form handling.
+$app->register(new Silex\Provider\FormServiceProvider());
+
 // Routing.
 $routes = array(
     array('/',            'get',  'TestRig\\Controllers\\IndexController::get'),
     array('/data',        'get',  'TestRig\\Controllers\\DataController::index'),
-    array('/data/new',    'get',  'TestRig\\Controllers\\DataController::createForm'),
-    array('/data/create', 'post', 'TestRig\\Controllers\\DataController::createSubmit'),
-    array('/data/{path}', 'get', 'TestRig\\Controllers\\DataController::read'),
+    array('/data/new',    'match', 'TestRig\\Controllers\\DataController::form'),
+    array('/data/{path}', 'get',  'TestRig\\Controllers\\DataController::read'),
 );
-
-
 foreach ($routes as $route)
 {
     $app->{$route[1]}($route[0], $route[2]);
