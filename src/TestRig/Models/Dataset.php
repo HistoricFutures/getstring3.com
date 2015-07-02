@@ -31,8 +31,20 @@ namespace TestRig\Models
         /**
          * Read details of a dataset and return.
          */
-        public function read()
+        public function read($path)
         {
+            $full_path = $this->dir . "/" . $path . "/";
+            $metadata = array();
+            foreach(glob("$full_path*") as $path)
+            {
+                $basename = strtolower(str_replace($full_path, "", $path));
+                switch ($basename)
+                {
+                    case "readme.txt":
+                        $metadata["readme"] = file_get_contents($path);
+                }
+            }
+            return $metadata;
         }
 
         /**

@@ -1,0 +1,10 @@
+{% extends "datasets.html" %}
+
+{% block content %}
+{% if readme is defined %}
+<section class="dataset-readme">
+  <h2>README</h2>
+  <pre>{{ readme }}</pre>
+</section>
+{% endif %}
+{% endblock %}

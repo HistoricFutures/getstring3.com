@@ -22,6 +22,16 @@ namespace TestRig\Controllers
         protected $template = "datasets.html";
 
         /**
+         * Implements ::__construct().
+         *
+         * Set up the Dataset model.
+         */
+        public function __construct()
+        {
+            $this->model = new Dataset();
+        }
+
+        /**
          * Handles GET method: CR*Di:Create.
          */
         public function createForm(Request $request, Application $app)
@@ -42,7 +52,10 @@ namespace TestRig\Controllers
          */
         public function read(Request $request, Application $app)
         {
-            return $this->render($app, array("title" => "view dataset"));
+            $this->template = "datasets_single.html";
+            $metadata = $this->model->read($request->get("path"));
+            $metadata["title"] = "view dataset";
+            return $this->render($app, $metadata);
         }
 
         /**
@@ -67,10 +80,9 @@ namespace TestRig\Controllers
         public function index(Request $request, Application $app)
         {
             $this->template = "datasets_listing.html";
-            $dataset = new Dataset();
             return $this->render(
                 $app,
-                array("title" => "datasets", "datasets" => $dataset->index())
+                array("title" => "datasets", "datasets" => $this->model->index())
             );
         }
     }
