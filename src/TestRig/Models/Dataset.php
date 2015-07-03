@@ -45,15 +45,15 @@ namespace TestRig\Models
          */
         public function read($path)
         {
-            $full_path = $this->dir . "/" . $path . "/";
+            $full_path = $this-fullPath($dir);
             $metadata = array();
-            foreach(glob("$full_path*") as $path)
+            foreach(glob("$full_path*") as $resource)
             {
-                $basename = strtolower(str_replace($full_path, "", $path));
+                $basename = strtolower(str_replace($full_path, "", $resource));
                 switch ($basename)
                 {
                     case "readme.txt":
-                        $metadata["readme"] = file_get_contents($path);
+                        $metadata["readme"] = file_get_contents($resource);
                 }
             }
             return $metadata;
@@ -62,8 +62,9 @@ namespace TestRig\Models
         /**
          * Delete dataset.
          */
-        public function delete()
+        public function delete($path)
         {
+            $full_path = $this-fullPath($dir);
         }
 
         /**
@@ -78,6 +79,14 @@ namespace TestRig\Models
               $datasets[] = str_replace($this->dir . "/", "", $path);
             }
             return $datasets;
+        }
+
+        /**
+         * Private: return full path to a dataset.
+         */
+        private function fullPath($path)
+        {
+            return $this->dir . "/" . $path;
         }
     }
 }
