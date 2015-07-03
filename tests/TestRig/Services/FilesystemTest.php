@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * @file
+ * Test: TestRig\Services\Filesystem.
+ */
+
 use TestRig\Services\Filesystem;
 
+/**
+ * @class
+ * Test: TestRig\Services\Filesystem.
+ */
 class FilesystemTest extends \PHPUnit_Framework_TestCase
 {
     /**

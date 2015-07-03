@@ -16,12 +16,21 @@ use TestRig\Services\Filesystem;
  */
 class Dataset
 {
+    // Directory datasets stored in: only override via environment.
+    private $dir;
+
     /**
      * Implements ::__construct().
      */
     public function __construct()
     {
-        $this->dir = $_SERVER['DOCUMENT_ROOT'] . '/' . getenv('DIR_DATASETS');
+        // If environment variable not absolute path, append the server
+        // document root variable to the start.
+        $this->dir = getenv('DIR_DATASETS');
+        if (strpos($this->dir, "/") !== 0)
+        {
+          $this->dir = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->dir;
+        }
     }
 
     /**
@@ -31,8 +40,17 @@ class Dataset
     {
         // Directory name based on the current date/time.
         $datasetDir = date("c");
+        $fullPath = $this->fullPath($datasetDir);
+        // If we really have a race condition, append a random string.
+        // Process ID no good, as we could be creating during same process.
+        if (file_exists($fullPath))
+        {
+            $datasetDir .= "-" . rand(1, 32767);
+            $fullPath = $this->fullPath($datasetDir);
+        }
+
         mkdir($this->dir . "/$datasetDir");
-        // Readme and BOP frmo the UploadedFile.
+        // Readme and BOP from the UploadedFile.
         file_put_contents($this->dir . "/$datasetDir/readme.txt", "Readme");
         $file->move($this->dir . "/$datasetDir", "bop.yaml");
 

@@ -1,7 +1,10 @@
-<phpunit>
+<phpunit bootstrap="tests/bootstrap.php">
   <testsuites>
     <testsuite name="testrig">
-      <directory>tests</directory>
+      <directory>tests/TestRig</directory>
     </testsuite>
   </testsuites>
+  <php>
+    <env name="DIR_DATASETS" value="/tmp/datasets"/>
+  </php>
 </phpunit>
