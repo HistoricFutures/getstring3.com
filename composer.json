@@ -6,7 +6,10 @@
         "vlucas/phpdotenv": "^2.0",
         "symfony/form": "^2.7",
         "symfony/security-csrf": "^2.7",
-        "symfony/translation": "^2.7"
+        "symfony/translation": "^2.7",
+        "phpunit/phpunit": "4.7.*"
+    },
+    "require-dev": {
     },
     "autoload": {
         "psr-4": {"TestRig\\": "src/TestRig/"}
