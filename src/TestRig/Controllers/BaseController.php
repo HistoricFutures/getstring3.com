@@ -5,21 +5,19 @@
  * Base controller, simplifying e.g. render methods.
  */
 
-namespace TestRig\Controllers
-{
+namespace TestRig\Controllers;
 
-    /** 
-     * @class
-     * Base controller.
-     */
-    class BaseController
-    {   
-        // Default template for rendering.
-        protected $template = "index.html";
+/** 
+ * @class
+ * Base controller.
+ */
+class BaseController
+{   
+    // Default template for rendering.
+    protected $template = "index.html";
 
-        protected function render($app, $variables = array())
-        {
-            return $app['twig']->render($this->template, $variables);
-        }
+    protected function render($app, $variables = array())
+    {
+        return $app['twig']->render($this->template, $variables);
     }
 }
