@@ -30,26 +30,26 @@ namespace TestRig\Models
         public function create(UploadedFile $file)
         {
             // Directory name based on the current date/time.
-            $dataset_dir = date("c");
-            mkdir($this->dir . "/$dataset_dir");
+            $datasetDir = date("c");
+            mkdir($this->dir . "/$datasetDir");
             // Readme and BOP frmo the UploadedFile.
-            file_put_contents($this->dir . "/$dataset_dir/readme.txt", "Readme");
-            $file->move($this->dir . "/$dataset_dir", "bop.yaml");
+            file_put_contents($this->dir . "/$datasetDir/readme.txt", "Readme");
+            $file->move($this->dir . "/$datasetDir", "bop.yaml");
 
             // Return directory name as a marker.
-            return $dataset_dir;
+            return $datasetDir;
         }
 
         /**
          * Read details of a dataset and return.
          */
-        public function read($path)
+        public function read($datasetDir)
         {
-            $full_path = $this-fullPath($dir);
+            $fullPath = $this->fullPath($datasetDir);
             $metadata = array();
-            foreach(glob("$full_path*") as $resource)
+            foreach(glob("$fullPath/*") as $resource)
             {
-                $basename = strtolower(str_replace($full_path, "", $resource));
+                $basename = strtolower(str_replace("$fullPath/", "", $resource));
                 switch ($basename)
                 {
                     case "readme.txt":
@@ -62,9 +62,9 @@ namespace TestRig\Models
         /**
          * Delete dataset.
          */
-        public function delete($path)
+        public function delete($datasetDir)
         {
-            $full_path = $this-fullPath($dir);
+            $fullPath = $this->fullPath($datasetDir);
         }
 
         /**
@@ -84,9 +84,9 @@ namespace TestRig\Models
         /**
          * Private: return full path to a dataset.
          */
-        private function fullPath($path)
+        private function fullPath($datasetDir)
         {
-            return $this->dir . "/" . $path;
+            return $this->dir . "/$datasetDir";
         }
     }
 }
