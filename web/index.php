@@ -30,8 +30,9 @@ $app->register(new Silex\Provider\FormServiceProvider());
 $routes = array(
     array('/',            'get',  'TestRig\\Controllers\\IndexController::get'),
     array('/data',        'get',  'TestRig\\Controllers\\DataController::index'),
-    array('/data/new',    'match', 'TestRig\\Controllers\\DataController::form'),
+    array('/data/new',    'match', 'TestRig\\Controllers\\DataController::create'),
     array('/data/{path}', 'get',  'TestRig\\Controllers\\DataController::read'),
+    array('/data/{path}/delete', 'match',  'TestRig\\Controllers\\DataController::delete'),
 );
 foreach ($routes as $route)
 {

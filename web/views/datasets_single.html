@@ -1,5 +1,9 @@
 {% extends "datasets.html" %}
 
+{% block nav_links__secondary__extra %}
+<li><a href="/data/{{ path }}/delete">Delete this dataset</a></li>
+{% endblock %}
+
 {% block content %}
 {% if readme is defined %}
 <section class="dataset-readme">

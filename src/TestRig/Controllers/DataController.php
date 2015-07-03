@@ -34,7 +34,7 @@ namespace TestRig\Controllers
         /**
          * Handles GET/POST method: CR*Di:Create.
          */
-        public function form(Request $request, Application $app)
+        public function create(Request $request, Application $app)
         {
             // Create a form with just an upload widget.
             $form = $app['form.factory']->createBuilder('form')
@@ -46,10 +46,11 @@ namespace TestRig\Controllers
             if ($form->isValid())
             {
                 // Pass file to model layer.
-                $this->model->create($form['attachment']->getData());
+              $path = $this->model->create($form['attachment']->getData());
+              $app->redirect("/data/$path");
             }
 
-            $this->template = "datasets_form.html";
+            $this->template = "datasets_create.html";
             return $this->render(
                 $app,
                 array("title" => "create new dataset", "form" => $form->createView())
@@ -61,26 +62,44 @@ namespace TestRig\Controllers
          */
         public function read(Request $request, Application $app)
         {
+            // Initialize incoming data.
             $this->template = "datasets_single.html";
-            $metadata = $this->model->read($request->get("path"));
+            $path = $request->get("path");
+
+            // Get metadata for dataset and inject variables for Twig.
+            $metadata = $this->model->read($path);
             $metadata["title"] = "view dataset";
+            $metadata["path"] = $path;
+
             return $this->render($app, $metadata);
         }
 
         /**
-         * Handles GET method: CR*Di:Delete.
+         * Handles GET/POST method: CR*Di:Delete.
          */
-        public function deleteForm(Request $request, Application $app)
+        public function delete(Request $request, Application $app)
         {
-            return $this->render($app, array("title" => "delete dataset"));
-        }
+            // Initialize incoming data.
+            $path = $request->get("path");
+            $this->template = "datasets_delete.html";
 
-        /**
-         * Handles POST method: CR*Di:Delete.
-         */
-        public function deleteSubmit(Request $request, Application $app)
-        {
-            return "Delete";
+            // Create a form with just a submit button.
+            $form = $app['form.factory']->createBuilder('form')
+                ->getForm();
+            $form->handleRequest($request);
+
+            // If form is submitted and (hence) valid, handle file.
+            if ($form->isValid())
+            {
+                // Pass request to model layer.
+                $this->model->delete($path);
+                return $app->redirect("/data");
+            }
+
+            return $this->render(
+                $app,
+                array("title" => "delete dataset", "form" => $form->createView(), "path" => $path)
+            );
         }
 
         /**
