@@ -7,8 +7,8 @@
 
 namespace TestRig\Models
 {
-
     use Symfony\Component\HttpFoundation\File\UploadedFile;
+    use TestRig\Services\Filesystem;
 
     /**
      * @class
@@ -65,6 +65,7 @@ namespace TestRig\Models
         public function delete($datasetDir)
         {
             $fullPath = $this->fullPath($datasetDir);
+            Filesystem::removeDirectory($fullPath);
         }
 
         /**
