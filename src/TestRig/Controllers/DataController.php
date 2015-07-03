@@ -46,8 +46,8 @@ namespace TestRig\Controllers
             if ($form->isValid())
             {
                 // Pass file to model layer.
-              $path = $this->model->create($form['attachment']->getData());
-              $app->redirect("/data/$path");
+                $path = $this->model->create($form['attachment']->getData());
+                return $app->redirect("/data/$path");
             }
 
             $this->template = "datasets_create.html";
