@@ -8,6 +8,7 @@
 namespace TestRig\Models;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Yaml\Parser;
 use TestRig\Services\Filesystem;
 
 /**
@@ -79,6 +80,8 @@ class Dataset
                 // Raw bop.yaml but also parse it for info.
                 case "bop.yaml":
                     $metadata["raw"]["bop"] = file_get_contents($resource);
+                    $yaml = new Parser();
+                    $metadata["bop"] = $yaml->parse($metadata["raw"]["bop"]);
             }
         }
         return $metadata;

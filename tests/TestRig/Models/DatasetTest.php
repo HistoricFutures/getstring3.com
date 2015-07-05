@@ -5,6 +5,7 @@
  * Test: TestRig\Models\Dataset.
  */
 
+use Symfony\Component\Yaml\Dumper;
 use TestRig\Models\Dataset;
 use TestRig\Services\Filesystem;
 
@@ -57,18 +58,37 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        // Always create.
-        $datasetDir = $this->createWithMock();
+        // Create, as above, but with a BOP.
+        $bop = array("organizations" => array(array("prefix" => "Foo")));
+
+        $datasetDir = $this->createWithMock($bop);
 
         // Read the manifest.
         $dataset = self::$model->read($datasetDir);
 
         // Assert manifest contents as expected.
+        // Raw files both present.
         $this->assertArrayHasKey("raw", $dataset);
         $this->assertArrayHasKey("readme", $dataset['raw']);
         $this->assertArrayHasKey("bop", $dataset['raw']);
-        $this->assertStringEqualsFile(self::$dir . "/$datasetDir/readme.txt", $dataset["raw"]["readme"]);
-        $this->assertStringEqualsFile(self::$dir . "/$datasetDir/bop.yaml", $dataset["raw"]["bop"]);
+        $this->assertStringEqualsFile(
+          self::$dir . "/$datasetDir/readme.txt", $dataset["raw"]["readme"]
+        );
+        $this->assertStringEqualsFile(
+          self::$dir . "/$datasetDir/bop.yaml", $dataset["raw"]["bop"]
+        );
+
+        // Parsed data from bop.yaml present?
+        $this->assertArrayHasKey("bop", $dataset);
+        $this->assertArrayHasKey("organizations", $dataset["bop"]);
+        $this->assertArrayHasKey(0, $dataset["bop"]["organizations"]);
+        $this->assertArrayHasKey(
+            "prefix", $dataset["bop"]["organizations"][0]
+        );
+        $this->assertEquals(
+            $dataset["bop"]["organizations"][0]["prefix"],
+            $bop["organizations"][0]["prefix"]
+        );
     }
 
     /**
@@ -106,7 +126,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper: create a dataset using mocking of UploadedFile.
      */
-    private function createWithMock() {
+    private function createWithMock($bop = NULL) {
         // Mock up an UploadedFile, disabling its constructor.
         $mockBuilder = $this->getMockBuilder(
             'Symfony\Component\HttpFoundation\File\UploadedFile'
@@ -120,6 +140,9 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $mockUploadedFile->expects($this->once())->method("move")
             ->will($this->returnCallback(array($this, 'mockMove')));
 
+        // Squirrel away the bop data array, so our mock callback can
+        // access it later on and clear it.
+        $this->temporary_bop_storage = $bop;
         return self::$model->create($mockUploadedFile);
     }
 
@@ -127,9 +150,17 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      * Helper: provide the UploadedFile mock with a ::move() method.
      *
      * This needs to touch a temporary BOP file for the dataset creation.
+     * If BOP data has been hidden on this test then it will be dumped out.
      */
     public function mockMove($dir, $file)
     {
         touch("$dir/$file");
+        if ($this->temporary_bop_storage) {
+            $dumper = new Dumper();
+            file_put_contents(
+                "$dir/$file",
+                $dumper->dump($this->temporary_bop_storage)
+            );
+        }
     }
 }

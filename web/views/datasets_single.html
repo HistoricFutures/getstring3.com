@@ -6,18 +6,27 @@
 
 {% block content %}
 {% if raw is defined %}
-  {% if raw.readme is defined %}
-  <section class="dataset-readme">
+  <section class="dataset dataset--readme">
     <h2>README</h2>
-    <pre>{{ raw.readme }}</pre>
+    {% if raw.readme is defined %}
+      <pre>{{ raw.readme }}</pre>
+    {% else %}
+      <p style="error">Not found!</p>
+    {% endif %}
   </section>
-  {% endif %}
-  {% if raw.bop is defined %}
-  <section class="dataset-readme">
-    <h2>Bill of Process</h2>
-    <pre>{{ raw.bop }}</pre>
-  </section>
-  {% endif %}
-{% endif %}
 
+  <section class="dataset dataset--bop">
+    <h2>Bill of Process</h2>
+    {% if raw.bop is defined %}
+      <pre>{{ raw.bop }}</pre>
+    {% else %}
+      <p style="error">Not found!</p>
+    {% endif %}
+  </section>
+{% else %}
+  <section class="dataset dataset--error">
+    <h2>Files missing</h2>
+    <p class="error">Cannot find any relevant files: readme.txt, bop.yaml</p>
+  </section>
+{% endif %}
 {% endblock %}
