@@ -65,13 +65,20 @@ class Dataset
     {
         $fullPath = $this->fullPath($datasetDir);
         $metadata = array();
+
         foreach(glob("$fullPath/*") as $resource)
         {
             $basename = strtolower(str_replace("$fullPath/", "", $resource));
             switch ($basename)
             {
+                // Put raw file contents into the 'raw' array.
                 case "readme.txt":
-                    $metadata["readme"] = file_get_contents($resource);
+                    $metadata["raw"]["readme"] = file_get_contents($resource);
+                    break;
+
+                // Raw bop.yaml but also parse it for info.
+                case "bop.yaml":
+                    $metadata["raw"]["bop"] = file_get_contents($resource);
             }
         }
         return $metadata;

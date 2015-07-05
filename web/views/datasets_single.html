@@ -5,10 +5,19 @@
 {% endblock %}
 
 {% block content %}
-{% if readme is defined %}
-<section class="dataset-readme">
-  <h2>README</h2>
-  <pre>{{ readme }}</pre>
-</section>
+{% if raw is defined %}
+  {% if raw.readme is defined %}
+  <section class="dataset-readme">
+    <h2>README</h2>
+    <pre>{{ raw.readme }}</pre>
+  </section>
+  {% endif %}
+  {% if raw.bop is defined %}
+  <section class="dataset-readme">
+    <h2>Bill of Process</h2>
+    <pre>{{ raw.bop }}</pre>
+  </section>
+  {% endif %}
 {% endif %}
+
 {% endblock %}

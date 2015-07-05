@@ -64,8 +64,11 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $dataset = self::$model->read($datasetDir);
 
         // Assert manifest contents as expected.
-        $this->assertArrayHasKey("readme", $dataset);
-        $this->assertStringEqualsFile(self::$dir . "/$datasetDir/readme.txt", $dataset["readme"]);
+        $this->assertArrayHasKey("raw", $dataset);
+        $this->assertArrayHasKey("readme", $dataset['raw']);
+        $this->assertArrayHasKey("bop", $dataset['raw']);
+        $this->assertStringEqualsFile(self::$dir . "/$datasetDir/readme.txt", $dataset["raw"]["readme"]);
+        $this->assertStringEqualsFile(self::$dir . "/$datasetDir/bop.yaml", $dataset["raw"]["bop"]);
     }
 
     /**
