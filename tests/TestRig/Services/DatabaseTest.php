@@ -25,7 +25,24 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $path = "/tmp/testrig-" . getmypid() . ".sqlite3";
         Database::create($path);
 
+        // Check database even exists.
         $this->assertFileExists($path);
+
+        // Now connect to it and look for the entity table.
+        $conn = Database::getConn($path);
+        try
+        {
+            $conn->exec("SELECT * FROM entity");
+        }
+        catch (Exception $e)
+        {
+            if (strpos($e->getMessage(), "no such table: entity") !== FALSE)
+            {
+                $this->fail("Creating database doesn't create table entity.");
+            }
+            throw $e;
+        }
+
         unlink($path);
     }
 }
