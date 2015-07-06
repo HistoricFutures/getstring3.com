@@ -9,6 +9,7 @@ namespace TestRig\Models;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Parser;
+use TestRig\Services\Database;
 use TestRig\Services\Filesystem;
 
 /**
@@ -50,10 +51,13 @@ class Dataset
             $fullPath = $this->fullPath($datasetDir);
         }
 
+        // Start dataset folder on disk.
         mkdir($this->dir . "/$datasetDir");
         // Readme and BOP from the UploadedFile.
         file_put_contents($this->dir . "/$datasetDir/readme.txt", "Readme");
         $file->move($this->dir . "/$datasetDir", "bop.yaml");
+        // SQLite database create and generate schema.
+        Database::create($this->dir . "/$datasetDir/dataset.sqlite3");
 
         // Return directory name as a marker.
         return $datasetDir;
