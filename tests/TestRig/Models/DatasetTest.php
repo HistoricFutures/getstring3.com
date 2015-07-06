@@ -59,7 +59,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     public function testRead()
     {
         // Create, as above, but with a BOP.
-        $bop = array("organizations" => array(array("prefix" => "Foo")));
+        $bop = "tests/fixtures/bop.yaml";
 
         $datasetDir = $this->createWithMock($bop);
 
@@ -80,15 +80,13 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
 
         // Parsed data from bop.yaml present?
         $this->assertArrayHasKey("bop", $dataset);
-        $this->assertArrayHasKey("organizations", $dataset["bop"]);
-        $this->assertArrayHasKey(0, $dataset["bop"]["organizations"]);
+        $this->assertArrayHasKey("populations", $dataset["bop"]);
+        $this->assertArrayHasKey(0, $dataset["bop"]["populations"]);
         $this->assertArrayHasKey(
-            "prefix", $dataset["bop"]["organizations"][0]
+            "number", $dataset["bop"]["populations"][0]
         );
-        $this->assertEquals(
-            $dataset["bop"]["organizations"][0]["prefix"],
-            $bop["organizations"][0]["prefix"]
-        );
+
+        $this->assertArrayHasKey("asks", $dataset["bop"]);
     }
 
     /**
@@ -155,12 +153,20 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     public function mockMove($dir, $file)
     {
         touch("$dir/$file");
-        if ($this->temporary_bop_storage) {
-            $dumper = new Dumper();
-            file_put_contents(
-                "$dir/$file",
-                $dumper->dump($this->temporary_bop_storage)
-            );
+        if ($this->temporary_bop_storage)
+        {
+            if (is_array($this->temporary_bop_storage))
+            {
+                $dumper = new Dumper();
+                file_put_contents(
+                    "$dir/$file",
+                    $dumper->dump($this->temporary_bop_storage)
+                );
+            }
+            else
+            {
+                copy($_SERVER['PWD'] . '/' . $this->temporary_bop_storage, "$dir/$file");
+            }
         }
     }
 }

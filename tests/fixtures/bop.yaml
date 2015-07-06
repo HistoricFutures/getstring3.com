@@ -1,0 +1,5 @@
+populations:
+  - number: 100
+    response_time: 5
+    termination_chance: 0.7
+asks: 1000
