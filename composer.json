@@ -7,7 +7,8 @@
         "symfony/form": "^2.7",
         "symfony/security-csrf": "^2.7",
         "symfony/translation": "^2.7",
-        "phpunit/phpunit": "4.7.*"
+        "phpunit/phpunit": "4.7.*",
+        "fzaninotto/faker": "^1.5"
     },
     "require-dev": {
     },

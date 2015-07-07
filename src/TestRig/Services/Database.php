@@ -32,6 +32,9 @@ class Database
 
         // Create schema.
         $conn->exec(file_get_contents(__DIR__ . "/../resources/schema.sql"));
+
+        // Return connection object.
+        return $conn;
     }
 
     /**
@@ -84,6 +87,7 @@ class Database
         $arguments = array();
         foreach ($record as $column => $argument)
         {
+            $column = \SQLite3::EscapeString($column);
             $columns[] = $column;
             $arguments[":$column"] = $argument;
         }
@@ -108,5 +112,89 @@ class Database
             $record["id"] = $row['id'];
             return $row['id'];
         }
+    }
+
+    /**
+     * Read a row from a database table.
+     */
+    public static function readRecord($path, $table, $id)
+    {
+        $conn = self::getConn($path);
+        $table = \SQLite3::EscapeString($table);
+
+        // Select all data from the row matching the ID.
+        $sql = "SELECT * FROM $table WHERE id = :id";
+        $statement = $conn->prepare($sql);
+        $statement->bindValue(":id", $id);
+        $results = $statement->execute();
+
+        while ($row = $results->fetchArray(SQLITE3_ASSOC))
+        {
+            return $row;
+        }
+    }
+
+    /**
+     * Update a row in a database table.
+     *
+     * @param string $path
+     *   Path to SQLite file.
+     * @param string $table
+     *   Table name.
+     * @param integer $id
+     *   ID of the row.
+     * @param array $record
+     *   Key/value array of *any* changes to write.
+     */
+    public static function updateRecord($path, $table, $id, $record)
+    {
+        $conn = self::getConn($path);
+        $table = \SQLite3::EscapeString($table);
+
+        // Never permit ID to be changed.
+        unset($record['id']);
+
+        // Create SQL based on $columns, sneaking a ":" in there for VALUES.
+        $arguments = array();
+        $sql = "UPDATE $table SET ";
+        foreach ($record as $column => $argument)
+        {
+            $column = \SQLite3::EscapeString($column);
+            $sql .= " $column = :$column,";
+            $arguments[":$column"] = $argument;
+        }
+        // The concatenate operator has left us with a trailing comma.
+        $sql = trim($sql, ",") . " WHERE id = :id";
+        $statement = $conn->prepare($sql);
+
+        // Bind all values and execute.
+        $statement->bindValue(":id", $id);
+        foreach ($arguments as $bindKey => $bindValue)
+        {
+            $statement->bindValue($bindKey, $bindValue);
+        }
+        $statement->execute();
+    }
+
+    /**
+     * Delete a row in a database table.
+     *
+     * @param string $path
+     *   Path to SQLite file.
+     * @param string $table
+     *   Table name.
+     * @param integer $id
+     *   ID of the row.
+     * @param array $record
+     *   Key/value array of *any* changes to write.
+     */
+    public static function deleteRecord($path, $table, $id)
+    {
+        $conn = self::getConn($path);
+        $table = \SQLite3::EscapeString($table);
+
+        $statement = $conn->prepare("DELETE FROM $table WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
     }
 }

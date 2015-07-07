@@ -83,7 +83,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: TestRig\Services\Database::getWriteRecord().
+     * Test: TestRig\Services\Database::writeRecord().
      */
     public function testWriteRecord()
     {
@@ -96,5 +96,50 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $results = Database::getConn($this->path)->query("SELECT * FROM entity WHERE id = 1");
         $row = $results->fetchArray();
         $this->assertEquals($record["name"], $row["name"]);
+    }
+
+    /**
+     * Test: TestRig\Services\Database::readRecord().
+     */
+    public function testReadRecord()
+    {
+        // Write record and ensure we get an ID back.
+        $record = array("name" => "Test " . uniqid());
+        Database::writeRecord($this->path, "entity", $record);
+
+        $newRecord = Database::readRecord($this->path, "entity", $record['id']);
+        $this->assertEquals($record['name'], $newRecord['name']);
+    }
+
+    /**
+     * Test: TestRig\Services\Database::updateRecord().
+     */
+    public function testUpdateRecord()
+    {
+        // Write record.
+        $record = array("name" => "Test " . uniqid());
+        Database::writeRecord($this->path, "entity", $record);
+
+        // Change the name and re-read.
+        $newName = "Test " . uniqid();
+        Database::updateRecord($this->path, "entity", $record['id'], array("name" => $newName));
+        $newRecord = Database::readRecord($this->path, "entity", $record['id']);
+
+        $this->assertEquals($newName, $newRecord['name']);
+    }
+    
+    /**
+     * Test: TestRig\Services\Database::deleteRecord().
+     */
+    public function testDeleteRecord()
+    {
+        // Write record.
+        $record = array("name" => "Test " . uniqid());
+        Database::writeRecord($this->path, "entity", $record);
+
+        // Delete record and check we can't find it any more.
+        Database::deleteRecord($this->path, "entity", $record['id']);
+        $record = Database::readRecord($this->path, "entity", $record['id']);
+        $this->assertNull($record);
     }
 }
