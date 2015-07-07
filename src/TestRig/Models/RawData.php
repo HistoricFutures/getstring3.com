@@ -70,4 +70,18 @@ class RawData
             }
         }
     }
+
+    /**
+     * Get all entities.
+     */
+    public function getEntities()
+    {
+        $entities = array();
+        $results = Database::getConn($this->path)->query("SELECT * FROM entity ORDER BY id");
+        while ($row = $results->fetchArray())
+        {
+            $entities[$row['id']] = $row;
+        }
+        return $entities;
+    }
 }

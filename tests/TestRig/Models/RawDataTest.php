@@ -61,7 +61,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testPopulate()
     {
-        $number = 50;
+        $number = 15;
 
         // Set up a fake BOP and wrap the database in RawData.
         $bop = array("populations" => array(array("number" => $number)));
@@ -74,5 +74,21 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
         $this->assertEquals($number * 2, $summary["entities"]["count"]);
+    }
+
+    /**
+     * Test: \TestRig\Models\RawData::getEntities().
+     */
+    public function testGetEntities()
+    {
+        // Attach to the database and insert an entity.
+        $rawData = new RawData($this->pathToDatabase);
+        $record = array("name" => "Get Entities " . uniqid());
+        Database::writeRecord($this->pathToDatabase, "entity", $record);
+
+        // Get entities out of database and check ours is among them.
+        $entities = (new RawData($this->pathToDatabase))->getEntities();
+        $this->assertArrayHasKey($record["id"], $entities);
+        $this->assertEquals($record["name"], $entities[$record["id"]]["name"]);
     }
 }
