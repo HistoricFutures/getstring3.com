@@ -51,6 +51,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists(self::$dir . "/$datasetDir"));
         $this->assertTrue(file_exists(self::$dir . "/$datasetDir/readme.txt"));
         $this->assertTrue(file_exists(self::$dir . "/$datasetDir/bop.yaml"));
+        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/dataset.sqlite3"));
     }
 
     /**
@@ -87,8 +88,11 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertArrayHasKey("asks", $dataset["bop"]);
 
-        // Ensure SQLite database present.
-        $this->assertFileExists(self::$dir . "/$datasetDir/dataset.sqlite3");
+        // Ensure some data in SQLite database.
+        $this->assertEquals(
+            $dataset["database"]["entities"]["count"],
+            $dataset["bop"]["populations"][0]["number"]
+        );
     }
 
     /**
@@ -121,6 +125,15 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         // Assert our new datasets are found.
         $this->assertContains($datasetDir, $datasets);
         $this->assertContains($datasetDir2, $datasets);
+    }
+
+    /**
+     * Test: TestRig\Models\Dataset::pathToDatabase().
+     */
+    public function testPathToDatabase()
+    {
+        $path = self::$model->pathToDatabase("foo");
+        $this->assertTrue(strpos($path, "foo/dataset.sqlite3") > 0);
     }
 
     /**

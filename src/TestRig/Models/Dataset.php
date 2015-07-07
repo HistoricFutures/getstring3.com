@@ -9,6 +9,7 @@ namespace TestRig\Models;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Parser;
+use TestRig\Models\RawData;
 use TestRig\Services\Database;
 use TestRig\Services\Filesystem;
 
@@ -57,7 +58,11 @@ class Dataset
         file_put_contents($this->dir . "/$datasetDir/readme.txt", "Readme");
         $file->move($this->dir . "/$datasetDir", "bop.yaml");
         // SQLite database create and generate schema.
-        Database::create($this->dir . "/$datasetDir/dataset.sqlite3");
+        $databasePath = $this->pathToDatabase($datasetDir);
+        Database::create($databasePath);
+        // Populate database with raw data based on the BOP.
+        $bopParsed = $this->getAndParseBOP($datasetDir);
+        (new RawData($databasePath))->populate($bopParsed['yaml']);
 
         // Return directory name as a marker.
         return $datasetDir;
@@ -88,6 +93,11 @@ class Dataset
                     $metadata["bop"] = $yaml->parse($metadata["raw"]["bop"]);
             }
         }
+
+        // SQLite database: connect and get info.
+        $rawData = new RawData($this->pathToDatabase($datasetDir));
+        $metadata["database"] = $rawData->getSummary();
+
         return $metadata;
     }
 
@@ -112,6 +122,38 @@ class Dataset
           $datasets[] = str_replace($this->dir . "/", "", $path);
         }
         return $datasets;
+    }
+
+    /**
+     * Path to database SQLite file.
+     *
+     * Used by e.g. RawData to connect to the database.
+     *
+     * @return string
+     *   Absolute path to file.
+     */
+    public function pathToDatabase($datasetDir)
+    {
+        $fullPath = $this->fullPath($datasetDir);
+        return "$fullPath/dataset.sqlite3";
+    }
+
+    /**
+     * Get BOP file and parse into YAML.
+     *
+     * @param string $datasetDir
+     *   Path to dataset directory.
+     * @return array
+     *   BOP file text, and parsed YAML.
+     */
+    public function getAndParseBOP($datasetDir)
+    {
+        $bopText = file_get_contents($this->fullPath($datasetDir) . "/bop.yaml");
+        $yaml = new Parser();
+        return array(
+            "yaml" => $yaml->parse($bopText),
+            "text" => $bopText,
+        );
     }
 
     /**
