@@ -91,4 +91,22 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey($record["id"], $entities);
         $this->assertEquals($record["name"], $entities[$record["id"]]["name"]);
     }
+
+    /**
+     * Test: \TestRig\Models\RawData::export().
+     */
+    public function testExport()
+    {
+        // Attach to the database and insert an entity.
+        $rawData = new RawData($this->pathToDatabase);
+        $record = array('name' => 'Get Entities ' . uniqid());
+        Database::writeRecord($this->pathToDatabase, 'entity', $record);
+
+        // All data back.
+        $allEntities = $rawData->export(array('entity' => 'all'));
+        $this->assertEquals($allEntities['entity'][0]['name'], $record['name']);
+
+        $count = $rawData->export(array('entity' => 'anything_else'));
+        $this->assertEquals($count['entity'][0]['count'], 1);
+    }
 }

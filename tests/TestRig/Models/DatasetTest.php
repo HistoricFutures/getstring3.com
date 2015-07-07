@@ -137,6 +137,16 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test: TestRig\Models\Dataset::readRawData().
+     */
+    public function testReadRawData()
+    {
+        $datasetDir = $this->createWithMock('tests/fixtures/bop.yaml');
+        $rawData = self::$model->readRawData($datasetDir);
+        $this->assertEquals(count($rawData['entity']), 100);
+    }
+
+    /**
      * Helper: create a dataset using mocking of UploadedFile.
      */
     private function createWithMock($bop = NULL) {

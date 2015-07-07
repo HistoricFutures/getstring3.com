@@ -157,6 +157,15 @@ class Dataset
     }
 
     /**
+     * Get (some) raw data via RawData.
+     */
+    public function readRawData($datasetDir)
+    {
+        $rawData = new RawData($this->pathToDatabase($datasetDir));
+        return $rawData->export(array("entity" => "all"));
+    }
+
+    /**
      * Private: return full path to a dataset.
      */
     private function fullPath($datasetDir)

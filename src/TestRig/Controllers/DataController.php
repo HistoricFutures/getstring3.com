@@ -70,6 +70,7 @@ class DataController extends BaseController
         $metadata = $this->model->read($path);
         $metadata["title"] = "view dataset";
         $metadata["path"] = $path;
+        $metadata["more_info"] = $this->model->readRawData($path);
 
         return $this->render($app, $metadata);
     }
