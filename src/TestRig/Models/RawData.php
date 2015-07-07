@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use TestRig\Models\Entity;
 use TestRig\Services\Database;
 
 /**
@@ -64,8 +65,7 @@ class RawData
             {
                 for ($i = 0; $i < $population['number']; $i++)
                 {
-                    $record = array('name' => 'Foo');
-                    Database::writeRecord($this->path, 'entity', $record);
+                    new Entity($this->path);
                 }
             }
         }
@@ -78,7 +78,7 @@ class RawData
     {
         $entities = array();
         $results = Database::getConn($this->path)->query('SELECT * FROM entity ORDER BY id');
-        while ($row = $results->fetchArray())
+        while ($row = $results->fetchArray(SQLITE3_ASSOC))
         {
             $entities[$row['id']] = $row;
         }

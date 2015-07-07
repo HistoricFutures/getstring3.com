@@ -74,6 +74,10 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
         $this->assertEquals($number * 2, $summary["entities"]["count"]);
+
+        // Check we have unique names.
+        $entities = $rawData->getEntities();
+        $this->assertNotEquals($entities[1]['name'], $entities[2]['name']);
     }
 
     /**
@@ -90,6 +94,9 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $entities = (new RawData($this->pathToDatabase))->getEntities();
         $this->assertArrayHasKey($record["id"], $entities);
         $this->assertEquals($record["name"], $entities[$record["id"]]["name"]);
+
+        // We don't want the columnar format along with associative.
+        $this->assertFalse(isset($entities[$record["id"]][0]));
     }
 
     /**
