@@ -10,6 +10,7 @@ namespace TestRig\Controllers;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use TestRig\Controllers\BaseController;
+use TestRig\Exceptions\MissingDatasetFileException;
 use TestRig\Models\Dataset;
 
 /**
@@ -67,10 +68,18 @@ class DataController extends BaseController
         $path = $request->get("path");
 
         // Get metadata for dataset and inject variables for Twig.
-        $metadata = $this->model->read($path);
+        try
+        {
+            $metadata = $this->model->read($path);
+            $metadata["more_info"] = $this->model->readRawData($path);
+        }
+        catch (MissingDatasetFileException $e)
+        {
+            $metadata = array();
+        }
         $metadata["title"] = "view dataset";
         $metadata["path"] = $path;
-        $metadata["more_info"] = $this->model->readRawData($path);
+
 
         return $this->render($app, $metadata);
     }

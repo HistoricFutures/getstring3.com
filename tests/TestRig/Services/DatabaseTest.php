@@ -6,6 +6,7 @@
  */
 
 use TestRig\Services\Database;
+use TestRig\Exceptions\MissingDatasetFileException;
 
 /**
  * @class
@@ -35,7 +36,35 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: TestRig\Services\Database:create().
+     * Test: TestRig\Services\Database::getConn().
+     */
+    public function testGetConn()
+    {
+        // Use getConn to create a database.
+        $temporaryDatabase = "/tmp/testrig-" . uniqid() . "-getconn.sqlite3";
+        Database::getConn($temporaryDatabase, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+        // Ensure database created and that our connection is a SQLite3 object.
+        $this->assertFileExists($temporaryDatabase);
+        $conn = Database::getConn($temporaryDatabase);
+        $this->assertEquals(get_class($conn), "SQLite3");
+
+        // Try to open a database that does not exist, NOT in create mode.
+        try
+        {
+            Database::getConn("/tmp/not_a_database");
+            $this->fail("Attempting to open a non-existent database worked.");
+        }
+        // We should get a very specific exception.
+        catch (MissingDatasetFileException $e) {}
+        catch (Exception $e)
+        {
+            var_dump(get_class($e));
+            $this->fail("Attempting to open a non-existent database did not raise the right exception.");
+        }
+    }
+
+    /**
+     * Test: TestRig\Services\Database::create().
      */
     public function testCreate()
     {

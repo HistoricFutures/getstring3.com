@@ -7,6 +7,8 @@
 
 namespace TestRig\Services;
 
+use TestRig\Exceptions\MissingDatasetFileException;
+
 /**
  * @class
  * Database methods.
@@ -64,7 +66,13 @@ class Database
      */
     public static function getConn($path, $flags = SQLITE3_OPEN_READWRITE)
     {
-        return new \SQLite3($path, $flags);
+        // If the file exists, or we have a flag to create, open regardless.
+        if (file_exists($path) || ($flags & SQLITE3_OPEN_CREATE))
+        {
+            return new \SQLite3($path, $flags);
+        }
+        // If no file, or we're not meant to create, raise exception.
+        throw new MissingDatasetFileException($path);
     }
 
     /**

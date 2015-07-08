@@ -42,14 +42,21 @@
     <p class="error">Cannot find any data corresponding to Bill of Process.</p>
   </section>
 {% endif %}
-<section class="dataset dataset--raw-data">
-  <h2>All entities</h2>
-  <table>
-    <tr><th>ID</th><th>Name</th></tr>
-    {% for entity in more_info.entity %}
-      <tr><td>{{ entity.id }}</td><td>{{ entity.name }}</td></tr>
-    {% endfor %}
-  </table>
-</section>
+{% if more_info is defined %}
+    <section class="dataset dataset--raw-data">
+        <h2>All entities</h2>
+        <table>
+            <tr><th>ID</th><th>Name</th></tr>
+            {% for entity in more_info.entity %}
+            <tr><td>{{ entity.id }}</td><td>{{ entity.name }}</td></tr>
+            {% endfor %}
+        </table>
+    </section>
+{% else %}
+    <section class="dataset dataset--error">
+        <h2>Entities not found</h2>
+        <p class="error">No entities found; the database file could be missing or misnamed?</p>
+    </section>
+{% endif %}
 
 {% endblock %}
