@@ -99,7 +99,7 @@ class Maths
 
 
     /**
-     * Generate a random number between 0 and 1.
+     * Generate a random number evenly between 0 and 1.
      *
      * Other methods of doing this are not ideal:
      *   * rand() is "not very" random.
@@ -112,5 +112,81 @@ class Maths
     public static function evenlyRandomZeroOne()
     {
         return (float)mt_rand() / (float)mt_getrandmax();
+    }
+    
+    /**
+     * Generate a random number between 0 and 1, binomial-ish distribution.
+     *
+     * This allows us to convert an industry-average probability into assigned
+     * probabilities for all agents.
+     *
+     * @param float $mean
+     *   Underlying distribution mean between 0 and 1.
+     * @param float $stdDev
+     *   Underlying distribution stdDev between 0 and 1.
+     * @return float
+     *   Random value distributed as a binomial on (0, 1).
+     */
+    public static function binomialNoiseZeroOne($mean, $stdDev)
+    {
+        // if $mean is 0 or 1, return the same. No messing about as p(1-p) = 0.
+        // Also if stdDev = 0 then there's no deviation possible.
+        if (($mean === 0) || ($mean === 1) || ($stdDev === 0))
+        {
+            return $mean;
+        }
+
+        // If the standard deviation is greater than $mean's distance from
+        // either limit, return the mean again.
+        if (($mean + $stdDev >= 1) || ($mean - $stdDev <= 1))
+        {
+            return $mean;
+        }
+
+        // Standard deviation is deviation *in*p*, not in our hypothetical n.
+        // Standard deviation in n is stdDev * n, which leads to:
+        // n^2 stdDev^2 = np(1-p) => n = p(1-p)/stdDev^2 .
+        $n = $mean * (1 - $mean) / pow($stdDev, 2);
+
+        // Return binomial noise over n, divided by n (so always 0<->1).
+        return self::binomialNoise($n, $mean) / $n;
+    }
+
+    /**
+     * Generate a random number with binomial distribution.
+     *
+     * See http://math.stackexchange.com/q/788814 .
+     *
+     * @param float $n
+     *   Number of trials.
+     * @param float $p
+     *   Probability of an event.
+     * @return float
+     *   Random number of events
+     */
+    public static function binomialNoise($n, $p)
+    {
+        $k = 0;
+        for (;;)
+        {
+            $wait = self::binomialNoiseHelper($p);
+            if ($wait > $n)
+            {
+                return $k;
+            }
+            $k++;
+            $n -= $wait;
+        }
+    }
+
+    /**
+     * Private helper: help in generation of binomial noise.
+     *
+     * This could behave weird for small $p or small randomness.
+     * See http://math.stackexchange.com/q/788814 .
+     */
+    private static function binomialNoiseHelper($p)
+    {
+        return ceil(log(self::evenlyRandomZeroOne())/log(1 - $p));
     }
 }

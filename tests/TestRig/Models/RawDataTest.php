@@ -81,6 +81,8 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         // Check we have columns for mean response time, reask probability etc.
         $this->assertArrayHasKey('mean_response_time', $entities[1]);
         $this->assertArrayHasKey('probability_reask', $entities[1]);
+        $this->assertNotNull($entities[1]['mean_response_time']);
+        $this->assertNotNull($entities[1]['probability_reask']);
     }
 
     /**

@@ -46,9 +46,14 @@
     <section class="dataset dataset--raw-data">
         <h2>All entities</h2>
         <table>
-            <tr><th>ID</th><th>Name</th></tr>
+          <tr><th>ID</th><th>Name</th><th>Mean response time</th><th>Probability of reask</th></tr>
             {% for entity in more_info.entity %}
-            <tr><td>{{ entity.id }}</td><td>{{ entity.name }}</td></tr>
+            <tr>
+              <td>{{ entity.id }}</td>
+              <td>{{ entity.name }}</td>
+              <td>{% if entity.mean_response_time is defined %}{{ entity.mean_response_time }}{% else %}n/a{% endif %}</td>
+              <td>{% if entity.probability_reask is defined %}{{ entity.probability_reask }}{% else %}n/a{% endif %}</td>
+            </tr>
             {% endfor %}
         </table>
     </section>

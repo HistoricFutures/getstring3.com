@@ -26,6 +26,12 @@ class Entity
     // Data for database.
     public $data = array();
 
+    // Default arguments.
+    private $defaultArguments = array(
+        'mean_response_time' => 500,
+        'probability_reask' => 0.5,
+    );
+
     /**
      * Implements ::__construct().
      */
@@ -54,7 +60,28 @@ class Entity
         // Create data suitable for database.
         $this->data = array();
         $this->data['name'] = isset($arguments['name']) ? $arguments['name']
-            : Generate::getEntityName();
+          : Generate::getEntityName();
+
+        // Turn arguments into entity properties,, based on default arguments.
+        foreach ($this->defaultArguments as $argumentName => $argumentData)
+        {
+            // Permit overriding by incoming arguments.
+            if (isset($arguments[$argumentName]))
+            {
+                $argumentData = $arguments[$argumentName];
+            }
+
+            // Different callbacks based on argumentName.
+            switch($argumentName)
+            {
+            case "mean_response_time":
+                $this->data[$argumentName] = Generate::getTime($argumentData);
+                break;
+
+            case "probability_reask":
+                $this->data[$argumentName] = Generate::getProbability($argumentData);
+            }
+        }
 
         // Write data, and extract the ID into a private attribute.
         Database::writeRecord($this->path, "entity", $this->data);
