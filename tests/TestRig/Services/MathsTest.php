@@ -15,7 +15,7 @@ class MathsTest extends \PHPUnit_Framework_TestCase
 {
     // Thresholds for "expected randomness".
     // Poissonian is generally wider as stddev = mean unavoidably.
-    private $poissonianDelta = 0.01;
+    private $poissonianDelta = 0.05;
     private $gaussianDelta = 0.004;
 
     /**
