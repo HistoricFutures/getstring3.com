@@ -1,5 +1,5 @@
 populations:
   - number: 100
-    response_time: 432000
-    termination_chance: 0.7
+    mean_response_time: 432000 # = 5 days average, in seconds.
+    probability_reask: 0.3 # But initial chain step is mandatory => 1.
 asks: 1000
