@@ -55,6 +55,12 @@
               <td>{% if entity.probability_reask is defined %}{{ entity.probability_reask }}{% else %}n/a{% endif %}</td>
             </tr>
             {% endfor %}
+            <tr class="aggregates">
+                <td>Summary:</td>
+                <td>{{ database.entities.count }}</td>
+                <td>{{ database.entities.mean_response_time }}</td>
+                <td>{{ database.entities.probability_reask }}</td>
+            </tr>
         </table>
     </section>
 {% else %}
