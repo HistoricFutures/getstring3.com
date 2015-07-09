@@ -36,10 +36,14 @@ class RawData
     public function getSummary()
     {
         $entityCount = Database::getTableCount($this->path, 'entity');
+        $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
+        $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
         return array(
             'entities' => array(
                 'count' => $entityCount,
+                'mean_response_time' => $meanResponseTime,
+                'probability_reask' => $probabilityReask,
             ),
         );
     }
@@ -65,7 +69,7 @@ class RawData
             {
                 for ($i = 0; $i < $population['number']; $i++)
                 {
-                    new Entity($this->path);
+                    new Entity($this->path, NULL, $population);
                 }
             }
         }

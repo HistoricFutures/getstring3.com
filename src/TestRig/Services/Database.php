@@ -57,6 +57,25 @@ class Database
     }
 
     /**
+     * Get arbitrary aggregate data on a table.
+     */
+    public static function getTableAggregate($path, $table, $aggregate, $column)
+    {
+        // Get connection and escape arguments.
+        $conn = self::getConn($path);
+        $table = \SQLite3::escapeString($table);
+        $aggregate = \SQLite3::escapeString($aggregate);
+        $column = \SQLite3::escapeString($column);
+
+        // Make query and return first value we find.
+        $results = $conn->query("SELECT $aggregate($column) AS result FROM $table");
+        while ($row = $results->fetchArray())
+        {
+            return $row['result'];
+        }
+    }
+
+    /**
      * Get (new) connection to SQLite databse.
      *
      * @param string $path

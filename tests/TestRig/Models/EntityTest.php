@@ -44,6 +44,8 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     {
         // We should always have an entity.
         $this->assertEquals(1, $this->entity->data['id']);
+        $this->assertNotNull($this->entity->data['probability_reask']);
+        $this->assertNotNull($this->entity->data['mean_response_time']);
     }
 
     /**

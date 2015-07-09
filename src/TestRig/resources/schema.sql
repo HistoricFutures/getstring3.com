@@ -1,6 +1,8 @@
 CREATE TABLE entity (
   id INTEGER PRIMARY KEY,
-  name VARCHAR(64)
+  name VARCHAR(64),
+  mean_response_time INTEGER,
+  probability_reask REAL
 );
 CREATE TABLE action (
   entity_from INTEGER,
