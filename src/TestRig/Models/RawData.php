@@ -65,7 +65,7 @@ class RawData
             {
                 for ($i = 0; $i < $population['number']; $i++)
                 {
-                    new Entity($this->path);
+                    new Entity($this->path, NULL, $population);
                 }
             }
         }

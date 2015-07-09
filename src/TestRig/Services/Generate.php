@@ -61,13 +61,13 @@ class Generate
      */
     public static function getProbability($expectedMean)
     {
-        // Pick a standard deviation that makes sense, defaulting to 0.2.
-        $stdDev = 0.2;
-        if ($expectedMean <= 0.2)
+        // Pick a standard deviation that makes sense, defaulting to 0.1.
+        $stdDev = 0.1;
+        if ($expectedMean <= $stdDev)
         {
             $stdDev = 0.25 * $expectedMean;
         }
-        elseif ($expectedMean >= 0.8)
+        elseif ($expectedMean >= 1 - $stdDev)
         {
             $stdDev = 0.25 * (1 - $expectedMean);
         }

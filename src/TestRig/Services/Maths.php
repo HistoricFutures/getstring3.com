@@ -138,7 +138,7 @@ class Maths
 
         // If the standard deviation is greater than $mean's distance from
         // either limit, return the mean again.
-        if (($mean + $stdDev >= 1) || ($mean - $stdDev <= 1))
+        if (($mean + $stdDev >= 1) || ($mean - $stdDev <= 0))
         {
             return $mean;
         }

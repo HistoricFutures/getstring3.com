@@ -18,6 +18,8 @@ class MathsTest extends \PHPUnit_Framework_TestCase
     private $poissonianDelta = 0.05;
     private $gaussianDelta = 0.004;
     private $binomialDelta = 0.002;
+    // Quite wide standard deviation on the 0-1 binomial.
+    private $binomialZeroOneDelta = 0.08;
 
     /**
      * Test: TestRig\Services\Maths::testPoissonianNoise().
@@ -70,6 +72,8 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         // narrowness of distribution.  This test CAN randomly fail, but very unlikely.
         $value = Maths::gaussianNoise($mean, 0.1);
         $this->assertTrue(is_float($value));
+        $this->assertNotEquals($mean, $value, "Gaussian noise equals the mean. Unlucky?");
+
         $this->assertGreaterThanOrEqual(
             $mean * (1 - $this->gaussianDelta), 
             $value,
@@ -114,6 +118,8 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         // Ensure we get a float back.
         $value = Maths::binomialNoiseZeroOne($mean, $stdDev);
         $this->assertTrue(is_float($value));
+        // And it should almost never (?) be exactly the mean.
+        $this->assertNotEquals($mean, $value, "Binomial noise 0-1 returned exactly the mean. Unlucky?");
 
         // We already have one value, so get 999 more.
         for ($i = 0; $i < $trials; $i++)
@@ -122,12 +128,12 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->binomialDelta), 
+            $mean * (1 - $this->binomialZeroOneDelta),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->binomialDelta), 
+            $mean * (1 + $this->binomialZeroOneDelta),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) high: test again?"
         );

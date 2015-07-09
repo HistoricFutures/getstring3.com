@@ -17,7 +17,8 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
     // Thresholds for "expected randomness".
     // Poissonian is generally wider as stddev = mean unavoidably.
     private $poissonianDelta = 0.05;
-    private $binomialDelta = 0.002;
+    // Quite wide standard deviation on the 0-1 binomial.
+    private $binomialZeroOneDelta = 0.08;
 
     /**
      * Test: \TestRig\Services\Generate::getEntityName().
@@ -78,12 +79,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->binomialDelta), 
+            $mean * (1 - $this->binomialZeroOneDelta),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->binomialDelta), 
+            $mean * (1 + $this->binomialZeroOneDelta),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) high: test again?"
         );
