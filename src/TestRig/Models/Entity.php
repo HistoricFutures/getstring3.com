@@ -19,7 +19,7 @@ use TestRig\Services\Generate;
 class Entity
 {
     // Path to database.
-    private $path = NULL;
+    protected $path = NULL;
     // ID of current entity.
     private $id = NULL;
 
