@@ -30,7 +30,6 @@ class AbstractDBObject
     // Data for database.
     public $data = array();
 
-
     /**
      * Implements ::__construct().
      */
