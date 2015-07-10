@@ -2,9 +2,7 @@
 
 /**
  * @file
- * An entity agent.
- *
- * Ideally we would use an ORM, but we want to be very lightweight.
+ * An entity, stripped of its Agent's asking powers.
  */
 
 namespace TestRig\Models;
@@ -20,7 +18,7 @@ class Entity extends AbstractDBObject
     // Database table we save to.
     protected $table = "entity";
     // Default arguments.
-    protected $defaultArguments = array(
+    private $defaultArguments = array(
         'mean_response_time' => 500,
         'probability_reask' => 0.5,
     );
@@ -59,6 +57,7 @@ class Entity extends AbstractDBObject
             }
         }
 
+        // Call parent class to now create this object in the DB.
         parent::create();
     }
 }

@@ -24,8 +24,6 @@ class AbstractDBObject
     protected $table = NULL;
     // Path to database.
     protected $path = NULL;
-    // Default arguments.
-    protected $defaultArguments = array();
 
     // Data for database.
     public $data = array();
