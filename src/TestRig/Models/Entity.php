@@ -117,4 +117,12 @@ class Entity
         $this->id = NULL;
         $this->data = array();
     }
+
+    /**
+     * Get ID of this entity.
+     */
+    public function getID()
+    {
+        return $this->id;
+    }
 }

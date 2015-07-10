@@ -101,4 +101,15 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->entity->read(1);
         $this->assertNull($this->entity->data);
     }
+
+    /**
+     * Test: \TestRig\Models\Entity::getID().
+     */
+    public function testGetID()
+    {
+        $id = $this->entity->getID();
+        $this->assertEquals($id, $this->entity->data['id']);
+        $this->entity->data['id'] = 5;
+        $this->assertNotEquals($id, $this->entity->data['id']);
+    }
 }
