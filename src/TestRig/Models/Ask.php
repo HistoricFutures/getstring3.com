@@ -96,7 +96,21 @@ class Ask extends AbstractDBObject
      */
     public function generateActions()
     {
+        // Generate a log from the agent(s).
+        $log = new Log();
+        $initiator = Agent::pickRandom($this->path);
+        $initiator->go($log);
 
+        // Convert the log into the actions format.
+        foreach ($log->getLog() as $logItem)
+        {
+            $action = array(
+                'entity_from' => $logItem['from'],
+                'entity_to' => $logItem['to'],
+                'time_start' => $logItem['start'],
+                'time_stop' => $logItem['end'],
+            );
+            $this->addAction($action);
+        }
     }
-
 }

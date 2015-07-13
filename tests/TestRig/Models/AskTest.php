@@ -118,7 +118,8 @@ class AskTest extends \PHPUnit_Framework_TestCase
             'ask' => $this->model->getID(),
             'entity_from' => $from->getID(),
             'entity_to' => $from->getID(),
-            'time_taken' => 50,
+            'time_start' => 50,
+            'time_stop' => 100,
         );
         $this->model->addAction($action);
 
@@ -152,6 +153,14 @@ class AskTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateActions()
     {
-        $this->markTestIncomplete("Need to test.");
+        // Create a few new entities.
+        for ($i = 0; $i < 5; $i++)
+        {
+            new Entity($this->pathToDatabase);
+        }
+        // Create a new ask chain.
+        $this->model->generateActions();
+
+        $this->assertNotEmpty($this->model->getActions());
     }
 }

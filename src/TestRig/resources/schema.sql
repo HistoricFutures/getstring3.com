@@ -13,7 +13,8 @@ CREATE TABLE action (
   ask INTEGER,
   entity_from INTEGER,
   entity_to INTEGER,
-  time_taken INT,
+  time_start INT,
+  time_stop INT,
   action_type VARCHAR(16),
 
   FOREIGN KEY(ask) REFERENCES ask(id)
