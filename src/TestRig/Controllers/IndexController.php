@@ -16,7 +16,7 @@ use TestRig\Controllers\BaseController;
  * Controller to handle the homepage index.
  */
 class IndexController extends BaseController
-{   
+{
     /**
      * Handles GET method.
      */
@@ -24,4 +24,4 @@ class IndexController extends BaseController
     {
         return $this->render($app);
     }
-}   
+}

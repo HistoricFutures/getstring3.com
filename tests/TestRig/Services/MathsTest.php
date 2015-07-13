@@ -35,8 +35,7 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_int($value));
 
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++)
-        {
+        for ($i = 0; $i < $trials; $i++) {
             $value += Maths::poissonianNoise($mean);
         }
         $this->assertGreaterThanOrEqual(
@@ -75,7 +74,7 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($mean, $value, "Gaussian noise equals the mean. Unlucky?");
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->gaussianDelta), 
+            $mean * (1 - $this->gaussianDelta),
             $value,
             "Gaussian noise value (unluckily?) low: test again?"
         );
@@ -122,8 +121,7 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($mean, $value, "Binomial noise 0-1 returned exactly the mean. Unlucky?");
 
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++)
-        {
+        for ($i = 0; $i < $trials; $i++) {
             $value += Maths::binomialNoiseZeroOne($mean, $stdDev);
         }
 
@@ -153,18 +151,17 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_int($value));
 
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++)
-        {
+        for ($i = 0; $i < $trials; $i++) {
             $value += Maths::binomialNoise($n, $p);
         }
 
         $this->assertGreaterThanOrEqual(
-            $n * $p * (1 - $this->binomialDelta), 
+            $n * $p * (1 - $this->binomialDelta),
             $value / $trials,
             "Binomial noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $n * $p * (1 + $this->binomialDelta), 
+            $n * $p * (1 + $this->binomialDelta),
             $value / $trials,
             "Binomial noise value (unluckily?) high: test again?"
         );

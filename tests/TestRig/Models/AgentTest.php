@@ -18,9 +18,9 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     // Create and tear down database for each test.
     private $pathToDatabase = "/tmp/for-agent.sqlite3";
     // Database connection.
-    private $conn = NULL;
+    private $conn = null;
     // Log object to pass into agent go calls.
-    private $log = NULL;
+    private $log = null;
 
     /**
      * Set up.
@@ -46,16 +46,14 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     public function testPickRandom()
     {
         // Have 10 agents in total.
-        for ($i = 0; $i < 10; $i++)
-        {
+        for ($i = 0; $i < 10; $i++) {
             new Agent($this->pathToDatabase);
         }
 
         // Pick an agent at random ten times and store their IDs.
-        for ($i = 0; $i <= 10; $i++)
-        {
+        for ($i = 0; $i <= 10; $i++) {
             $randomAgent = Agent::pickRandom($this->pathToDatabase);
-            $ids[$randomAgent->getID()] = TRUE;
+            $ids[$randomAgent->getID()] = true;
         }
         // Assert we've got more than one agent at random, not always the same.
         $this->assertGreaterThan(1, count($ids));

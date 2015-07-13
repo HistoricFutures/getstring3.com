@@ -26,8 +26,7 @@ class Maths
         $produ = 1;
 
         $produ *= self::evenlyRandomZeroOne();
-        while ($produ >= exp(-$mean))
-        {
+        while ($produ >= exp(-$mean)) {
             $produ *= self::evenlyRandomZeroOne();
             $k++;
         }
@@ -71,17 +70,15 @@ class Maths
         // The transform actually generates two values each time, so we
         // can re-use the second value if it exists.
         static $cached;
-        if ($cached)
-        {
+        if ($cached) {
             $value = $cached * $stdDev + $mean;
-            $cached = NULL;
+            $cached = null;
             return $value;
         }
 
 
         // Generate two evenly random values, but require u1 nonzero for log().
-        for ($u1 = 0; $u1 == 0; )
-        {
+        for ($u1 = 0; $u1 == 0;) {
             $u1 = self::evenlyRandomZeroOne();
             $u2 = self::evenlyRandomZeroOne();
         }
@@ -131,15 +128,13 @@ class Maths
     {
         // if $mean is 0 or 1, return the same. No messing about as p(1-p) = 0.
         // Also if stdDev = 0 then there's no deviation possible.
-        if (($mean === 0) || ($mean === 1) || ($stdDev === 0))
-        {
+        if (($mean === 0) || ($mean === 1) || ($stdDev === 0)) {
             return $mean;
         }
 
         // If the standard deviation is greater than $mean's distance from
         // either limit, return the mean again.
-        if (($mean + $stdDev >= 1) || ($mean - $stdDev <= 0))
-        {
+        if (($mean + $stdDev >= 1) || ($mean - $stdDev <= 0)) {
             return $mean;
         }
 
@@ -167,11 +162,9 @@ class Maths
     public static function binomialNoise($n, $p)
     {
         $k = 0;
-        for (;;)
-        {
+        for (;;) {
             $wait = self::binomialNoiseHelper($p);
-            if ($wait > $n)
-            {
+            if ($wait > $n) {
                 return $k;
             }
             $k++;

@@ -56,18 +56,16 @@ class Agent extends Entity
      *   Probability of asking to use, instead of the agent's own. Useful
      *   for forcing the initial ask at the start of a chain.
      */
-    public function maybeAsk(Log $log, $overrideProbability = NULL)
+    public function maybeAsk(Log $log, $overrideProbability = null)
     {
         // Decide what the ask probability is, but distinguish betweeen an
         // override probability of zero (don't ask) and NULL (not defined).
         $probability = $this->data['probability_reask'];
-        if ($overrideProbability !== NULL)
-        {
+        if ($overrideProbability !== null) {
             $probability = $overrideProbability;
         }
 
-        if (Maths::evenlyRandomZeroOne() <= $probability)
-        {
+        if (Maths::evenlyRandomZeroOne() <= $probability) {
             $toAsk = Agent::pickRandom($this->path);
             $toAsk->maybeRespond($this, $log);
         }

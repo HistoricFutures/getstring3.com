@@ -12,7 +12,7 @@ namespace TestRig\Controllers;
  * Base controller.
  */
 class BaseController
-{   
+{
     // Default template for rendering.
     protected $template = "index.html";
 

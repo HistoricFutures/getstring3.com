@@ -18,7 +18,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     // Create and tear down database for each test.
     private $pathToDatabase = "/tmp/for-ask.sqlite3";
     // Database connection.
-    private $conn = NULL;
+    private $conn = null;
 
     /**
      * Set up.
@@ -54,8 +54,6 @@ class AskTest extends \PHPUnit_Framework_TestCase
         // Create a new entity and confirm its newness.
         $this->model->create();
         $this->assertEquals(2, $this->model->data['id']);
-
-
     }
 
     /**
@@ -78,12 +76,11 @@ class AskTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdate()
     {
-        try
-        {
+        try {
             $this->model->update();
             $this->fail('Asks should not be updatable.');
+        } catch (Exception $e) {
         }
-        catch (Exception $e) {}
     }
 
     /**
@@ -154,8 +151,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     public function testGenerateActions()
     {
         // Create a few new entities.
-        for ($i = 0; $i < 5; $i++)
-        {
+        for ($i = 0; $i < 5; $i++) {
             new Entity($this->pathToDatabase);
         }
         // Create a new ask chain.

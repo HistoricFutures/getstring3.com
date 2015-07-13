@@ -37,8 +37,7 @@ class MissingTableException extends \Exception
     public static function errorHandler($errno, $errstr, $errfile, $errline, array $errcontext)
     {
         preg_match('/no such table: (.*)/', $errstr, $matches);
-        if (isset($matches[1]))
-        {
+        if (isset($matches[1])) {
             throw new MissingTableException($matches[1]);
         }
         throw new \Exception("Something unexpected happened while trying to handle an error.");

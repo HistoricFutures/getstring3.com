@@ -18,7 +18,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     // Create and tear down database for each test.
     private $pathToDatabase = "/tmp/for-entity.sqlite3";
     // Database connection.
-    private $conn = NULL;
+    private $conn = null;
 
     /**
      * Set up.

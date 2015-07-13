@@ -44,8 +44,7 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_int($value));
 
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++)
-        {
+        for ($i = 0; $i < $trials; $i++) {
             $value += Generate::getTime($mean);
         }
         $this->assertGreaterThanOrEqual(
@@ -73,8 +72,7 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         $value = Generate::getProbability($mean, $stdDev);
         $this->assertTrue(is_float($value));
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++)
-        {
+        for ($i = 0; $i < $trials; $i++) {
             $value += Generate::getProbability($mean, $stdDev);
         }
 
