@@ -58,6 +58,17 @@ class Ask extends AbstractDBObject
     }
 
     /**
+     * @inheritDoc
+     *
+     * @throws \Exception
+     */
+    public function update()
+    {
+        // An ask can't be updated: all actions handled separately.
+        throw new \Exception('Ask cannot be updated.');
+    }
+
+    /**
      * Add an action to this ask.
      *
      * @param array &$data

@@ -78,7 +78,12 @@ class AskTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdate()
     {
-        $this->marktestincomplete('update should perhaps be disabled for ask?');
+        try
+        {
+            $this->model->update();
+            $this->fail('Asks should not be updatable.');
+        }
+        catch (Exception $e) {}
     }
 
     /**
