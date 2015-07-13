@@ -143,7 +143,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     {
         $datasetDir = $this->createWithMock('tests/fixtures/bop.yaml');
         $rawData = self::$model->readRawData($datasetDir);
-        $this->assertEquals(count($rawData['entity']), 100);
+        $this->assertEquals(count($rawData['entity']), 20);
     }
 
     /**

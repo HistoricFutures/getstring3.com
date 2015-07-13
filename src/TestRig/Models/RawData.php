@@ -39,11 +39,16 @@ class RawData
         $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
+        $asksCount = Database::getTableCount($this->path, 'ask');
+
         return array(
             'entities' => array(
                 'count' => $entityCount,
                 'mean_response_time' => $meanResponseTime,
                 'probability_reask' => $probabilityReask,
+            ),
+            'asks' => array(
+                'count' => $asksCount,
             ),
         );
     }
@@ -71,6 +76,15 @@ class RawData
                 {
                     new Entity($this->path, NULL, $population);
                 }
+            }
+        }
+
+        // Create our asks.
+        if (isset($bop['asks']))
+        {
+            for ($i = 0; $i < $bop['asks']; $i++)
+            {
+                (new Ask($this->path))->generateActions();
             }
         }
     }

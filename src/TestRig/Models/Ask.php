@@ -90,4 +90,13 @@ class Ask extends AbstractDBObject
     {
         return $this->actions;
     }
+
+    /**
+     * Generate a chain of actions for this ask.
+     */
+    public function generateActions()
+    {
+
+    }
+
 }

@@ -136,6 +136,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
         $this->model->read(5);
         $this->assertEmpty($this->model->getActions());
     }
+
     /**
      * Test: \TestRig\Models\Ask::getActions().
      */
@@ -144,5 +145,13 @@ class AskTest extends \PHPUnit_Framework_TestCase
         // Confirm actions is at least an array.
         $this->assertTrue(is_array($this->model->getActions()));
         $this->assertEmpty($this->model->getActions());
+    }
+
+    /**
+     * Test: \TestRig\Models\Ask::generateActions().
+     */
+    public function testGenerateActions()
+    {
+        $this->markTestIncomplete("Need to test.");
     }
 }

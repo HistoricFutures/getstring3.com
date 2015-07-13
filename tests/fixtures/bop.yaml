@@ -1,5 +1,5 @@
 populations:
-  - number: 100
+  - number: 20
     mean_response_time: 20 # This needs to be granular to hours: generation is slow.
     probability_reask: 0.3 # But initial chain step is mandatory => 1.
-asks: 1000
+asks: 50
