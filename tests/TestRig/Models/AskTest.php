@@ -2,21 +2,20 @@
 
 /**
  * @file
- * Test: TestRig\Models\Entity.
+ * Test: TestRig\Models\Ask.
  */
 
-use TestRig\Models\Entity;
+use TestRig\Models\Ask;
 use TestRig\Services\Database;
 
 /**
  * @class
- * Test: TestRig\Models\Entity.
+ * Test: TestRig\Models\Ask.
  */
-
-class EntityTest extends \PHPUnit_Framework_TestCase
+class AskTest extends \PHPUnit_Framework_TestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-entity.sqlite3";
+    private $pathToDatabase = "/tmp/for-ask.sqlite3";
     // Database connection.
     private $conn = NULL;
 
@@ -26,7 +25,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->conn = Database::create($this->pathToDatabase);
-        $this->model = new Entity($this->pathToDatabase);
+        $this->model = new Ask($this->pathToDatabase);
     }
 
     /**
@@ -44,8 +43,6 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     {
         // We should always have an entity.
         $this->assertEquals(1, $this->model->data['id']);
-        $this->assertNotNull($this->model->data['probability_reask']);
-        $this->assertNotNull($this->model->data['mean_response_time']);
     }
 
     /**
@@ -53,12 +50,9 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate()
     {
-        $oldName = $this->model->data['name'];
-
         // Create a new entity and confirm its newness.
         $this->model->create();
         $this->assertEquals(2, $this->model->data['id']);
-        $this->assertNotEquals($oldName, $this->model->data['name']);
     }
 
     /**
@@ -66,13 +60,10 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        $oldName = $this->model->data['name'];
-
         // Create a new entity and bind to it, but then re-bind to the
         // entity with ID=1.
         $this->model->create();
         $this->model->read(1);
-        $this->assertEquals($oldName, $this->model->data['name']);
 
         // Read a record that doesn't exist.
         $this->model->read(5);
@@ -84,12 +75,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdate()
     {
-        $newName = "Test " . uniqid();
-
-        $this->model->data['name'] = $newName;
-        $this->model->update();
-        $this->model->read(1);
-        $this->assertEquals($newName, $this->model->data['name']);
+        $this->marktestincomplete('update should perhaps be disabled for ask?');
     }
 
     /**

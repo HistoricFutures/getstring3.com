@@ -52,6 +52,8 @@ class AbstractDBObject
      */
     public function create()
     {
+        // ID is not settable.
+        unset($this->data['id']);
         // Write data, and extract the ID into a private attribute.
         Database::writeRecord($this->path, $this->table, $this->data);
         $this->id = $this->data['id'];

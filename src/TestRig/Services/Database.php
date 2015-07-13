@@ -120,8 +120,17 @@ class Database
         }
 
         // Create SQL based on $columns, sneaking a ":" in there for VALUES.
-        $sql = "INSERT INTO $table (" . implode(", ", $columns) .
-            ") VALUES(:" . implode(", :", $columns) . ");";
+        // Cope with situation when there's no data and all values are default.
+        if ($columns)
+        {
+            $sql = "INSERT INTO $table (" . implode(", ", $columns) .
+                ") VALUES(:" . implode(", :", $columns) . ");";
+        }
+        else
+        {
+            $sql = "INSERT INTO $table DEFAULT VALUES;";
+        }
+
         $statement = $conn->prepare($sql);
 
         // Bind all values and execute.
