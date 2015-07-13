@@ -8,6 +8,7 @@
 namespace TestRig\Services;
 
 use TestRig\Exceptions\MissingDatasetFileException;
+use TestRig\Exceptions\MissingTableException;
 
 /**
  * @class
@@ -49,7 +50,10 @@ class Database
         $table = \SQLite3::escapeString($table);
 
         // Make query and return first value we find.
+        set_error_handler(array('TestRig\Exceptions\MissingTableException', 'errorHandler'));
         $results = $conn->query("SELECT COUNT(*) AS result FROM $table");
+        restore_error_handler();
+
         while ($row = $results->fetchArray())
         {
             return $row['result'];

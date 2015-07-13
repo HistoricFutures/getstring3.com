@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use TestRig\Exceptions\MissingTableException;
 use TestRig\Models\Entity;
 use TestRig\Services\Database;
 
@@ -39,7 +40,17 @@ class RawData
         $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
-        $asksCount = Database::getTableCount($this->path, 'ask');
+        // Older datasets have no asks.
+        try
+        {
+            $asksCount = Database::getTableCount($this->path, 'ask');
+            $actionsCount = Database::getTableCount($this->path, 'action');
+        }
+        catch (MissingTableException $e)
+        {
+            $asksCount = NULL;
+            $actionsCount = NULL;
+        }
 
         return array(
             'entities' => array(
@@ -49,6 +60,9 @@ class RawData
             ),
             'asks' => array(
                 'count' => $asksCount,
+                'actions' => array(
+                    'count' => $actionsCount,
+                ),
             ),
         );
     }
