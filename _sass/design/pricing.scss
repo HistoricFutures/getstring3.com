@@ -49,6 +49,7 @@
 		position:absolute;
 		bottom:0;
 		@include box-shadow-standard();
+		border:none;
 		display:block;
 		border-bottom:0;
 	}
@@ -59,8 +60,12 @@
 		float:left;
 		margin-left:33.33%;
 		@include box-shadow-standard();
+		border:none;
 		display:block;
 		border-bottom:0;
+		.questions {
+			@include font-size($a-scale-2);
+		}
 	}
 	.enterprise {
 		background:$turquoise;
@@ -70,6 +75,7 @@
 		bottom:0;
 		right:0;
 		@include box-shadow-standard();
+		border:none;
 		display:block;
 		border-bottom:0;
 	}
@@ -93,17 +99,18 @@
 		@include padding($a-scale);
 	}
 	.choose {
-		
+
 			display:block;
 			color:$turquoise;
 			background:mix($turquoise, $off-white, 20%);
-			
+
 			@include padding($a-scale);
 			@include transition($link-transition);
-			
-		
+
+
 	}
 	a:hover, a:focus {
+		color:$off-white;
 		.choose {
 			background:$link-color-hover;
 			color:$off-white;
@@ -115,10 +122,10 @@
 
 			color:$off-white;
 			background:$turquoise;
-			
+
 	}
 
-	
+
 
 	.promo {
 		color:$pink;
