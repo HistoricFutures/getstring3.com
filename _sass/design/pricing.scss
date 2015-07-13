@@ -63,7 +63,7 @@
 		border:none;
 		display:block;
 		border-bottom:0;
-		.questions {
+		.questions .large {
 			@include font-size($a-scale-2);
 		}
 	}
