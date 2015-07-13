@@ -76,6 +76,51 @@ class Database
     }
 
     /**
+     * Get all rows matching a criteria.
+     *
+     * @param string $path
+     *   Path to SQLite database.
+     * @param string $table
+     *   Table in database.
+     * @param array $filters
+     *   Optional filters (if not set, will return whole table!)
+     * @return array
+     *   Array of results in ID order.
+     */
+    public static function getRowsWhere($path, $table, $filters = array())
+    {
+        $conn = self::getConn($path);
+        $table = \SQLite3::EscapeString($table);
+
+        // Assemble SQL including WHERE columns.
+        $sql = "SELECT * FROM $table ";
+        $arguments = array();
+        if ($filters)
+        {
+            $where = ' WHERE ';
+            foreach ($filters as $column => $argument)
+            {
+                $column = \SQLite3::EscapeString($column);
+                $where .=  "$column = :$column,";
+                $arguments[":$column"] = $argument;
+            }
+            $sql .= trim($where, ',');
+        }
+        $sql .= ' ORDER BY id';
+
+        // Prepare statement and bind variables.
+        $results = self::returnStatement($conn, $sql, $arguments)->execute();
+
+        // Read results into an array and return.
+        $rows = array();
+        while ($row = $results->fetchArray(SQLITE3_ASSOC))
+        {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    /**
      * Get (new) connection to SQLite databse.
      *
      * @param string $path
@@ -232,5 +277,28 @@ class Database
         $statement = $conn->prepare("DELETE FROM $table WHERE id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
+    }
+
+    /**
+     * Private: pepare a statement with arguments.
+     *
+     * @param \SQLite3 $conn
+     *   Database connection.
+     * @param string $sql
+     *   String SQL query with ":foo" placeholders for arguments.
+     * @param array $arguments
+     *   Optional array of arguments to match the placeholders.
+     * @return \SQLite3Stmt
+     *   Prepared statement, ready for execution.
+     */
+    private static function returnStatement($conn, $sql, $arguments = array())
+    {
+        $statement = $conn->prepare($sql);
+        // Bind all values.
+        foreach ($arguments as $bindKey => $bindValue)
+        {
+            $statement->bindValue($bindKey, $bindValue);
+        }
+        return $statement;
     }
 }

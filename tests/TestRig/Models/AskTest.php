@@ -6,6 +6,7 @@
  */
 
 use TestRig\Models\Ask;
+use TestRig\Models\Entity;
 use TestRig\Services\Database;
 
 /**
@@ -37,7 +38,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Entity::__construct().
+     * Test: \TestRig\Models\Ask::__construct().
      */
     public function testConstruct()
     {
@@ -46,17 +47,19 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Entity::create().
+     * Test: \TestRig\Models\Ask::create().
      */
     public function testCreate()
     {
         // Create a new entity and confirm its newness.
         $this->model->create();
         $this->assertEquals(2, $this->model->data['id']);
+
+
     }
 
     /**
-     * Test: \TestRig\Models\Entity::read().
+     * Test: \TestRig\Models\Ask::read().
      */
     public function testRead()
     {
@@ -71,7 +74,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Entity::update().
+     * Test: \TestRig\Models\Ask::update().
      */
     public function testUpdate()
     {
@@ -79,7 +82,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Entity::delete().
+     * Test: \TestRig\Models\Ask::delete().
      */
     public function testDelete()
     {
@@ -89,7 +92,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Entity::getID().
+     * Test: \TestRig\Models\Ask::getID().
      */
     public function testGetID()
     {
@@ -97,5 +100,44 @@ class AskTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($id, $this->model->data['id']);
         $this->model->data['id'] = 5;
         $this->assertNotEquals($id, $this->model->data['id']);
+    }
+
+    /**
+     * Test: \TestRig\Models\Ask::addAction().
+     */
+    public function testAddAction()
+    {
+        $from = new Entity($this->pathToDatabase);
+        $to = new Entity($this->pathToDatabase);
+        $action = array(
+            'ask' => $this->model->getID(),
+            'entity_from' => $from->getID(),
+            'entity_to' => $from->getID(),
+            'time_taken' => 50,
+        );
+        $this->model->addAction($action);
+
+        // ID should be retrieved.
+        $this->assertArrayHasKey('id', $action);
+        // And action should be on the list.
+        $actions = $this->model->getActions();
+        $this->assertEquals($action['id'], $actions[0]['id']);
+
+        // Actions should be preserved across reloads.
+        $this->model->read(1);
+        $actions = $this->model->getActions();
+        $this->assertEquals($action['id'], $actions[0]['id']);
+        // But not if the reload is of an ask that doesn't exist!
+        $this->model->read(5);
+        $this->assertEmpty($this->model->getActions());
+    }
+    /**
+     * Test: \TestRig\Models\Ask::getActions().
+     */
+    public function testGetActions()
+    {
+        // Confirm actions is at least an array.
+        $this->assertTrue(is_array($this->model->getActions()));
+        $this->assertEmpty($this->model->getActions());
     }
 }
