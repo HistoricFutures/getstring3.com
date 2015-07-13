@@ -16,9 +16,9 @@ use TestRig\Services\Filesystem;
 class DatasetTest extends \PHPUnit_Framework_TestCase
 {
     // To be replaced with new Dataset() during setUpBeforeClass.
-    public static $model = NULL;
+    public static $model = null;
     // Directory for datasets: we keep track too.
-    private static $dir = NULL;
+    private static $dir = null;
 
     /**
      * Set up before class: create dataset folder and Dataset() handler class.
@@ -149,7 +149,8 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper: create a dataset using mocking of UploadedFile.
      */
-    private function createWithMock($bop = NULL) {
+    private function createWithMock($bop = null)
+    {
         // Mock up an UploadedFile, disabling its constructor.
         $mockBuilder = $this->getMockBuilder(
             'Symfony\Component\HttpFoundation\File\UploadedFile'
@@ -178,18 +179,14 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     public function mockMove($dir, $file)
     {
         touch("$dir/$file");
-        if ($this->temporary_bop_storage)
-        {
-            if (is_array($this->temporary_bop_storage))
-            {
+        if ($this->temporary_bop_storage) {
+            if (is_array($this->temporary_bop_storage)) {
                 $dumper = new Dumper();
                 file_put_contents(
                     "$dir/$file",
                     $dumper->dump($this->temporary_bop_storage)
                 );
-            }
-            else
-            {
+            } else {
                 copy($_SERVER['PWD'] . '/' . $this->temporary_bop_storage, "$dir/$file");
             }
         }

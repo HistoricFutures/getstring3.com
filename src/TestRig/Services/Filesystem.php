@@ -28,8 +28,7 @@ class Filesystem
         );
 
         // Loop over recursive list and pick a relevant remove callback.
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             $callback = ($file->isDir() ? 'rmdir' : 'unlink');
             $callback($file->getRealPath());
         }

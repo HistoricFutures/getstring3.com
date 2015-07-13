@@ -44,8 +44,7 @@ class Ask extends AbstractDBObject
         parent::read($id);
 
         // If the ask doesn't exist, just quit silently here.
-        if (!$this->getID())
-        {
+        if (!$this->getID()) {
             return;
         }
 
@@ -54,7 +53,7 @@ class Ask extends AbstractDBObject
             $this->path,
             'action',
             array('ask' => $this->getID())
-        );       
+        );
     }
 
     /**
@@ -102,8 +101,7 @@ class Ask extends AbstractDBObject
         $initiator->go($log);
 
         // Convert the log into the actions format.
-        foreach ($log->getLog() as $logItem)
-        {
+        foreach ($log->getLog() as $logItem) {
             $action = array(
                 'entity_from' => $logItem['from'],
                 'entity_to' => $logItem['to'],

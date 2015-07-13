@@ -18,12 +18,12 @@ use TestRig\Services\Database;
 class AbstractDBObject
 {
     // ID of current object.
-    private $id = NULL;
+    private $id = null;
 
     // Database table we save to.
-    protected $table = NULL;
+    protected $table = null;
     // Path to database.
-    protected $path = NULL;
+    protected $path = null;
 
     // Data for database.
     public $data = array();
@@ -31,13 +31,12 @@ class AbstractDBObject
     /**
      * Implements ::__construct().
      */
-    public function __construct($path, $id = NULL, $arguments = array())
+    public function __construct($path, $id = null, $arguments = array())
     {
         $this->path = $path;
 
         // If we have an ID, try to load the object.
-        if ($id)
-        {
+        if ($id) {
             $this->read($id);
             return;
         }
@@ -85,7 +84,7 @@ class AbstractDBObject
     public function delete()
     {
         Database::deleteRecord($this->path, $this->table, $this->id);
-        $this->id = NULL;
+        $this->id = null;
         $this->data = array();
     }
 

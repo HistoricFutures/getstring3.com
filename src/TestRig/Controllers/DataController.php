@@ -39,13 +39,12 @@ class DataController extends BaseController
     {
         // Create a form with just an upload widget.
         $form = $app['form.factory']->createBuilder('form')
-            ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => TRUE))
+            ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => true))
             ->getForm();
         $form->handleRequest($request);
 
         // If form is submitted and (hence) valid, handle file.
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             // Pass file to model layer.
             $path = $this->model->create($form['attachment']->getData());
             return $app->redirect("/data/$path");
@@ -68,13 +67,10 @@ class DataController extends BaseController
         $path = $request->get("path");
 
         // Get metadata for dataset and inject variables for Twig.
-        try
-        {
+        try {
             $metadata = $this->model->read($path);
             $metadata["more_info"] = $this->model->readRawData($path);
-        }
-        catch (MissingDatasetFileException $e)
-        {
+        } catch (MissingDatasetFileException $e) {
             $metadata = array();
         }
         $metadata["title"] = "view dataset";
@@ -99,8 +95,7 @@ class DataController extends BaseController
         $form->handleRequest($request);
 
         // If form is submitted and (hence) valid, handle file.
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             // Pass request to model layer.
             $this->model->delete($path);
             return $app->redirect("/data");

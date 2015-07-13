@@ -18,7 +18,7 @@ use TestRig\Services\Database;
 class RawData
 {
     // Dataset path provided by constructor.
-    private $path = NULL;
+    private $path = null;
 
     /**
      * Implements ::__construct().
@@ -41,15 +41,12 @@ class RawData
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
         // Older datasets have no asks.
-        try
-        {
+        try {
             $asksCount = Database::getTableCount($this->path, 'ask');
             $actionsCount = Database::getTableCount($this->path, 'action');
-        }
-        catch (MissingTableException $e)
-        {
-            $asksCount = NULL;
-            $actionsCount = NULL;
+        } catch (MissingTableException $e) {
+            $asksCount = null;
+            $actionsCount = null;
         }
 
         return array(
@@ -76,28 +73,22 @@ class RawData
     public function populate($bop)
     {
         // Sometimes an empty or unparseable BOP is passed in.
-        if (!is_array($bop))
-        {
+        if (!is_array($bop)) {
             return;
         }
 
         // Create our entity populations.
-        if (isset($bop['populations']))
-        {
-            foreach ($bop['populations'] as $population)
-            {
-                for ($i = 0; $i < $population['number']; $i++)
-                {
-                    new Entity($this->path, NULL, $population);
+        if (isset($bop['populations'])) {
+            foreach ($bop['populations'] as $population) {
+                for ($i = 0; $i < $population['number']; $i++) {
+                    new Entity($this->path, null, $population);
                 }
             }
         }
 
         // Create our asks.
-        if (isset($bop['asks']))
-        {
-            for ($i = 0; $i < $bop['asks']; $i++)
-            {
+        if (isset($bop['asks'])) {
+            for ($i = 0; $i < $bop['asks']; $i++) {
                 (new Ask($this->path))->generateActions();
             }
         }
@@ -110,8 +101,7 @@ class RawData
     {
         $entities = array();
         $results = Database::getConn($this->path)->query('SELECT * FROM entity ORDER BY id');
-        while ($row = $results->fetchArray(SQLITE3_ASSOC))
-        {
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
             $entities[$row['id']] = $row;
         }
         return $entities;
@@ -126,10 +116,8 @@ class RawData
 
         // Only work on tables which exist: also avoids having to worry about
         // string escaping at this layer.
-        if (isset($options['entity']))
-        {
-            switch($options['entity'])
-            {
+        if (isset($options['entity'])) {
+            switch ($options['entity']) {
             case 'all':
                 $sql = 'SELECT * FROM entity ORDER BY id';
                 break;
@@ -139,8 +127,7 @@ class RawData
             }
 
             $results = Database::getConn($this->path)->query($sql);
-            while ($row = $results->fetchArray())
-            {
+            while ($row = $results->fetchArray()) {
                 $export['entity'][] = $row;
             }
         }

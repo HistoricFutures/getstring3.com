@@ -34,8 +34,7 @@ $routes = array(
     array('/data/{path}', 'get',  'TestRig\\Controllers\\DataController::read'),
     array('/data/{path}/delete', 'match',  'TestRig\\Controllers\\DataController::delete'),
 );
-foreach ($routes as $route)
-{
+foreach ($routes as $route) {
     $app->{$route[1]}($route[0], $route[2]);
 }
 

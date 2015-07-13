@@ -15,9 +15,8 @@ use TestRig\Exceptions\MissingTableException;
  */
 class DatabaseTest extends \PHPUnit_Framework_TestCase
 {
-
     // Path to temporary database file.
-    private $path = NULL;
+    private $path = null;
 
     /**
      * Set up.
@@ -50,15 +49,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(get_class($conn), "SQLite3");
 
         // Try to open a database that does not exist, NOT in create mode.
-        try
-        {
+        try {
             Database::getConn("/tmp/not_a_database");
             $this->fail("Attempting to open a non-existent database worked.");
         }
         // We should get a very specific exception.
-        catch (MissingDatasetFileException $e) {}
-        catch (Exception $e)
-        {
+        catch (MissingDatasetFileException $e) {
+        } catch (Exception $e) {
             var_dump(get_class($e));
             $this->fail("Attempting to open a non-existent database did not raise the right exception.");
         }
@@ -69,8 +66,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate()
     {
-        if (!class_exists('\SQLite3'))
-        {
+        if (!class_exists('\SQLite3')) {
             $this->fail("php5-sqlite must be installed via PECL, apt-get etc.");
         }
 
@@ -79,14 +75,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
 
         // Now connect to it and look for the entity table.
         $conn = Database::getConn($this->path);
-        try
-        {
+        try {
             $conn->exec("SELECT * FROM entity");
-        }
-        catch (Exception $e)
-        {
-            if (strpos($e->getMessage(), "no such table: entity") !== FALSE)
-            {
+        } catch (Exception $e) {
+            if (strpos($e->getMessage(), "no such table: entity") !== false) {
                 $this->fail("Creating database doesn't create table entity.");
             }
             throw $e;
@@ -99,11 +91,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     public function testGetTableCount()
     {
         $this->assertEquals(Database::getTableCount($this->path, "entity"), 0);
-        try
-        {
+        try {
             Database::getTableCount($this->path, "not_a_table");
+        } catch (TestRig\Exceptions\MissingTableException $e) {
         }
-        catch (TestRig\Exceptions\MissingTableException $e) {}
     }
 
     /**

@@ -26,8 +26,7 @@ class Database
      */
     public static function create($path)
     {
-        if (file_exists($path))
-        {
+        if (file_exists($path)) {
             throw new \Exception("Tried to create SQLite db but '$path' exists.");
         }
         // Open with default flags: will create if it doesn't exist.
@@ -54,8 +53,7 @@ class Database
         $results = $conn->query("SELECT COUNT(*) AS result FROM $table");
         restore_error_handler();
 
-        while ($row = $results->fetchArray())
-        {
+        while ($row = $results->fetchArray()) {
             return $row['result'];
         }
     }
@@ -73,8 +71,7 @@ class Database
 
         // Make query and return first value we find.
         $results = $conn->query("SELECT $aggregate($column) AS result FROM $table");
-        while ($row = $results->fetchArray())
-        {
+        while ($row = $results->fetchArray()) {
             return $row['result'];
         }
     }
@@ -99,11 +96,9 @@ class Database
         // Assemble SQL including WHERE columns.
         $sql = "SELECT * FROM $table ";
         $arguments = array();
-        if ($filters)
-        {
+        if ($filters) {
             $where = ' WHERE ';
-            foreach ($filters as $column => $argument)
-            {
+            foreach ($filters as $column => $argument) {
                 $column = \SQLite3::EscapeString($column);
                 $where .=  "$column = :$column,";
                 $arguments[":$column"] = $argument;
@@ -117,8 +112,7 @@ class Database
 
         // Read results into an array and return.
         $rows = array();
-        while ($row = $results->fetchArray(SQLITE3_ASSOC))
-        {
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
             $rows[] = $row;
         }
         return $rows;
@@ -135,8 +129,7 @@ class Database
     public static function getConn($path, $flags = SQLITE3_OPEN_READWRITE)
     {
         // If the file exists, or we have a flag to create, open regardless.
-        if (file_exists($path) || ($flags & SQLITE3_OPEN_CREATE))
-        {
+        if (file_exists($path) || ($flags & SQLITE3_OPEN_CREATE)) {
             return new \SQLite3($path, $flags);
         }
         // If no file, or we're not meant to create, raise exception.
@@ -161,8 +154,7 @@ class Database
         // Ensure columns and arguments match up.
         $columns = array();
         $arguments = array();
-        foreach ($record as $column => $argument)
-        {
+        foreach ($record as $column => $argument) {
             $column = \SQLite3::EscapeString($column);
             $columns[] = $column;
             $arguments[":$column"] = $argument;
@@ -170,21 +162,17 @@ class Database
 
         // Create SQL based on $columns, sneaking a ":" in there for VALUES.
         // Cope with situation when there's no data and all values are default.
-        if ($columns)
-        {
+        if ($columns) {
             $sql = "INSERT INTO $table (" . implode(", ", $columns) .
                 ") VALUES(:" . implode(", :", $columns) . ");";
-        }
-        else
-        {
+        } else {
             $sql = "INSERT INTO $table DEFAULT VALUES;";
         }
 
         $statement = $conn->prepare($sql);
 
         // Bind all values and execute.
-        foreach ($arguments as $bindKey => $bindValue)
-        {
+        foreach ($arguments as $bindKey => $bindValue) {
             $statement->bindValue($bindKey, $bindValue);
         }
         $statement->execute();
@@ -192,8 +180,7 @@ class Database
         // Using same connection, inject the autoincrement ID into $record.
         $statement = $conn->prepare("SELECT last_insert_rowid() AS id;");
         $results = $statement->execute();
-        while ($row = $results->fetchArray())
-        {
+        while ($row = $results->fetchArray()) {
             $record["id"] = $row['id'];
             return $row['id'];
         }
@@ -213,8 +200,7 @@ class Database
         $statement->bindValue(":id", $id);
         $results = $statement->execute();
 
-        while ($row = $results->fetchArray(SQLITE3_ASSOC))
-        {
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
             return $row;
         }
     }
@@ -242,8 +228,7 @@ class Database
         // Create SQL based on $columns, sneaking a ":" in there for VALUES.
         $arguments = array();
         $sql = "UPDATE $table SET ";
-        foreach ($record as $column => $argument)
-        {
+        foreach ($record as $column => $argument) {
             $column = \SQLite3::EscapeString($column);
             $sql .= " $column = :$column,";
             $arguments[":$column"] = $argument;
@@ -254,8 +239,7 @@ class Database
 
         // Bind all values and execute.
         $statement->bindValue(":id", $id);
-        foreach ($arguments as $bindKey => $bindValue)
-        {
+        foreach ($arguments as $bindKey => $bindValue) {
             $statement->bindValue($bindKey, $bindValue);
         }
         $statement->execute();
@@ -299,8 +283,7 @@ class Database
     {
         $statement = $conn->prepare($sql);
         // Bind all values.
-        foreach ($arguments as $bindKey => $bindValue)
-        {
+        foreach ($arguments as $bindKey => $bindValue) {
             $statement->bindValue($bindKey, $bindValue);
         }
         return $statement;

@@ -16,7 +16,7 @@ use TestRig\Services\Database;
 class RawDataTest extends \PHPUnit_Framework_TestCase
 {
     // Dataset helper created in ::setUpBeforeClass().
-    private static $dataset = NULL;
+    private static $dataset = null;
     // Create and tear down database for each test.
     private $pathToDatabase = "/tmp/for-rawdata.sqlite3";
 

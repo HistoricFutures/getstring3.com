@@ -37,17 +37,14 @@ class Entity extends AbstractDBObject
           : Generate::getEntityName();
 
         // Turn arguments into entity properties,, based on default arguments.
-        foreach ($this->defaultArguments as $argumentName => $argumentData)
-        {
+        foreach ($this->defaultArguments as $argumentName => $argumentData) {
             // Permit overriding by incoming arguments.
-            if (isset($arguments[$argumentName]))
-            {
+            if (isset($arguments[$argumentName])) {
                 $argumentData = $arguments[$argumentName];
             }
 
             // Different callbacks based on argumentName.
-            switch($argumentName)
-            {
+            switch ($argumentName) {
             case "mean_response_time":
                 $this->data[$argumentName] = Generate::getTime($argumentData);
                 break;
