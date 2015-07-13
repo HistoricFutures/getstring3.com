@@ -7,6 +7,7 @@
 
 use TestRig\Services\Database;
 use TestRig\Exceptions\MissingDatasetFileException;
+use TestRig\Exceptions\MissingTableException;
 
 /**
  * @class
@@ -102,13 +103,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         {
             Database::getTableCount($this->path, "not_a_table");
         }
-        catch (Exception $e)
-        {
-            if (strpos($e->getMessage(), "no such table: not_a_table") === FALSE)
-            {
-                $this->fail("Can get table count from a table that doesn't exist.");
-            }
-        }
+        catch (TestRig\Exceptions\MissingTableException $e) {}
     }
 
     /**

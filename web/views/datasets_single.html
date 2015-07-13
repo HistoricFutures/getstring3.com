@@ -62,6 +62,12 @@
                 <td>{{ database.entities.probability_reask }}</td>
             </tr>
         </table>
+
+        <h2>Asks</h2>
+        <ul>
+          <li>Number: {{ database.asks.count }}</li>
+          <li>Number of actions: {{ database.asks.actions.count }}</li>
+        </ul>
     </section>
 {% else %}
     <section class="dataset dataset--error">

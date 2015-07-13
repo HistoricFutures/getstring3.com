@@ -61,19 +61,26 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testPopulate()
     {
-        $number = 15;
+        $numEntities = 15;
+        $numAsks = 50;
 
         // Set up a fake BOP and wrap the database in RawData.
-        $bop = array("populations" => array(array("number" => $number)));
+        $bop = array(
+            "populations" => array(array("number" => $numEntities)),
+            "asks" => $numAsks,
+        );
         $rawData = new RawData($this->pathToDatabase);
 
-        // Every time we populate, total should increase by $number.
+        // Every time we populate, total should increase by $numEntities.
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
-        $this->assertEquals($number, $summary["entities"]["count"]);
+        $this->assertEquals($numEntities, $summary["entities"]["count"]);
+        $this->assertEquals($numAsks, $summary["asks"]["count"]);
+
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
-        $this->assertEquals($number * 2, $summary["entities"]["count"]);
+        $this->assertEquals($numEntities * 2, $summary["entities"]["count"]);
+        $this->assertEquals($numAsks * 2, $summary["asks"]["count"]);
 
         // Check we have unique names.
         $entities = $rawData->getEntities();
