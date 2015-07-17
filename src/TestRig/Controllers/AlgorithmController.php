@@ -7,11 +7,9 @@
 
 namespace TestRig\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
-use TestRig\Controllers\BaseController;
-use TestRig\Exceptions\MissingDatasetFileException;
-use TestRig\Models\Dataset;
+use Symfony\Component\HttpFoundation\Request;
+use TestRig\Models\Algorithm;
 
 /**
  * @class
@@ -29,7 +27,7 @@ class AlgorithmController
      */
     public function __construct()
     {
-        $this->model = new Dataset();
+        $this->model = new Algorithm();
     }
 
     /**
@@ -39,21 +37,32 @@ class AlgorithmController
     {
         // Create a form with just an upload widget.
         $form = $app['form.factory']->createBuilder('form')
-            ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => true))
+            ->add('attachment', 'file', array('label' => 'Choose an algorithm file', 'required' => true))
+            ->add('format', 'choice', array(
+                'label' => 'Choose a file format',
+                'required' => true,
+                'choices' => array('php' => 'PHP', 'py' => 'Python'),
+            ))
             ->getForm();
         $form->handleRequest($request);
 
         // If form is submitted and (hence) valid, handle file.
         if ($form->isValid()) {
             // Pass file to model layer.
-            $path = $this->model->create($form['attachment']->getData());
-            return $app->redirect("/data/$path");
+            $path = $this->model->create(
+                $form['format']->getData(),
+                $form['attachment']->getData()
+            );
+            return $app->redirect("/algo/$path");
         }
 
-        $this->template = "datasets_create.html";
-        return $this->render(
-            $app,
-            array("title" => "create new dataset", "form" => $form->createView())
+        return $app['twig']->render(
+            "create.html",
+            array(
+                "title" => "upload new algorithm",
+                "form" => $form->createView(),
+                "layout" => "algorithms.html",
+            )
         );
     }
 
@@ -63,21 +72,14 @@ class AlgorithmController
     public function read(Request $request, Application $app)
     {
         // Initialize incoming data.
-        $this->template = "datasets_single.html";
         $path = $request->get("path");
 
         // Get metadata for dataset and inject variables for Twig.
-        try {
-            $metadata = $this->model->read($path);
-            $metadata["more_info"] = $this->model->readRawData($path);
-        } catch (MissingDatasetFileException $e) {
-            $metadata = array();
-        }
-        $metadata["title"] = "view dataset";
+        $metadata = $this->model->read($path);
+        $metadata["title"] = "view algorithm";
         $metadata["path"] = $path;
 
-
-        return $this->render($app, $metadata);
+        return $app['twig']->render("algorithms_single.html", $metadata);
     }
 
     /**
@@ -87,7 +89,6 @@ class AlgorithmController
     {
         // Initialize incoming data.
         $path = $request->get("path");
-        $this->template = "datasets_delete.html";
 
         // Create a form with just a submit button.
         $form = $app['form.factory']->createBuilder('form')
@@ -98,12 +99,18 @@ class AlgorithmController
         if ($form->isValid()) {
             // Pass request to model layer.
             $this->model->delete($path);
-            return $app->redirect("/data");
+            return $app->redirect("/algo");
         }
 
-        return $this->render(
-            $app,
-            array("title" => "delete dataset", "form" => $form->createView(), "path" => $path)
+        return $app['twig']->render(
+            "delete.html",
+            array(
+                "title" => "delete algorithm",
+                "form" => $form->createView(),
+                "path" => $path,
+                "layout" => "algorithms.html",
+                "link_prefix" => "algo",
+            )
         );
     }
 

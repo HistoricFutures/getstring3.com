@@ -7,9 +7,8 @@
 
 namespace TestRig\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
-use TestRig\Controllers\BaseController;
+use Symfony\Component\HttpFoundation\Request;
 use TestRig\Exceptions\MissingDatasetFileException;
 use TestRig\Models\Dataset;
 
@@ -17,7 +16,7 @@ use TestRig\Models\Dataset;
  * @class
  * Controller to handle data generation CR*Di methods.
  */
-class DataController extends BaseController
+class DataController
 {
     // Default template for rendering.
     protected $template = "datasets.html";
@@ -50,10 +49,13 @@ class DataController extends BaseController
             return $app->redirect("/data/$path");
         }
 
-        $this->template = "datasets_create.html";
-        return $this->render(
-            $app,
-            array("title" => "create new dataset", "form" => $form->createView())
+        return $app['twig']->render(
+            "create.html",
+            array(
+                "title" => "create new dataset",
+                "form" => $form->createView(),
+                "layout" => "datasets.html",
+            )
         );
     }
 
@@ -76,8 +78,7 @@ class DataController extends BaseController
         $metadata["title"] = "view dataset";
         $metadata["path"] = $path;
 
-
-        return $this->render($app, $metadata);
+        return $app['twig']->render("datasets_single.html", $metadata);
     }
 
     /**
@@ -87,7 +88,6 @@ class DataController extends BaseController
     {
         // Initialize incoming data.
         $path = $request->get("path");
-        $this->template = "datasets_delete.html";
 
         // Create a form with just a submit button.
         $form = $app['form.factory']->createBuilder('form')
@@ -101,9 +101,15 @@ class DataController extends BaseController
             return $app->redirect("/data");
         }
 
-        return $this->render(
-            $app,
-            array("title" => "delete dataset", "form" => $form->createView(), "path" => $path)
+        return $app['twig']->render(
+            "delete.html",
+            array(
+                "title" => "delete dataset",
+                "form" => $form->createView(),
+                "path" => $path,
+                "layout" => "datasets.html",
+                "link_prefix" => "data",
+            )
         );
     }
 

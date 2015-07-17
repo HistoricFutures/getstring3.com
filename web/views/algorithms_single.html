@@ -1,0 +1,16 @@
+{% extends "algorithms.html" %}
+
+{% block nav_links__secondary__extra %}
+<li><a href="/algo/{{ path }}/delete">Delete this algorithm</a></li>
+{% endblock %}
+
+{% block content %}
+<section class="algorithm algorithm--raw-script">
+  <h2>Script</h2>
+  {% if raw.algorithm is defined %}
+    <pre>{{ raw.algorithm }}</pre>
+  {% else %}
+    <p style="error">Not found!</p>
+  {% endif %}
+</section>
+{% endblock %}

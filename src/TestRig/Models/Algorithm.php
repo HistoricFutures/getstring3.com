@@ -20,6 +20,13 @@ class Algorithm extends AbstractFolderManager
 
     /**
      * Create an algorithm.
+     *
+     * @param string $format
+     *   Format of the file i.e. the suffix and hence interpreter (php, py).
+     * @param UploadedFile $file
+     *   Symfony uploaded file object to turn into an executable on disk.
+     * @return string
+     *   Folder name for the resulting algorithm bundle.
      */
     public function create($format, UploadedFile $file)
     {

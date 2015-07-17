@@ -34,6 +34,9 @@ $routes = array(
     array('/data/{path}', 'get',  'TestRig\\Controllers\\DataController::read'),
     array('/data/{path}/delete', 'match',  'TestRig\\Controllers\\DataController::delete'),
     array('/algo',        'get',  'TestRig\\Controllers\\AlgorithmController::index'),
+    array('/algo/new',    'match', 'TestRig\\Controllers\\AlgorithmController::create'),
+    array('/algo/{path}', 'get',  'TestRig\\Controllers\\AlgorithmController::read'),
+    array('/algo/{path}/delete', 'match',  'TestRig\\Controllers\\AlgorithmController::delete'),
 );
 foreach ($routes as $route) {
     $app->{$route[1]}($route[0], $route[2]);
