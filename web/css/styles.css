@@ -1,0 +1,84 @@
+/**
+ * @file
+ * Simple styles following normalize.css.
+ */
+
+html {
+  text-align: center;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1280px;
+  min-width: 540px;
+  text-align: left;
+}
+
+a {
+  color: #000088;
+  text-decoration: none;
+}
+
+/* Clearfix */
+nav:before,
+nav:after {
+  content: " ";
+  display: table;
+}
+nav:after {
+  clear: both;
+}
+
+nav {
+  background-color: gray;
+}
+
+nav ul, nav li {
+  float: left;
+  list-style-type: none;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+}
+
+nav a {
+  color: white;
+  display: block;
+  padding: 0.75em 1em;
+}
+nav a:hover {
+  background-color: #666;
+}
+nav .nav-links--secondary a {
+  color: #ddddff;
+  font-size: 0.9em;
+  padding: 0.833333em 1.111111em;
+}
+
+article {
+  clear: left;
+}
+
+ul.listing, ul.listing li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+}
+
+ul.listing li a {
+  border-bottom: solid 1px gray;
+  display: block;
+  padding: 1em 2em;
+}
+
+ul.listing li:last-child a {
+  border-bottom: none;
+}
+
+ul.listing li a:hover {
+  background-color: #ddddff;
+}
+

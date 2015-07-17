@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if items %}
-<ul>
+<ul class="listing listing--{{ link_prefix}}">
   {% for item in items %}
   <li><a href="/{{ link_prefix }}/{{ item }}">{{ item }}</a></li>
   {% endfor %}
