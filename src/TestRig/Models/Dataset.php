@@ -18,7 +18,7 @@ use TestRig\Services\Database;
  */
 class Dataset extends AbstractFolderManager
 {
-    // Environment variable key for above, to be set per-extended class.
+    // Environment variable to be set per-extended class.
     protected $dirEnvVar = 'DIR_DATASETS';
 
     /**
@@ -43,7 +43,9 @@ class Dataset extends AbstractFolderManager
     }
 
     /**
-     * Read details of a dataset and return.
+     * Implements ::read().
+     *
+     * Overrides abstract method to read details of an algorithm.
      */
     public function read($datasetDir)
     {
