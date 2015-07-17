@@ -6,5 +6,6 @@
   </testsuites>
   <php>
     <env name="DIR_DATASETS" value="/tmp/datasets"/>
+    <env name="DIR_ALGORITHMS" value="/tmp/algorithms"/>
   </php>
 </phpunit>

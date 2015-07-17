@@ -1,0 +1,8 @@
+{% extends "index.html" %}
+{% block nav_links__secondary %}
+<ul class="nav-links nav-links--secondary">
+  <li><a href="/algo">All algorithms</a></li>
+  <li><a href="/algo/new">Create algorithm</a></li>
+  {% block nav_links__secondary__extra %}{% endblock %}
+</ul>
+{% endblock %}
