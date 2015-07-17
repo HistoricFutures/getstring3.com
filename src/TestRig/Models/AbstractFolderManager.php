@@ -16,7 +16,7 @@ use TestRig\Services\Filesystem;
 abstract class AbstractFolderManager
 {
     // Directory datasets stored in: only override via environment.
-    protected $dir;
+    protected $rootDir;
     // Environment variable key for above, to be set per-extended class.
     protected $dirEnvVar = null;
     
@@ -31,9 +31,9 @@ abstract class AbstractFolderManager
 
         // If environment variable not absolute path, append the server
         // document root variable to the start.
-        $this->dir = getenv($this->dirEnvVar);
-        if (strpos($this->dir, "/") !== 0) {
-            $this->dir = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->dir;
+        $this->rootDir = getenv($this->dirEnvVar);
+        if (strpos($this->rootDir, "/") !== 0) {
+            $this->rootDir = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->rootDir;
         }
     }
 
@@ -53,7 +53,7 @@ abstract class AbstractFolderManager
         }
 
         // Start folder on disk and make known what folder it's in.
-        mkdir($this->dir . "/$dir");
+        mkdir($this->rootDir . "/$dir");
         return $dir;
     }
 
@@ -79,10 +79,10 @@ abstract class AbstractFolderManager
      */
     public function index()
     {
-        $paths = glob("$this->dir/*");
+        $paths = glob("$this->rootDir/*");
         $managedFolders = array();
         foreach ($paths as $path) {
-            $managedFolders[] = str_replace($this->dir . "/", "", $path);
+            $managedFolders[] = str_replace($this->rootDir . "/", "", $path);
         }
         return $managedFolders;
     }
@@ -92,7 +92,7 @@ abstract class AbstractFolderManager
      */
     protected function fullPath($dir)
     {
-        return $this->dir . "/$dir";
+        return $this->rootDir . "/$dir";
     }
 
     /**

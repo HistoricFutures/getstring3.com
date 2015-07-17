@@ -26,7 +26,7 @@ class Algorithm extends AbstractFolderManager
         // Parent creates the folder and gets naming right.
         $dir = parent::create();
         // Add the algorithm file in the right format.
-        $file->move($this->dir . "/$dir", "algorithm.$format");
+        $file->move($this->rootDir . "/$dir", "algorithm.$format");
 
         return $dir;
     }
