@@ -17,7 +17,7 @@ use TestRig\Models\Dataset;
  * @class
  * Controller to handle data generation CR*Di methods.
  */
-class DataController extends BaseController
+class AlgorithmController
 {
     // Default template for rendering.
     protected $template = "datasets.html";
@@ -115,10 +115,10 @@ class DataController extends BaseController
         return $app['twig']->render(
             "listing.html",
             array(
-                "title" => "datasets",
+                "title" => "algorithms",
                 "items" => $this->model->index(),
-                "layout" => "datasets.html",
-                "link_prefix" => "data",
+                "layout" => "algorithms.html",
+                "link_prefix" => "algo",
             )
         );
     }
