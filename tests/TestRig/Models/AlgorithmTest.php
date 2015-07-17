@@ -50,6 +50,10 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         // Assert we've got a manifest.
         $this->assertTrue(file_exists(self::$rootDir . "/$dir"));
         $this->assertTrue(file_exists(self::$rootDir . "/$dir/algorithm.php"));
+
+        // Create with a different format.
+        $dir = $this->createWithMock("py");
+        $this->assertTrue(file_exists(self::$rootDir . "/$dir/algorithm.py"));
     }
 
     /**
@@ -61,7 +65,10 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
 
         // Read the manifest.
         $algorithm = self::$model->read($dir);
-        $this->markTestIncomplete("Needs writing");
+        // Assert manifest contents as expected.
+        // Raw file present.
+        $this->assertArrayHasKey("raw", $algorithm);
+        $this->assertArrayHasKey("algorithm", $algorithm['raw']);
     }
 
     /**

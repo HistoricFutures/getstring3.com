@@ -94,4 +94,29 @@ abstract class AbstractFolderManager
     {
         return $this->dir . "/$dir";
     }
+
+    /**
+     * Protected: parse file contents into an array.
+     *
+     * @param string $fullPath
+     *   Full qualified path to the directory.
+     * @param array $basenames
+     *   Basenames we want our filenames to be *like* using strpos().
+     * @return array
+     *   Any files we find, keyed as per the $basenames array.
+     */
+    protected function parseFileContents($fullPath, $basenames = array())
+    {
+        $rawFiles = array();
+        foreach (glob("$fullPath/*") as $resource) {
+            $basename = strtolower(str_replace("$fullPath/", "", $resource));
+            foreach ($basenames as $rawFileKey => $basenameWeWant) {
+                if (strpos($basename, $basenameWeWant) !== false) {
+                    $rawFiles[$rawFileKey] = file_get_contents($resource);
+                }
+            }
+        }
+
+        return $rawFiles;
+    }
 }

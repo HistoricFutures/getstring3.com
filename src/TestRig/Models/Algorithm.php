@@ -38,7 +38,10 @@ class Algorithm extends AbstractFolderManager
      */
     public function read($dir)
     {
-        $metadata = array();
+        $metadata['raw'] = $this->parseFileContents(
+            $this->fullPath($dir),
+            array("algorithm" => "algorithm")
+        );
 
         return $metadata;
     }
