@@ -11,47 +11,23 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Parser;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
-use TestRig\Services\Filesystem;
 
 /**
  * @class
  * Represent a dataset on disk.
  */
-class Dataset
+class Dataset extends AbstractFolderManager
 {
-    // Directory datasets stored in: only override via environment.
-    private $dir;
-
-    /**
-     * Implements ::__construct().
-     */
-    public function __construct()
-    {
-        // If environment variable not absolute path, append the server
-        // document root variable to the start.
-        $this->dir = getenv('DIR_DATASETS');
-        if (strpos($this->dir, "/") !== 0) {
-            $this->dir = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->dir;
-        }
-    }
+    // Environment variable key for above, to be set per-extended class.
+    protected $dirEnvVar = 'DIR_DATASETS';
 
     /**
      * Create a dataset.
      */
     public function create(UploadedFile $file)
     {
-        // Directory name based on the current date/time.
-        $datasetDir = date("c");
-        $fullPath = $this->fullPath($datasetDir);
-        // If we really have a race condition, append a random string.
-        // Process ID no good, as we could be creating during same process.
-        if (file_exists($fullPath)) {
-            $datasetDir .= "-" . rand(1, 32767);
-            $fullPath = $this->fullPath($datasetDir);
-        }
+        $datasetDir = parent::create();
 
-        // Start dataset folder on disk.
-        mkdir($this->dir . "/$datasetDir");
         // Readme and BOP from the UploadedFile.
         file_put_contents($this->dir . "/$datasetDir/readme.txt", "Readme");
         $file->move($this->dir . "/$datasetDir", "bop.yaml");
@@ -98,28 +74,6 @@ class Dataset
     }
 
     /**
-     * Delete dataset.
-     */
-    public function delete($datasetDir)
-    {
-        $fullPath = $this->fullPath($datasetDir);
-        Filesystem::removeDirectory($fullPath);
-    }
-
-    /**
-     * Index of datasets.
-     */
-    public function index()
-    {
-        $paths = glob("$this->dir/*");
-        $datasets = array();
-        foreach ($paths as $path) {
-            $datasets[] = str_replace($this->dir . "/", "", $path);
-        }
-        return $datasets;
-    }
-
-    /**
      * Path to database SQLite file.
      *
      * Used by e.g. RawData to connect to the database.
@@ -158,13 +112,5 @@ class Dataset
     {
         $rawData = new RawData($this->pathToDatabase($datasetDir));
         return $rawData->export(array("entity" => "all"));
-    }
-
-    /**
-     * Private: return full path to a dataset.
-     */
-    private function fullPath($datasetDir)
-    {
-        return $this->dir . "/$datasetDir";
     }
 }
