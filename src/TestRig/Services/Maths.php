@@ -182,4 +182,23 @@ class Maths
     {
         return ceil(log(self::evenlyRandomZeroOne())/log(1 - $p));
     }
+
+    /**
+     * Returns exponential noise using the inverse of its CDF.
+     *
+     * @param float $mean
+     *    Mean of underlying distribution.
+     * @return float
+     *    Random value from distribution.
+     */
+    public static function exponentialNoise($mean)
+    {
+        // Random seed: cannot be 1 as formula then diverges.
+        $p = 1;
+        while ($p == 1) {
+            $p = self::evenlyRandomZeroOne();
+        }
+
+        return (-$mean * log(1-$p));
+    }
 }

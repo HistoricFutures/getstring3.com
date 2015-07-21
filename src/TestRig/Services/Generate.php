@@ -34,7 +34,7 @@ class Generate
 
 
     /**
-     * Generate a Poisson-randomized time value based on expected mean.
+     * Generate a randomized time value based on expected mean.
      *
      * Averaging over very many return values should retrieve the expectation.
      *
@@ -45,7 +45,7 @@ class Generate
      */
     public static function getTime($expectedMean)
     {
-        return Maths::poissonianNoise($expectedMean);
+        return Maths::exponentialNoise($expectedMean);
     }
 
     /**
