@@ -98,7 +98,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
 
         // Check question IDs saved.
         $conn = Database::getConn($this->pathToDatabase);
-        $results = $conn->query("SELECT * FROM action WHERE question IS NULL");
+        $results = $conn->query("SELECT * FROM ask WHERE question IS NULL");
         while ($row = $results->fetchArray()) {
             $this->fail("Saved an action where the question ID is null.");
         }

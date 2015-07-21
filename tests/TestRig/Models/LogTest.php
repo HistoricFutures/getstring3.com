@@ -22,13 +22,13 @@ class LogTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test:: TestRig\Models\Log::logAction().
+     * Test:: TestRig\Models\Log::logInteraction().
      */
-    public function testLogAction()
+    public function testLogInteraction()
     {
         // Queue up a couple of log items.
-        $this->model->logAction("A", "B", 50);
-        $this->model->logAction("C", "D", 20);
+        $this->model->logInteraction("A", "B", 50);
+        $this->model->logInteraction("C", "D", 20);
 
         // Now check they're logged properly, with incrementing time.
         $log = $this->model->getLog();
@@ -48,7 +48,7 @@ class LogTest extends \PHPUnit_Framework_TestCase
     public function testGetLog()
     {
         // Not much to do here; just check return value. We'll check
-        // the structure in more depth during testLogAction().
+        // the structure in more depth during testLogInteraction().
         $this->assertTrue(is_array($this->model->getLog()));
     }
 }

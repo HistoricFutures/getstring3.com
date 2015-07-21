@@ -8,16 +8,15 @@ CREATE TABLE entity (
 CREATE TABLE question (
   id INTEGER PRIMARY KEY
 );
-CREATE TABLE action (
+CREATE TABLE ask (
   id INTEGER PRIMARY KEY,
   question INTEGER NOT NULL,
   entity_from INTEGER NOT NULL,
   entity_to INTEGER NOT NULL,
   time_start INT,
   time_stop INT,
-  action_type VARCHAR(16),
 
-  FOREIGN KEY(question) REFERENCES question(id)
+  FOREIGN KEY(question) REFERENCES question(id),
   FOREIGN KEY(entity_from) REFERENCES entity(id),
   FOREIGN KEY(entity_to) REFERENCES entity(id)
 );

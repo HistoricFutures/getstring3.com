@@ -22,11 +22,11 @@ class Log
      * Log an interaction between agents.
      *
      * @param mixed $from
-     *   ID of thing instigating action.
+     *   ID of thing instigating interaction.
      * @param mixed $to
-     *   ID of thing responding to action (even if with a "no-response").
+     *   ID of thing responding to interaction (even if with a "no-response").
      */
-    public function logAction($from, $to, $timeDifference)
+    public function logInteraction($from, $to, $timeDifference)
     {
         // Prepare a log item and add it to the log, updating the incremental
         // timestamp as we go.

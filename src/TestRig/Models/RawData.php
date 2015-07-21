@@ -41,7 +41,7 @@ class RawData
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
         $questionsCount = Database::getTableCount($this->path, 'question');
-        $actionsCount = Database::getTableCount($this->path, 'action');
+        $asksCount = Database::getTableCount($this->path, 'ask');
 
         return array(
             'entities' => array(
@@ -51,8 +51,8 @@ class RawData
             ),
             'questions' => array(
                 'count' => $questionsCount,
-                'actions' => array(
-                    'count' => $actionsCount,
+                'asks' => array(
+                    'count' => $asksCount,
                 ),
             ),
         );
@@ -83,7 +83,7 @@ class RawData
         // Create our questions.
         if (isset($recipe['questions'])) {
             for ($i = 0; $i < $recipe['questions']; $i++) {
-                (new Question($this->path))->generateActions();
+                (new Question($this->path))->generateAsks();
             }
         }
     }

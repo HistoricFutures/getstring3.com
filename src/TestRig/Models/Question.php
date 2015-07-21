@@ -2,7 +2,7 @@
 
 /**
  * @file
- * A single chain of interactions.
+ * A single chain of asks.
  */
 
 namespace TestRig\Models;
@@ -11,12 +11,12 @@ use TestRig\Services\Database;
 
 /**
  * @class
- * A single chain of interactions.
+ * A single chain of asks.
  */
 class Question extends AbstractDBObject
 {
-    // Actions.
-    private $actions = array();
+    // Asks.
+    private $asks = array();
 
     // Database table we save to.
     protected $table = 'question';
@@ -26,8 +26,8 @@ class Question extends AbstractDBObject
      */
     public function create()
     {
-        // Reset actions array prior to create.
-        $this->actions = array();
+        // Reset asks array prior to create.
+        $this->asks = array();
         // Let parent handle the rest.
         parent::create();
     }
@@ -37,8 +37,8 @@ class Question extends AbstractDBObject
      */
     public function read($id)
     {
-        // Reset actions array prior to create.
-        $this->actions = array();
+        // Reset asks array prior to create.
+        $this->asks = array();
 
         // Let parent handle the core entity.
         parent::read($id);
@@ -48,10 +48,10 @@ class Question extends AbstractDBObject
             return;
         }
 
-        // Otherwise, load its associated actions.
-        $this->actions = Database::getRowsWhere(
+        // Otherwise, load its associated asks.
+        $this->asks = Database::getRowsWhere(
             $this->path,
-            'action',
+            'ask',
             array('question' => $this->getID())
         );
     }
@@ -63,53 +63,53 @@ class Question extends AbstractDBObject
      */
     public function update()
     {
-        // A question can't be updated: all actions handled separately.
+        // A question can't be updated: all asks handled separately.
         throw new \Exception('Question cannot be updated.');
     }
 
     /**
-     * Add an action to this question.
+     * Add an asks to this question.
      *
      * @param array &$data
-     *   Action data, passed by reference, using column names as per table.
+     *   Ask data, passed by reference, using column names as per table.
      */
-    public function addAction(&$data)
+    public function addAsk(&$data)
     {
         $data['question'] = $this->getID();
-        Database::writeRecord($this->path, 'action', $data);
-        $this->actions[] = $data;
+        Database::writeRecord($this->path, 'ask', $data);
+        $this->asks[] = $data;
     }
 
     /**
-     * Retrieve all actions for this question.
+     * Retrieve all asks for this question.
      *
      * @return array
-     *   All actions associated with the question chain.
+     *   All asks associated with the question chain.
      */
-    public function getActions()
+    public function getAsks()
     {
-        return $this->actions;
+        return $this->asks;
     }
 
     /**
-     * Generate a chain of actions for this question.
+     * Generate a chain of asks for this question.
      */
-    public function generateActions()
+    public function generateAsks()
     {
         // Generate a log from the agent(s).
         $log = new Log();
         $initiator = Agent::pickRandom($this->path);
         $initiator->go($log);
 
-        // Convert the log into the actions format.
+        // Convert the log into the ask format.
         foreach ($log->getLog() as $logItem) {
-            $action = array(
+            $ask = array(
                 'entity_from' => $logItem['from'],
                 'entity_to' => $logItem['to'],
                 'time_start' => $logItem['start'],
                 'time_stop' => $logItem['end'],
             );
-            $this->addAction($action);
+            $this->addAsk($ask);
         }
     }
 }
