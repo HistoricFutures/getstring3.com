@@ -40,14 +40,8 @@ class RawData
         $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
-        // Older datasets have no asks.
-        try {
-            $asksCount = Database::getTableCount($this->path, 'ask');
-            $actionsCount = Database::getTableCount($this->path, 'action');
-        } catch (MissingTableException $e) {
-            $asksCount = null;
-            $actionsCount = null;
-        }
+        $questionsCount = Database::getTableCount($this->path, 'question');
+        $actionsCount = Database::getTableCount($this->path, 'action');
 
         return array(
             'entities' => array(
@@ -55,8 +49,8 @@ class RawData
                 'mean_response_time' => $meanResponseTime,
                 'probability_reask' => $probabilityReask,
             ),
-            'asks' => array(
-                'count' => $asksCount,
+            'questions' => array(
+                'count' => $questionsCount,
                 'actions' => array(
                     'count' => $actionsCount,
                 ),
@@ -86,10 +80,10 @@ class RawData
             }
         }
 
-        // Create our asks.
-        if (isset($recipe['asks'])) {
-            for ($i = 0; $i < $recipe['asks']; $i++) {
-                (new Ask($this->path))->generateActions();
+        // Create our questions.
+        if (isset($recipe['questions'])) {
+            for ($i = 0; $i < $recipe['questions']; $i++) {
+                (new Question($this->path))->generateActions();
             }
         }
     }

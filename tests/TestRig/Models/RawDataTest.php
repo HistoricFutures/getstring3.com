@@ -62,12 +62,12 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     public function testPopulate()
     {
         $numEntities = 15;
-        $numAsks = 50;
+        $numQuestions = 50;
 
         // Set up a fake recipe and wrap the database in RawData.
         $recipe = array(
             "populations" => array(array("number" => $numEntities)),
-            "asks" => $numAsks,
+            "questions" => $numQuestions,
         );
         $rawData = new RawData($this->pathToDatabase);
 
@@ -75,17 +75,17 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
-        // Check overall counts of entities and asks.
+        // Check overall counts of entities and questions.
         $this->assertEquals($numEntities, $summary["entities"]["count"]);
-        $this->assertEquals($numAsks, $summary["asks"]["count"]);
+        $this->assertEquals($numQuestions, $summary["questions"]["count"]);
 
         // Populate a second time.
         $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
-        // Check overall counts of entities and asks.
+        // Check overall counts of entities and questions.
         $this->assertEquals($numEntities * 2, $summary["entities"]["count"]);
-        $this->assertEquals($numAsks * 2, $summary["asks"]["count"]);
+        $this->assertEquals($numQuestions * 2, $summary["questions"]["count"]);
 
         // Check we have unique names.
         $entities = $rawData->getEntities();
@@ -96,11 +96,11 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($entities[1]['mean_response_time']);
         $this->assertNotNull($entities[1]['probability_reask']);
 
-        // Check ask IDs saved.
+        // Check question IDs saved.
         $conn = Database::getConn($this->pathToDatabase);
-        $results = $conn->query("SELECT * FROM action WHERE ask IS NULL");
+        $results = $conn->query("SELECT * FROM action WHERE question IS NULL");
         while ($row = $results->fetchArray()) {
-            $this->fail("Saved an action where the ask ID is null.");
+            $this->fail("Saved an action where the question ID is null.");
         }
     }
 

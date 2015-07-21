@@ -2,21 +2,21 @@
 
 /**
  * @file
- * Test: TestRig\Models\Ask.
+ * Test: TestRig\Models\Question.
  */
 
-use TestRig\Models\Ask;
+use TestRig\Models\Question;
 use TestRig\Models\Entity;
 use TestRig\Services\Database;
 
 /**
  * @class
- * Test: TestRig\Models\Ask.
+ * Test: TestRig\Models\Question.
  */
-class AskTest extends \PHPUnit_Framework_TestCase
+class QuestionTest extends \PHPUnit_Framework_TestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-ask.sqlite3";
+    private $pathToDatabase = "/tmp/for-question.sqlite3";
     // Database connection.
     private $conn = null;
 
@@ -26,7 +26,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->conn = Database::create($this->pathToDatabase);
-        $this->model = new Ask($this->pathToDatabase);
+        $this->model = new Question($this->pathToDatabase);
     }
 
     /**
@@ -38,7 +38,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::__construct().
+     * Test: \TestRig\Models\Question::__construct().
      */
     public function testConstruct()
     {
@@ -47,7 +47,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::create().
+     * Test: \TestRig\Models\Question::create().
      */
     public function testCreate()
     {
@@ -57,7 +57,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::read().
+     * Test: \TestRig\Models\Question::read().
      */
     public function testRead()
     {
@@ -72,19 +72,19 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::update().
+     * Test: \TestRig\Models\Question::update().
      */
     public function testUpdate()
     {
         try {
             $this->model->update();
-            $this->fail('Asks should not be updatable.');
+            $this->fail('Questions should not be updatable.');
         } catch (Exception $e) {
         }
     }
 
     /**
-     * Test: \TestRig\Models\Ask::delete().
+     * Test: \TestRig\Models\Question::delete().
      */
     public function testDelete()
     {
@@ -94,7 +94,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::getID().
+     * Test: \TestRig\Models\Question::getID().
      */
     public function testGetID()
     {
@@ -105,14 +105,14 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::addAction().
+     * Test: \TestRig\Models\Question::addAction().
      */
     public function testAddAction()
     {
         $from = new Entity($this->pathToDatabase);
         $to = new Entity($this->pathToDatabase);
         $action = array(
-            'ask' => $this->model->getID(),
+            'question' => $this->model->getID(),
             'entity_from' => $from->getID(),
             'entity_to' => $from->getID(),
             'time_start' => 50,
@@ -125,19 +125,19 @@ class AskTest extends \PHPUnit_Framework_TestCase
         // And action should be on the list.
         $actions = $this->model->getActions();
         $this->assertEquals($action['id'], $actions[0]['id']);
-        $this->assertEquals($this->model->getID(), $actions[0]['ask']);
+        $this->assertEquals($this->model->getID(), $actions[0]['question']);
 
         // Actions should be preserved across reloads.
         $this->model->read(1);
         $actions = $this->model->getActions();
         $this->assertEquals($action['id'], $actions[0]['id']);
-        // But not if the reload is of an ask that doesn't exist!
+        // But not if the reload is of an question that doesn't exist!
         $this->model->read(5);
         $this->assertEmpty($this->model->getActions());
     }
 
     /**
-     * Test: \TestRig\Models\Ask::getActions().
+     * Test: \TestRig\Models\Question::getActions().
      */
     public function testGetActions()
     {
@@ -147,7 +147,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: \TestRig\Models\Ask::generateActions().
+     * Test: \TestRig\Models\Question::generateActions().
      */
     public function testGenerateActions()
     {
@@ -155,7 +155,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < 5; $i++) {
             new Entity($this->pathToDatabase);
         }
-        // Create a new ask chain.
+        // Create a new question chain.
         $this->model->generateActions();
 
         $this->assertNotEmpty($this->model->getActions());

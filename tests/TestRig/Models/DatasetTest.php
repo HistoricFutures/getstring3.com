@@ -81,7 +81,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(
             "number", $dataset["recipe"]["populations"][0]
         );
-        $this->assertArrayHasKey("asks", $dataset["recipe"]);
+        $this->assertArrayHasKey("questions", $dataset["recipe"]);
 
         // Ensure some data in SQLite database.
         $this->assertEquals(

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * A single ask chain of questions.
+ * A single chain of interactions.
  */
 
 namespace TestRig\Models;
@@ -11,15 +11,15 @@ use TestRig\Services\Database;
 
 /**
  * @class
- * A single ask chain of questions.
+ * A single chain of interactions.
  */
-class Ask extends AbstractDBObject
+class Question extends AbstractDBObject
 {
     // Actions.
     private $actions = array();
 
     // Database table we save to.
-    protected $table = 'ask';
+    protected $table = 'question';
 
     /**
      * @inheritDoc
@@ -43,7 +43,7 @@ class Ask extends AbstractDBObject
         // Let parent handle the core entity.
         parent::read($id);
 
-        // If the ask doesn't exist, just quit silently here.
+        // If the question doesn't exist, just quit silently here.
         if (!$this->getID()) {
             return;
         }
@@ -52,7 +52,7 @@ class Ask extends AbstractDBObject
         $this->actions = Database::getRowsWhere(
             $this->path,
             'action',
-            array('ask' => $this->getID())
+            array('question' => $this->getID())
         );
     }
 
@@ -63,28 +63,28 @@ class Ask extends AbstractDBObject
      */
     public function update()
     {
-        // An ask can't be updated: all actions handled separately.
-        throw new \Exception('Ask cannot be updated.');
+        // A question can't be updated: all actions handled separately.
+        throw new \Exception('Question cannot be updated.');
     }
 
     /**
-     * Add an action to this ask.
+     * Add an action to this question.
      *
      * @param array &$data
      *   Action data, passed by reference, using column names as per table.
      */
     public function addAction(&$data)
     {
-        $data['ask'] = $this->getID();
+        $data['question'] = $this->getID();
         Database::writeRecord($this->path, 'action', $data);
         $this->actions[] = $data;
     }
 
     /**
-     * Retrieve all actions for this ask.
+     * Retrieve all actions for this question.
      *
      * @return array
-     *   All actions associated with the task.
+     *   All actions associated with the question chain.
      */
     public function getActions()
     {
@@ -92,7 +92,7 @@ class Ask extends AbstractDBObject
     }
 
     /**
-     * Generate a chain of actions for this ask.
+     * Generate a chain of actions for this question.
      */
     public function generateActions()
     {
