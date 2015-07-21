@@ -76,19 +76,19 @@ class AgentTest extends \PHPUnit_Framework_TestCase
      */
     public function testMaybeAsk()
     {
-        $this->agent->maybeAsk($this->log, 0);
-        $this->assertEquals(0, count($this->log->getLog()));
         $this->agent->maybeAsk($this->log, 1);
+        $this->assertEquals(0, count($this->log->getLog()));
+        $this->agent->maybeAsk($this->log, 0);
         $this->assertGreaterThan(0, count($this->log->getLog()));
     }
 
     /**
-     * Test: TestRig\Models\Agent::maybeRespond().
+     * Test: TestRig\Models\Agent::maybeAcknowledge().
      */
-    public function testMaybeRespond()
+    public function testMaybeAcknowledge()
     {
         $toAsk = new Agent($this->pathToDatabase);
-        $toAsk->maybeRespond($this->agent, $this->log);
+        $toAsk->maybeAcknowledge($this->agent, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
 
         // Last log item should be our asker and toAsk.
