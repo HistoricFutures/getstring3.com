@@ -116,7 +116,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
             'entity_from' => $from->getID(),
             'entity_to' => $from->getID(),
             'time_start' => 50,
-            'time_stop' => 100,
+            'time_ack' => 100,
         );
         $this->model->addAsk($ask);
 
