@@ -29,7 +29,7 @@ class Generate
             self::$faker = $faker;
         }
 
-        return self::$faker->company();
+        return self::$faker->name();
     }
 
 
