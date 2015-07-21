@@ -37,61 +37,47 @@ class Agent extends Entity
     }
 
     /**
-     * Starts a chain by forcing an ask.
+     * Pick another agent and ask them the question.
      *
-     * @return array
-     *   Log messages including timestamps etc.
+     * Questions can be commenced by calling this directly on an agent.
+     *
+     * @param Log $log
+     *   Log for the entire question chain.
      */
-    public function go(Log $log)
+    public function pickAndAsk(Log $log)
     {
-        $this->maybeAsk($log, 0);
+        $toAsk = Agent::pickRandom($this->path);
+        $toAsk->respondTo($this, $log);
     }
 
     /**
-     * Maybe ask another agent, with logging.
-     *
-     * @param Log $log
-     *   Log object for this agent to put actions into.
-     * @param float $overrideProbability
-     *   Probability of overriding asking and just giving an answer.
+     * Respond either with an ack-and-pass-on or answer.
      */
-    public function maybeAsk(Log $log, $overrideProbability = null)
+    public function respondTo(Agent $from, Log $log)
     {
-        // Decide what the ask probability is, but distinguish betweeen an
-        // override probability of zero (don't ask) and NULL (not defined).
         $probability = $this->data['probability_answer'];
-        if ($overrideProbability !== null) {
-            $probability = $overrideProbability;
-        }
 
         // Answer directly and terminate chain....
         if (Maths::evenlyRandomZeroOne() <= $probability) {
-            // Answer.
+            $log->logInteraction(
+                $from->getID(),
+                $this->getID(),
+                Generate::getTime($this->data['mean_ack_time']),
+                Generate::getTime($this->data['mean_answer_time'])
+            );
         }
-        // ... Or pick an agent to ask and get them to respond.
+        // ... Or acknowledge, wait to route, then pick a new agent to ask.
         else {
-            $toAsk = Agent::pickRandom($this->path);
-            $toAsk->maybeAcknowledge($this, $log);
-        }
-    }
+            $log->logInteraction(
+                $from->getID(),
+                $this->getID(),
+                Generate::getTime($this->data['mean_ack_time'])
+            );
+            $log->timePasses(
+                Generate::getTime($this->data['mean_routing_time'])
+            );
 
-    /**
-     * Acknowledge an ask; maybe even re-ask to do so.
-     *
-     * @param Agent $asker
-     *   Agent asking the question.
-     * @param Log $log
-     *   Log object for subsequent agents to also use.
-     */
-    public function maybeAcknowledge(Agent $asker, Log $log)
-    {
-        // For now, always respond.
-        // See if we need to re-ask first.
-        $this->maybeAsk($log);
-        $log->logInteraction(
-            $asker->getID(),
-            $this->getID(),
-            Generate::getTime($this->data['mean_ack_time'])
-        );
+            $this->pickAndAsk($log);
+        }
     }
 }

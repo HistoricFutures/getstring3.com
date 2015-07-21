@@ -30,6 +30,11 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $this->conn = Database::create($this->pathToDatabase);
         $this->agent = new Agent($this->pathToDatabase);
         $this->log = new Log();
+
+        // Have 10 agents in total.
+        for ($i = 1; $i < 10; $i++) {
+            new Agent($this->pathToDatabase);
+        }
     }
 
     /**
@@ -45,11 +50,6 @@ class AgentTest extends \PHPUnit_Framework_TestCase
      */
     public function testPickRandom()
     {
-        // Have 10 agents in total.
-        for ($i = 0; $i < 10; $i++) {
-            new Agent($this->pathToDatabase);
-        }
-
         // Pick an agent at random ten times and store their IDs.
         for ($i = 0; $i <= 10; $i++) {
             $randomAgent = Agent::pickRandom($this->pathToDatabase);
@@ -60,40 +60,53 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: TestRig\Models\Agent::go().
+     * Test: TestRig\Models\Agent::pickAndAsk().
      */
-    public function testGo()
+    public function testPickAndAsk()
     {
-        $this->agent->go($this->log);
-        $log = $this->log->getLog();
+        $this->agent->pickAndAsk($this->log);
+        $logSoFar = $this->log->getLog();
 
-        // Have at least one entry: our first ask is mandated.
-        $this->assertGreaterThan(0, count($log));
+        // Second log item should always be tied to the first by agent ID.
+        if (count($logSoFar) > 1) {
+            $this->assertEquals($logSoFar[0]['to'], $logSoFar[1]['from']);
+        }
+        // Log will NEVER be empty: always at least one ask.
+        else {
+            $this->assertNotEmpty($logSoFar);
+        }
     }
 
     /**
-     * Test: TestRig\Models\Agent::maybeAsk().
+     * Test: TestRig\Models\Agent::respondTo().
      */
-    public function testMaybeAsk()
-    {
-        $this->agent->maybeAsk($this->log, 1);
-        $this->assertEquals(0, count($this->log->getLog()));
-        $this->agent->maybeAsk($this->log, 0);
-        $this->assertGreaterThan(0, count($this->log->getLog()));
-    }
-
-    /**
-     * Test: TestRig\Models\Agent::maybeAcknowledge().
-     */
-    public function testMaybeAcknowledge()
+    public function testRespondTo()
     {
         $toAsk = new Agent($this->pathToDatabase);
-        $toAsk->maybeAcknowledge($this->agent, $this->log);
+        $toAsk->respondTo($this->agent, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
 
-        // Last log item should be our asker and toAsk.
-        $last = array_pop($this->log->getLog());
-        $this->assertEquals($last['from'], $this->agent->getID());
-        $this->assertEquals($last['to'], $toAsk->getID());
+        // First log item should be our asker and toAsk.
+        $first = array_shift($this->log->getLog());
+        $this->assertEquals($first['from'], $this->agent->getID());
+        $this->assertEquals($first['to'], $toAsk->getID());
+
+        // Re-ask with an agent with zero chance of re-routing.
+        $toAsk->data['probability_answer'] = 1;
+        $newLog = new Log();
+        $toAsk->respondTo($this->agent, $newLog);
+        $logItems = $newLog->getLog();
+        $this->assertEquals(1, count($logItems));
+        $lastItem = array_pop($logItems);
+        $this->assertArrayHasKey('answer', $lastItem);
+
+        // Re-ask with an agent with 1 chance of re-routing.
+        $toAsk->data['probability_answer'] = 0;
+        $newLog = new Log();
+        $toAsk->respondTo($this->agent, $newLog);
+        $logItems = $newLog->getLog();
+        $this->assertGreaterThan(1, count($logItems));
+        $lastItem = array_pop($logItems);
+        $this->assertArrayHasKey('answer', $lastItem);
     }
 }
