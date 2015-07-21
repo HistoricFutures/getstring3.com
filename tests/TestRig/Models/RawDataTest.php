@@ -74,11 +74,16 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         // Every time we populate, total should increase by $numEntities.
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
+
+        // Check overall counts of entities and asks.
         $this->assertEquals($numEntities, $summary["entities"]["count"]);
         $this->assertEquals($numAsks, $summary["asks"]["count"]);
 
+        // Populate a second time.
         $rawData->populate($bop);
         $summary = $rawData->getSummary();
+
+        // Check overall counts of entities and asks.
         $this->assertEquals($numEntities * 2, $summary["entities"]["count"]);
         $this->assertEquals($numAsks * 2, $summary["asks"]["count"]);
 
@@ -90,6 +95,13 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('probability_reask', $entities[1]);
         $this->assertNotNull($entities[1]['mean_response_time']);
         $this->assertNotNull($entities[1]['probability_reask']);
+
+        // Check ask IDs saved.
+        $conn = Database::getConn($this->pathToDatabase);
+        $results = $conn->query("SELECT * FROM action WHERE ask IS NULL");
+        while ($row = $results->fetchArray()) {
+            $this->fail("Saved an action where the ask ID is null.");
+        }
     }
 
     /**

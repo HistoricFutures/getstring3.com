@@ -75,6 +75,7 @@ class Ask extends AbstractDBObject
      */
     public function addAction(&$data)
     {
+        $data['ask'] = $this->getID();
         Database::writeRecord($this->path, 'action', $data);
         $this->actions[] = $data;
     }
