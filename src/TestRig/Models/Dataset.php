@@ -28,15 +28,14 @@ class Dataset extends AbstractFolderManager
     {
         $datasetDir = parent::create();
 
-        // Readme and BOP from the UploadedFile.
-        file_put_contents($this->rootDir . "/$datasetDir/readme.txt", "Readme");
-        $file->move($this->rootDir . "/$datasetDir", "bop.yaml");
+        // Recipe from the UploadedFile.
+        $file->move($this->rootDir . "/$datasetDir", "recipe.yaml");
         // SQLite database create and generate schema.
         $databasePath = $this->pathToDatabase($datasetDir);
         Database::create($databasePath);
-        // Populate database with raw data based on the BOP.
-        $bopParsed = $this->getAndParseBOP($datasetDir);
-        (new RawData($databasePath))->populate($bopParsed['yaml']);
+        // Populate database with raw data based on the recipe.
+        $recipeParsed = $this->getAndParseRecipe($datasetDir);
+        (new RawData($databasePath))->populate($recipeParsed['yaml']);
 
         // Return directory name as a marker.
         return $datasetDir;
@@ -51,13 +50,13 @@ class Dataset extends AbstractFolderManager
     {
         $metadata['raw'] = $this->parseFileContents(
             $this->fullPath($dir),
-            array('readme' => 'readme.txt', 'bop' => 'bop.yaml')
+            array('readme' => 'readme.txt', 'recipe' => 'recipe.yaml')
         );
 
-        // Parse any existing BOP into a structured array.
-        if (isset($metadata['raw']['bop'])) {
+        // Parse any existing recipe into a structured array.
+        if (isset($metadata['raw']['recipe'])) {
             $yaml = new Parser();
-            $metadata["bop"] = $yaml->parse($metadata["raw"]["bop"]);
+            $metadata["recipe"] = $yaml->parse($metadata["raw"]["recipe"]);
         }
 
         // SQLite database: connect and get info.
@@ -82,20 +81,20 @@ class Dataset extends AbstractFolderManager
     }
 
     /**
-     * Get BOP file and parse into YAML.
+     * Get recipe file and parse into YAML.
      *
      * @param string $datasetDir
      *   Path to dataset directory.
      * @return array
-     *   BOP file text, and parsed YAML.
+     *   Recipe file text, and parsed YAML.
      */
-    public function getAndParseBOP($datasetDir)
+    public function getAndParseRecipe($datasetDir)
     {
-        $bopText = file_get_contents($this->fullPath($datasetDir) . "/bop.yaml");
+        $recipeText = file_get_contents($this->fullPath($datasetDir) . "/recipe.yaml");
         $yaml = new Parser();
         return array(
-            "yaml" => $yaml->parse($bopText),
-            "text" => $bopText,
+            "yaml" => $yaml->parse($recipeText),
+            "text" => $recipeText,
         );
     }
 

@@ -5,30 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<section class="dataset dataset--raw-readme">
-  <h2>README</h2>
-  {% if raw.readme is defined %}
-    <pre>{{ raw.readme }}</pre>
+<section class="dataset dataset--raw-recipe">
+  <h2>Recipe</h2>
+  {% if raw.recipe is defined %}
+    <pre>{{ raw.recipe }}</pre>
   {% else %}
     <p style="error">Not found!</p>
   {% endif %}
 </section>
-
-<section class="dataset dataset--raw-bop">
-  <h2>Bill of Process</h2>
-  {% if raw.bop is defined %}
-    <pre>{{ raw.bop }}</pre>
-  {% else %}
-    <p style="error">Not found!</p>
-  {% endif %}
-</section>
-{% if bop is defined %}
-  <section class="dataset dataset--bop">
-    <h2>Parsed BOP</h2>
-    {% if bop.populations is defined %}
+{% if recipe is defined %}
+  <section class="dataset dataset--recipe">
+    <h2>Parsed recipe</h2>
+    {% if recipe.populations is defined %}
       <h3>Populations</h3>
       <dl>
-        {% for pop in bop.populations %}
+        {% for pop in recipe.populations %}
           <dt>Number</dt><dd>{{ pop.number }}</dd>
         {% endfor %}
       </dl>
@@ -38,8 +29,8 @@
   </section>
 {% else %}
   <section class="dataset dataset--error">
-    <h2>BOP missing</h2>
-    <p class="error">Cannot find any data corresponding to Bill of Process.</p>
+    <h2>Recipe missing</h2>
+    <p class="error">Cannot find any recipe data..</p>
   </section>
 {% endif %}
 {% if more_info is defined %}
@@ -63,10 +54,10 @@
             </tr>
         </table>
 
-        <h2>Asks</h2>
+        <h2>Questions</h2>
         <ul>
-          <li>Number: {{ database.asks.count }}</li>
-          <li>Number of actions: {{ database.asks.actions.count }}</li>
+          <li>Number: {{ database.questions.count }}</li>
+          <li>Number of asks: {{ database.questions.asks.count }}</li>
         </ul>
     </section>
 {% else %}

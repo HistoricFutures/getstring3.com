@@ -40,14 +40,8 @@ class RawData
         $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
         $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
 
-        // Older datasets have no asks.
-        try {
-            $asksCount = Database::getTableCount($this->path, 'ask');
-            $actionsCount = Database::getTableCount($this->path, 'action');
-        } catch (MissingTableException $e) {
-            $asksCount = null;
-            $actionsCount = null;
-        }
+        $questionsCount = Database::getTableCount($this->path, 'question');
+        $asksCount = Database::getTableCount($this->path, 'ask');
 
         return array(
             'entities' => array(
@@ -55,41 +49,41 @@ class RawData
                 'mean_response_time' => $meanResponseTime,
                 'probability_reask' => $probabilityReask,
             ),
-            'asks' => array(
-                'count' => $asksCount,
-                'actions' => array(
-                    'count' => $actionsCount,
+            'questions' => array(
+                'count' => $questionsCount,
+                'asks' => array(
+                    'count' => $asksCount,
                 ),
             ),
         );
     }
 
     /**
-     * Populate a database with data based on a BOP.
+     * Populate a database with data based on a recipe.
      *
-     * @param array $bop
+     * @param array $recipe
      *   Configuration array.
      */
-    public function populate($bop)
+    public function populate($recipe)
     {
-        // Sometimes an empty or unparseable BOP is passed in.
-        if (!is_array($bop)) {
+        // Sometimes an empty or unparseable recipe is passed in.
+        if (!is_array($recipe)) {
             return;
         }
 
         // Create our entity populations.
-        if (isset($bop['populations'])) {
-            foreach ($bop['populations'] as $population) {
+        if (isset($recipe['populations'])) {
+            foreach ($recipe['populations'] as $population) {
                 for ($i = 0; $i < $population['number']; $i++) {
                     new Entity($this->path, null, $population);
                 }
             }
         }
 
-        // Create our asks.
-        if (isset($bop['asks'])) {
-            for ($i = 0; $i < $bop['asks']; $i++) {
-                (new Ask($this->path))->generateActions();
+        // Create our questions.
+        if (isset($recipe['questions'])) {
+            for ($i = 0; $i < $recipe['questions']; $i++) {
+                (new Question($this->path))->generateAsks();
             }
         }
     }

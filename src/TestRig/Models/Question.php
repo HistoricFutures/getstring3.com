@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @file
+ * A single chain of asks.
+ */
+
+namespace TestRig\Models;
+
+use TestRig\Services\Database;
+
+/**
+ * @class
+ * A single chain of asks.
+ */
+class Question extends AbstractDBObject
+{
+    // Asks.
+    private $asks = array();
+
+    // Database table we save to.
+    protected $table = 'question';
+
+    /**
+     * @inheritDoc
+     */
+    public function create()
+    {
+        // Reset asks array prior to create.
+        $this->asks = array();
+        // Let parent handle the rest.
+        parent::create();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function read($id)
+    {
+        // Reset asks array prior to create.
+        $this->asks = array();
+
+        // Let parent handle the core entity.
+        parent::read($id);
+
+        // If the question doesn't exist, just quit silently here.
+        if (!$this->getID()) {
+            return;
+        }
+
+        // Otherwise, load its associated asks.
+        $this->asks = Database::getRowsWhere(
+            $this->path,
+            'ask',
+            array('question' => $this->getID())
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws \Exception
+     */
+    public function update()
+    {
+        // A question can't be updated: all asks handled separately.
+        throw new \Exception('Question cannot be updated.');
+    }
+
+    /**
+     * Add an asks to this question.
+     *
+     * @param array &$data
+     *   Ask data, passed by reference, using column names as per table.
+     */
+    public function addAsk(&$data)
+    {
+        $data['question'] = $this->getID();
+        Database::writeRecord($this->path, 'ask', $data);
+        $this->asks[] = $data;
+    }
+
+    /**
+     * Retrieve all asks for this question.
+     *
+     * @return array
+     *   All asks associated with the question chain.
+     */
+    public function getAsks()
+    {
+        return $this->asks;
+    }
+
+    /**
+     * Generate a chain of asks for this question.
+     */
+    public function generateAsks()
+    {
+        // Generate a log from the agent(s).
+        $log = new Log();
+        $initiator = Agent::pickRandom($this->path);
+        $initiator->go($log);
+
+        // Convert the log into the ask format.
+        foreach ($log->getLog() as $logItem) {
+            $ask = array(
+                'entity_from' => $logItem['from'],
+                'entity_to' => $logItem['to'],
+                'time_start' => $logItem['start'],
+                'time_stop' => $logItem['end'],
+            );
+            $this->addAsk($ask);
+        }
+    }
+}

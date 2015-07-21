@@ -84,7 +84,7 @@ class Agent extends Entity
         // For now, always respond.
         // See if we need to re-ask first.
         $this->maybeAsk($log);
-        $log->logAction(
+        $log->logInteraction(
             $asker->getID(),
             $this->getID(),
             Generate::getTime($this->data['mean_response_time'])
