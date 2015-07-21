@@ -10,9 +10,9 @@ CREATE TABLE ask (
 );
 CREATE TABLE action (
   id INTEGER PRIMARY KEY,
-  ask INTEGER,
-  entity_from INTEGER,
-  entity_to INTEGER,
+  ask INTEGER NOT NULL,
+  entity_from INTEGER NOT NULL,
+  entity_to INTEGER NOT NULL,
   time_start INT,
   time_stop INT,
   action_type VARCHAR(16),
