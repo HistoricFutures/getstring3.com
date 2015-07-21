@@ -49,8 +49,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
 
         // Assert we've got a manifest.
         $this->assertTrue(file_exists(self::$dir . "/$datasetDir"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/readme.txt"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/bop.yaml"));
+        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/recipe.yaml"));
         $this->assertTrue(file_exists(self::$dir . "/$datasetDir/dataset.sqlite3"));
     }
 
@@ -59,10 +58,10 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        // Create, as above, but with a BOP.
-        $bop = "tests/fixtures/bop.yaml";
+        // Create, as above, but with a recipe.
+        $recipe = "tests/fixtures/recipe.yaml";
 
-        $datasetDir = $this->createWithMock($bop);
+        $datasetDir = $this->createWithMock($recipe);
 
         // Read the manifest.
         $dataset = self::$model->read($datasetDir);
@@ -70,28 +69,24 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         // Assert manifest contents as expected.
         // Raw files both present.
         $this->assertArrayHasKey("raw", $dataset);
-        $this->assertArrayHasKey("readme", $dataset['raw']);
-        $this->assertArrayHasKey("bop", $dataset['raw']);
+        $this->assertArrayHasKey("recipe", $dataset['raw']);
         $this->assertStringEqualsFile(
-          self::$dir . "/$datasetDir/readme.txt", $dataset["raw"]["readme"]
-        );
-        $this->assertStringEqualsFile(
-          self::$dir . "/$datasetDir/bop.yaml", $dataset["raw"]["bop"]
+          self::$dir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
         );
 
-        // Parsed data from bop.yaml present?
-        $this->assertArrayHasKey("bop", $dataset);
-        $this->assertArrayHasKey("populations", $dataset["bop"]);
-        $this->assertArrayHasKey(0, $dataset["bop"]["populations"]);
+        // Parsed data from reecipe.yaml present?
+        $this->assertArrayHasKey("recipe", $dataset);
+        $this->assertArrayHasKey("populations", $dataset["recipe"]);
+        $this->assertArrayHasKey(0, $dataset["recipe"]["populations"]);
         $this->assertArrayHasKey(
-            "number", $dataset["bop"]["populations"][0]
+            "number", $dataset["recipe"]["populations"][0]
         );
-        $this->assertArrayHasKey("asks", $dataset["bop"]);
+        $this->assertArrayHasKey("asks", $dataset["recipe"]);
 
         // Ensure some data in SQLite database.
         $this->assertEquals(
             $dataset["database"]["entities"]["count"],
-            $dataset["bop"]["populations"][0]["number"]
+            $dataset["recipe"]["populations"][0]["number"]
         );
     }
 
@@ -141,7 +136,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadRawData()
     {
-        $datasetDir = $this->createWithMock('tests/fixtures/bop.yaml');
+        $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
         $rawData = self::$model->readRawData($datasetDir);
         $this->assertEquals(count($rawData['entity']), 20);
     }
@@ -149,7 +144,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper: create a dataset using mocking of UploadedFile.
      */
-    private function createWithMock($bop = null)
+    private function createWithMock($recipe = null)
     {
         // Mock up an UploadedFile, disabling its constructor.
         $mockBuilder = $this->getMockBuilder(
@@ -164,30 +159,30 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $mockUploadedFile->expects($this->once())->method("move")
             ->will($this->returnCallback(array($this, 'mockMove')));
 
-        // Squirrel away the bop data array, so our mock callback can
+        // Squirrel away the data array, so our mock callback can
         // access it later on and clear it.
-        $this->temporary_bop_storage = $bop;
+        $this->temporary_storage = $recipe;
         return self::$model->create($mockUploadedFile);
     }
 
     /**
      * Helper: provide the UploadedFile mock with a ::move() method.
      *
-     * This needs to touch a temporary BOP file for the dataset creation.
-     * If BOP data has been hidden on this test then it will be dumped out.
+     * This needs to touch a temporary recipe file for the dataset creation.
+     * If data has been hidden on this test then it will be dumped out.
      */
     public function mockMove($dir, $file)
     {
         touch("$dir/$file");
-        if ($this->temporary_bop_storage) {
-            if (is_array($this->temporary_bop_storage)) {
+        if ($this->temporary_storage) {
+            if (is_array($this->temporary_storage)) {
                 $dumper = new Dumper();
                 file_put_contents(
                     "$dir/$file",
-                    $dumper->dump($this->temporary_bop_storage)
+                    $dumper->dump($this->temporary_storage)
                 );
             } else {
-                copy($_SERVER['PWD'] . '/' . $this->temporary_bop_storage, "$dir/$file");
+                copy($_SERVER['PWD'] . '/' . $this->temporary_storage, "$dir/$file");
             }
         }
     }

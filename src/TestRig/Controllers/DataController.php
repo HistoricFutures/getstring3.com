@@ -38,7 +38,7 @@ class DataController
     {
         // Create a form with just an upload widget.
         $form = $app['form.factory']->createBuilder('form')
-            ->add('attachment', 'file', array("label" => "Choose a BOP", "required" => true))
+            ->add('attachment', 'file', array("label" => "Choose a recipe", "required" => true))
             ->getForm();
         $form->handleRequest($request);
 

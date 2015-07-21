@@ -65,21 +65,21 @@ class RawData
     }
 
     /**
-     * Populate a database with data based on a BOP.
+     * Populate a database with data based on a recipe.
      *
-     * @param array $bop
+     * @param array $recipe
      *   Configuration array.
      */
-    public function populate($bop)
+    public function populate($recipe)
     {
-        // Sometimes an empty or unparseable BOP is passed in.
-        if (!is_array($bop)) {
+        // Sometimes an empty or unparseable recipe is passed in.
+        if (!is_array($recipe)) {
             return;
         }
 
         // Create our entity populations.
-        if (isset($bop['populations'])) {
-            foreach ($bop['populations'] as $population) {
+        if (isset($recipe['populations'])) {
+            foreach ($recipe['populations'] as $population) {
                 for ($i = 0; $i < $population['number']; $i++) {
                     new Entity($this->path, null, $population);
                 }
@@ -87,8 +87,8 @@ class RawData
         }
 
         // Create our asks.
-        if (isset($bop['asks'])) {
-            for ($i = 0; $i < $bop['asks']; $i++) {
+        if (isset($recipe['asks'])) {
+            for ($i = 0; $i < $recipe['asks']; $i++) {
                 (new Ask($this->path))->generateActions();
             }
         }

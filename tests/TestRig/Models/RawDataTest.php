@@ -64,15 +64,15 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $numEntities = 15;
         $numAsks = 50;
 
-        // Set up a fake BOP and wrap the database in RawData.
-        $bop = array(
+        // Set up a fake recipe and wrap the database in RawData.
+        $recipe = array(
             "populations" => array(array("number" => $numEntities)),
             "asks" => $numAsks,
         );
         $rawData = new RawData($this->pathToDatabase);
 
         // Every time we populate, total should increase by $numEntities.
-        $rawData->populate($bop);
+        $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and asks.
@@ -80,7 +80,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($numAsks, $summary["asks"]["count"]);
 
         // Populate a second time.
-        $rawData->populate($bop);
+        $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and asks.

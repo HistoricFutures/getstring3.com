@@ -121,7 +121,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         $mockUploadedFile->expects($this->once())->method("move")
             ->will($this->returnCallback(array($this, 'mockMove')));
 
-        // Squirrel away the bop data array, so our mock callback can
+        // Squirrel away the data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_mock_storage = "<" . "?php echo 'foo'; ";
         return self::$model->create($format, $mockUploadedFile);
@@ -130,8 +130,8 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper: provide the UploadedFile mock with a ::move() method.
      *
-     * This needs to touch a temporary BOP file for the folder creation.
-     * If BOP data has been hidden on this test then it will be dumped out.
+     * This needs to touch a temporary recipe file for the folder creation.
+     * If data has been hidden on this test then it will be dumped out.
      */
     public function mockMove($dir, $file)
     {
