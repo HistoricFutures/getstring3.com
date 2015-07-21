@@ -125,6 +125,7 @@ class AskTest extends \PHPUnit_Framework_TestCase
         // And action should be on the list.
         $actions = $this->model->getActions();
         $this->assertEquals($action['id'], $actions[0]['id']);
+        $this->assertEquals($this->model->getID(), $actions[0]['ask']);
 
         // Actions should be preserved across reloads.
         $this->model->read(1);
