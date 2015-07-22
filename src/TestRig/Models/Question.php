@@ -99,7 +99,7 @@ class Question extends AbstractDBObject
         // Generate a log from the agent(s).
         $log = new Log();
         $initiator = Agent::pickRandom($this->path);
-        $initiator->go($log);
+        $initiator->pickAndAsk($log);
 
         // Convert the log into the ask format.
         foreach ($log->getLog() as $logItem) {
@@ -107,8 +107,13 @@ class Question extends AbstractDBObject
                 'entity_from' => $logItem['from'],
                 'entity_to' => $logItem['to'],
                 'time_start' => $logItem['start'],
-                'time_stop' => $logItem['end'],
             );
+            if (isset($logItem['ack'])) {
+                $ask['time_ack'] = $logItem['ack'];
+            }
+            if (isset($logItem['answer'])) {
+                $ask['time_answer'] = $logItem['answer'];
+            }
             $this->addAsk($ask);
         }
     }

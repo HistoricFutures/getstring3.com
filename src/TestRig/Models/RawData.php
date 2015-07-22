@@ -37,8 +37,10 @@ class RawData
     public function getSummary()
     {
         $entityCount = Database::getTableCount($this->path, 'entity');
-        $meanResponseTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_response_time');
-        $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_reask');
+        $meanAckTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_ack_time');
+        $meanAnswerTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_answer_time');
+        $meanRoutingTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_routing_time');
+        $probabilityReask = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_answer');
 
         $questionsCount = Database::getTableCount($this->path, 'question');
         $asksCount = Database::getTableCount($this->path, 'ask');
@@ -46,8 +48,10 @@ class RawData
         return array(
             'entities' => array(
                 'count' => $entityCount,
-                'mean_response_time' => $meanResponseTime,
-                'probability_reask' => $probabilityReask,
+                'mean_ack_time' => $meanAckTime,
+                'mean_answer_time' => $meanAnswerTime,
+                'mean_routing_time' => $meanRoutingTime,
+                'probability_answer' => $probabilityReask,
             ),
             'questions' => array(
                 'count' => $questionsCount,

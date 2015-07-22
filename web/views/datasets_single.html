@@ -37,20 +37,24 @@
     <section class="dataset dataset--raw-data">
         <h2>All entities</h2>
         <table>
-          <tr><th>ID</th><th>Name</th><th>Mean response time</th><th>Probability of reask</th></tr>
+          <tr><th>ID</th><th>Name</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Probability of reask</th></tr>
             {% for entity in more_info.entity %}
             <tr>
               <td>{{ entity.id }}</td>
               <td>{{ entity.name }}</td>
-              <td>{% if entity.mean_response_time is defined %}{{ entity.mean_response_time }}{% else %}n/a{% endif %}</td>
-              <td>{% if entity.probability_reask is defined %}{{ entity.probability_reask }}{% else %}n/a{% endif %}</td>
+              <td>{{ entity.mean_ack_time }}</td>
+              <td>{{ entity.mean_answer_time }}</td>
+              <td>{{ entity.mean_routing_time }}</td>
+              <td>{{ entity.probability_answer }}</td>
             </tr>
             {% endfor %}
             <tr class="aggregates">
                 <td>Summary:</td>
                 <td>{{ database.entities.count }}</td>
-                <td>{{ database.entities.mean_response_time }}</td>
-                <td>{{ database.entities.probability_reask }}</td>
+                <td>{{ database.entities.mean_ack_time }}</td>
+                <td>{{ database.entities.mean_answer_time }}</td>
+                <td>{{ database.entities.mean_routing_time }}</td>
+                <td>{{ database.entities.probability_answer }}</td>
             </tr>
         </table>
 

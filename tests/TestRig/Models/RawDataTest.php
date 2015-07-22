@@ -4,7 +4,6 @@
  * @file
  * Test: TestRig\Models\RawData.
  */
-
 use TestRig\Models\Dataset;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
@@ -18,7 +17,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     // Dataset helper created in ::setUpBeforeClass().
     private static $dataset = null;
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-rawdata.sqlite3";
+    private $pathToDatabase = '/tmp/for-rawdata.sqlite3';
 
     /**
      * Set up before class.
@@ -52,8 +51,10 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     public function testGetSummary()
     {
         $summary = (new RawData($this->pathToDatabase))->getSummary();
-        $this->assertArrayHasKey("entities", $summary);
-        $this->assertArrayHasKey("count", $summary["entities"]);
+        $this->assertArrayHasKey('entities', $summary);
+        foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_answer') as $key) {
+            $this->assertArrayHasKey($key, $summary['entities']);
+        }
     }
 
     /**
@@ -66,8 +67,8 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
 
         // Set up a fake recipe and wrap the database in RawData.
         $recipe = array(
-            "populations" => array(array("number" => $numEntities)),
-            "questions" => $numQuestions,
+            'populations' => array(array('number' => $numEntities)),
+            'questions' => $numQuestions,
         );
         $rawData = new RawData($this->pathToDatabase);
 
@@ -76,31 +77,31 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and questions.
-        $this->assertEquals($numEntities, $summary["entities"]["count"]);
-        $this->assertEquals($numQuestions, $summary["questions"]["count"]);
+        $this->assertEquals($numEntities, $summary['entities']['count']);
+        $this->assertEquals($numQuestions, $summary['questions']['count']);
 
         // Populate a second time.
         $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and questions.
-        $this->assertEquals($numEntities * 2, $summary["entities"]["count"]);
-        $this->assertEquals($numQuestions * 2, $summary["questions"]["count"]);
+        $this->assertEquals($numEntities * 2, $summary['entities']['count']);
+        $this->assertEquals($numQuestions * 2, $summary['questions']['count']);
 
         // Check we have unique names.
         $entities = $rawData->getEntities();
         $this->assertNotEquals($entities[1]['name'], $entities[2]['name']);
         // Check we have columns for mean response time, reask probability etc.
-        $this->assertArrayHasKey('mean_response_time', $entities[1]);
-        $this->assertArrayHasKey('probability_reask', $entities[1]);
-        $this->assertNotNull($entities[1]['mean_response_time']);
-        $this->assertNotNull($entities[1]['probability_reask']);
+        foreach (array('mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_answer') as $key) {
+            $this->assertArrayHasKey($key, $entities[1]);
+            $this->assertNotNull($entities[1][$key]);
+        }
 
         // Check question IDs saved.
         $conn = Database::getConn($this->pathToDatabase);
-        $results = $conn->query("SELECT * FROM ask WHERE question IS NULL");
+        $results = $conn->query('SELECT * FROM ask WHERE question IS NULL');
         while ($row = $results->fetchArray()) {
-            $this->fail("Saved an action where the question ID is null.");
+            $this->fail('Saved an action where the question ID is null.');
         }
     }
 
@@ -111,16 +112,16 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     {
         // Attach to the database and insert an entity.
         $rawData = new RawData($this->pathToDatabase);
-        $record = array("name" => "Get Entities " . uniqid());
-        Database::writeRecord($this->pathToDatabase, "entity", $record);
+        $record = array('name' => 'Get Entities '.uniqid());
+        Database::writeRecord($this->pathToDatabase, 'entity', $record);
 
         // Get entities out of database and check ours is among them.
         $entities = (new RawData($this->pathToDatabase))->getEntities();
-        $this->assertArrayHasKey($record["id"], $entities);
-        $this->assertEquals($record["name"], $entities[$record["id"]]["name"]);
+        $this->assertArrayHasKey($record['id'], $entities);
+        $this->assertEquals($record['name'], $entities[$record['id']]['name']);
 
         // We don't want the columnar format along with associative.
-        $this->assertFalse(isset($entities[$record["id"]][0]));
+        $this->assertFalse(isset($entities[$record['id']][0]));
     }
 
     /**
@@ -130,7 +131,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     {
         // Attach to the database and insert an entity.
         $rawData = new RawData($this->pathToDatabase);
-        $record = array('name' => 'Get Entities ' . uniqid());
+        $record = array('name' => 'Get Entities '.uniqid());
         Database::writeRecord($this->pathToDatabase, 'entity', $record);
 
         // All data back.

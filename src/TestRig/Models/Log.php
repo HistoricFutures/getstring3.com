@@ -25,8 +25,12 @@ class Log
      *   ID of thing instigating interaction.
      * @param mixed $to
      *   ID of thing responding to interaction (even if with a "no-response").
+     * @param float $ackTimeDifference
+     *   Time passsing between initiation and ack.
+     * @param float $answerTimeDifference
+     *   Time passsing between ack and answer.
      */
-    public function logInteraction($from, $to, $timeDifference)
+    public function logInteraction($from, $to, $ackTimeDifference = null, $answerTimeDifference = null)
     {
         // Prepare a log item and add it to the log, updating the incremental
         // timestamp as we go.
@@ -35,8 +39,29 @@ class Log
             'to' => $to,
             'start' => $this->timeSoFar,
         );
-        $logItem['end'] = $this->timeSoFar = $this->timeSoFar + $timeDifference;
+
+        // Ack and answer could be either null.
+        if ($ackTimeDifference !== null) {
+            $logItem['ack'] = $this->timePasses($ackTimeDifference);
+        }
+        if ($answerTimeDifference !== null) {
+            $logItem['answer'] = $this->timePasses($answerTimeDifference);
+        }
+
         $this->log[] = $logItem;
+    }
+
+    /**
+     * Increment internal clock.
+     *
+     * @param float $timeDifference
+     *   Time difference by which to increment internal clock.
+     * @return float
+     *   New internal time.
+     */
+    public function timePasses($timeDifference)
+    {
+        return ($this->timeSoFar += $timeDifference);
     }
 
     /**

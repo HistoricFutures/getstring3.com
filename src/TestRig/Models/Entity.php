@@ -19,8 +19,10 @@ class Entity extends AbstractDBObject
     protected $table = "entity";
     // Default arguments.
     private $defaultArguments = array(
-        'mean_response_time' => 500,
-        'probability_reask' => 0.5,
+        'mean_ack_time' => 5,
+        'mean_answer_time' => 5,
+        'mean_routing_time' => 5,
+        'probability_answer' => 0.5,
     );
 
     /**
@@ -45,11 +47,13 @@ class Entity extends AbstractDBObject
 
             // Different callbacks based on argumentName.
             switch ($argumentName) {
-            case "mean_response_time":
+            case "mean_ack_time":
+            case "mean_answer_time":
+            case "mean_routing_time":
                 $this->data[$argumentName] = Generate::getTime($argumentData);
                 break;
 
-            case "probability_reask":
+            case "probability_answer":
                 $this->data[$argumentName] = Generate::getProbability($argumentData);
             }
         }
