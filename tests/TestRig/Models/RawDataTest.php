@@ -4,7 +4,6 @@
  * @file
  * Test: TestRig\Models\RawData.
  */
-
 use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Models\Dataset;
 use TestRig\Models\RawData;
@@ -80,18 +79,18 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         );
         try {
             $rawData->populate($recipeNoQuestions);
-            $this->fail("Could build recipe with no questions.");
+            $this->fail('Could build recipe with no questions.');
+        } catch (DatasetIntegrityException $e) {
         }
-        catch (DatasetIntegrityException $e) {}
         // 2. With no populations.
         $recipeNoPopulations = array(
             'questions' => $numQuestions,
         );
         try {
             $rawData->populate($recipeNoPopulations);
-            $this->fail("Could build recipe with no populations.");
+            $this->fail('Could build recipe with no populations.');
+        } catch (DatasetIntegrityException $e) {
         }
-        catch (DatasetIntegrityException $e) {}
         // 3. With uncontiguous tiers.
         $recipeBrokenTiers = array(
             'populations' => array(
@@ -101,9 +100,9 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         );
         try {
             $rawData->populate($recipeBrokenTiers);
-            $this->fail("Could build recipe with broken tiers.");
+            $this->fail('Could build recipe with broken tiers.');
+        } catch (DatasetIntegrityException $e) {
         }
-        catch (DatasetIntegrityException $e) {}
 
         // Set up a good recipe and wrap the database in RawData.
         $recipe = array(
@@ -113,7 +112,6 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
             ),
             'questions' => $numQuestions,
         );
-
 
         // Every time we populate, total should increase by two numbers.
         $rawData->populate($recipe);
