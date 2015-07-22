@@ -22,6 +22,7 @@ class Entity extends AbstractDBObject
         'mean_ack_time' => 5,
         'mean_answer_time' => 5,
         'mean_routing_time' => 5,
+        'tier' => 1,
         'probability_answer' => 0.5,
     );
 
@@ -34,9 +35,10 @@ class Entity extends AbstractDBObject
     public function create($arguments = array())
     {
         // Create data suitable for database.
-        $this->data = array();
-        $this->data['name'] = isset($arguments['name']) ? $arguments['name']
-          : Generate::getEntityName();
+        $this->data = array(
+            'name' => isset($arguments['name']) ? $arguments['name'] :
+                Generate::getEntityName(),
+        );
 
         // Turn arguments into entity properties,, based on default arguments.
         foreach ($this->defaultArguments as $argumentName => $argumentData) {
@@ -47,6 +49,10 @@ class Entity extends AbstractDBObject
 
             // Different callbacks based on argumentName.
             switch ($argumentName) {
+            case "tier":
+                $this->data[$argumentName] = $argumentData;
+                break;
+
             case "mean_ack_time":
             case "mean_answer_time":
             case "mean_routing_time":

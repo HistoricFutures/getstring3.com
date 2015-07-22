@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Exceptions\MissingTableException;
 use TestRig\Models\Entity;
 use TestRig\Services\Database;
@@ -75,20 +76,36 @@ class RawData
             return;
         }
 
+        // Ensure our recipe contains everything we need.
+        if (!isset($recipe['questions'])) {
+            throw new DatasetIntegrityException("No questions defined.");
+        }
+        if (!isset($recipe['populations'])) {
+            throw new DatasetIntegrityException("No entity populations defined.");
+        }
+        // Ensure our tiers are contiguous 1..N.
+        $tiers = array();
+        foreach ($recipe['populations'] as $population) {
+            if (isset($population['tier'])) {
+                $tiers[$population['tier']] = true;
+            }
+        }
+        for ($i = 1; $i <= count($tiers); $i++) {
+            if (!isset($tiers[$i])) {
+                throw new DatasetIntegrityException("Tier $i is missing from contiguous set.");
+            }
+        }
+
         // Create our entity populations.
-        if (isset($recipe['populations'])) {
-            foreach ($recipe['populations'] as $population) {
-                for ($i = 0; $i < $population['number']; $i++) {
-                    new Entity($this->path, null, $population);
-                }
+        foreach ($recipe['populations'] as $population) {
+            for ($i = 0; $i < $population['number']; $i++) {
+                new Entity($this->path, null, $population);
             }
         }
 
         // Create our questions.
-        if (isset($recipe['questions'])) {
-            for ($i = 0; $i < $recipe['questions']; $i++) {
-                (new Question($this->path))->generateAsks();
-            }
+        for ($i = 0; $i < $recipe['questions']; $i++) {
+            (new Question($this->path))->generateAsks();
         }
     }
 

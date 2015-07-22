@@ -1,7 +1,14 @@
 populations:
-  - number: 20
-    mean_ack_time: 20
-    mean_answer_time: 20
+  - tier: 1
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
     mean_routing_time: 20
-    probability_answer: 0.7 # But initial chain step is mandatory => 0.
+    probability_answer: 0.7
+  - tier: 2
+    number: 10
+    mean_ack_time: 7
+    mean_answer_time: 21
+    mean_routing_time: 28
+    probability_answer: 0.7
 questions: 50

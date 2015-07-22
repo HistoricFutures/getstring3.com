@@ -37,7 +37,7 @@
     <section class="dataset dataset--raw-data">
         <h2>All entities</h2>
         <table>
-          <tr><th>ID</th><th>Name</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Probability of reask</th></tr>
+          <tr><th>ID</th><th>Name</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Tier</th><th>Probability of reask</th></tr>
             {% for entity in more_info.entity %}
             <tr>
               <td>{{ entity.id }}</td>
@@ -45,6 +45,7 @@
               <td>{{ entity.mean_ack_time }}</td>
               <td>{{ entity.mean_answer_time }}</td>
               <td>{{ entity.mean_routing_time }}</td>
+              <td>{{ entity.tier }}</td>
               <td>{{ entity.probability_answer }}</td>
             </tr>
             {% endfor %}
@@ -54,6 +55,7 @@
                 <td>{{ database.entities.mean_ack_time }}</td>
                 <td>{{ database.entities.mean_answer_time }}</td>
                 <td>{{ database.entities.mean_routing_time }}</td>
+                <td></td>
                 <td>{{ database.entities.probability_answer }}</td>
             </tr>
         </table>

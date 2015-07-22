@@ -4,6 +4,8 @@
  * @file
  * Test: TestRig\Models\RawData.
  */
+
+use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Models\Dataset;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
@@ -62,22 +64,63 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testPopulate()
     {
-        $numEntities = 15;
+        $numTier1 = 15;
+        $numTier2 = 20;
         $numQuestions = 50;
 
-        // Set up a fake recipe and wrap the database in RawData.
-        $recipe = array(
-            'populations' => array(array('number' => $numEntities)),
-            'questions' => $numQuestions,
-        );
+        // Raw data bucket.
         $rawData = new RawData($this->pathToDatabase);
 
-        // Every time we populate, total should increase by $numEntities.
+        // Try to build broken recipes.
+        // 1. With no questions.
+        $recipeNoQuestions = array(
+            'populations' => array(
+                array('tier' => 1, 'number' => $numTier1),
+            ),
+        );
+        try {
+            $rawData->populate($recipeNoQuestions);
+            $this->fail("Could build recipe with no questions.");
+        }
+        catch (DatasetIntegrityException $e) {}
+        // 2. With no populations.
+        $recipeNoPopulations = array(
+            'questions' => $numQuestions,
+        );
+        try {
+            $rawData->populate($recipeNoPopulations);
+            $this->fail("Could build recipe with no populations.");
+        }
+        catch (DatasetIntegrityException $e) {}
+        // 3. With uncontiguous tiers.
+        $recipeBrokenTiers = array(
+            'populations' => array(
+                array('tier' => 2, 'number' => $numTier2),
+            ),
+            'questions' => $numQuestions,
+        );
+        try {
+            $rawData->populate($recipeBrokenTiers);
+            $this->fail("Could build recipe with broken tiers.");
+        }
+        catch (DatasetIntegrityException $e) {}
+
+        // Set up a good recipe and wrap the database in RawData.
+        $recipe = array(
+            'populations' => array(
+                array('tier' => 1, 'number' => $numTier1),
+                array('tier' => 2, 'number' => $numTier2),
+            ),
+            'questions' => $numQuestions,
+        );
+
+
+        // Every time we populate, total should increase by two numbers.
         $rawData->populate($recipe);
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and questions.
-        $this->assertEquals($numEntities, $summary['entities']['count']);
+        $this->assertEquals($numTier1 + $numTier2, $summary['entities']['count']);
         $this->assertEquals($numQuestions, $summary['questions']['count']);
 
         // Populate a second time.
@@ -85,7 +128,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $summary = $rawData->getSummary();
 
         // Check overall counts of entities and questions.
-        $this->assertEquals($numEntities * 2, $summary['entities']['count']);
+        $this->assertEquals(($numTier1 + $numTier2) * 2, $summary['entities']['count']);
         $this->assertEquals($numQuestions * 2, $summary['questions']['count']);
 
         // Check we have unique names.
