@@ -86,7 +86,8 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         // Ensure some data in SQLite database.
         $this->assertEquals(
             $dataset["database"]["entities"]["count"],
-            $dataset["recipe"]["populations"][0]["number"]
+            $dataset["recipe"]["populations"][0]["number"] +
+            $dataset["recipe"]["populations"][1]["number"]
         );
     }
 
