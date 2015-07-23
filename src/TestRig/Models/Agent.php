@@ -24,30 +24,42 @@ class Agent extends Entity
      * but we do need to be able to drop back to no filters so we can
      * still parse old databases.
      *
-     * @param array $filters
-     *   Not yet used.
+     * @param string $path
+     *   Path to SQLite file.
+     * @param string $filters
+     *   WHERE fragment to go after "WHERE ... AND "
      * @return Agent
      */
-    public static function pickRandom($path, $filters = array())
+    public static function pickRandom($path, $filters = null)
     {
         $conn = Database::getConn($path);
+        if ($filters === null) {
+            $filters = "1 = 1";
+        }
+
         // Getting a random row from a SQLite table is a hack!
-        $randomID = $conn->querySingle("SELECT id FROM entity WHERE _ROWID_ >= (abs(random()) % (SELECT max(_ROWID_) FROM entity)) LIMIT 1;");
+        $randomID = $conn->querySingle("SELECT id FROM entity WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+        // Now we're putting filters in, we could end up with no suitable candidate.
+        if (!$randomID) {
+            return null;
+        }
         return new Agent($path, $randomID);
     }
 
     /**
-     * Pick another agent and ask them the question.
+     * Pick another valid agent to ask the question.
      *
      * Questions can be commenced by calling this directly on an agent.
      *
      * @param Log $log
-     *   Log for the entire question chain.
+     *   Log for the entire question chain. This could include filters e.g.
+     *   all asked IDs so far, so we don't re-ask the same agent.
+     * @return mixed
+     *   If a to-ask is found, return Agent object; otherwise null.
      */
-    public function pickAndAsk(Log $log)
+    public function pickToAsk(Log $log)
     {
-        $toAsk = Agent::pickRandom($this->path);
-        $toAsk->respondTo($this, $log);
+        return Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1));
     }
 
     /**
@@ -57,8 +69,12 @@ class Agent extends Entity
     {
         $probability = $this->data['probability_answer'];
 
+        // Now we have tiers, we have to check if we're the top tier or not.
+        // If we don't get an askee, we're top tier!
+        $toAsk = $this->pickToAsk($log);
+
         // Answer directly and terminate chain....
-        if (Maths::evenlyRandomZeroOne() <= $probability) {
+        if (Maths::evenlyRandomZeroOne() <= $probability || $toAsk === null) {
             $log->logInteraction(
                 $from->getID(),
                 $this->getID(),
@@ -66,7 +82,7 @@ class Agent extends Entity
                 Generate::getTime($this->data['mean_answer_time'])
             );
         }
-        // ... Or acknowledge, wait to route, then pick a new agent to ask.
+        // ... Or acknowledge, wait routing time, then get the to-ask to respond.
         else {
             $log->logInteraction(
                 $from->getID(),
@@ -77,7 +93,7 @@ class Agent extends Entity
                 Generate::getTime($this->data['mean_routing_time'])
             );
 
-            $this->pickAndAsk($log);
+            $toAsk->respondTo($this, $log);
         }
     }
 }

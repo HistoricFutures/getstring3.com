@@ -152,12 +152,23 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testGenerateAsks()
     {
         // Create a few new entities.
-        for ($i = 0; $i < 5; $i++) {
-            new Entity($this->pathToDatabase);
+        for ($i = 1; $i <= 5; $i++) {
+            new Entity($this->pathToDatabase, null, array("tier" => $i));
         }
         // Create a new question chain.
         $this->model->generateAsks();
+        $asks = $this->model->getAsks();
 
-        $this->assertNotEmpty($this->model->getAsks());
+        // Ensure we have at least one ask.
+        $this->assertNotEmpty($asks);
+
+        // Ensure that asks never go backwards in terms of tiers.
+        // For five linear entities that means always forwards.
+        $tier = 1;
+        foreach ($asks as $ask) {
+            $entity = new Entity($this->pathToDatabase, $ask['entity_from']);
+            $this->assertEquals($tier, $entity->data['tier'], "Expected tier $tier; got tier {$entity->data['tier']}");
+            $tier++;
+        }
     }
 }
