@@ -11,4 +11,10 @@ populations:
     mean_answer_time: 21
     mean_routing_time: 28
     probability_answer: 0.7
+  - tier: 3
+    number: 10
+    mean_ack_time: 3
+    mean_answer_time: 9
+    mean_routing_time: 12
+    probability_answer: 0.7
 questions: 50
