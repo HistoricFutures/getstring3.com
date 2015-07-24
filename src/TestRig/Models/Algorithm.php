@@ -45,10 +45,19 @@ class Algorithm extends AbstractFolderManager
      */
     public function read($dir)
     {
+        $fullPath = $this->fullPath($dir);
+
+        // Get algorithm as raw text.
         $metadata['raw'] = $this->parseFileContents(
-            $this->fullPath($dir),
+            $fullPath,
             array("algorithm" => "algorithm")
         );
+
+        // Implicit file format in extension.
+        foreach (glob("$fullPath/algorithm.*") as $file) {
+            $fileInfo = pathinfo($file);
+            $metadata['format'] = $fileInfo['extension'];
+        }
 
         return $metadata;
     }
