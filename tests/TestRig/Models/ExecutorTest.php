@@ -44,7 +44,6 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         // Create an algorithm and a fake dataset.
         $algorithmDir = $this->createWithMock("php", '<' . '?php echo $argv[1];');
         $datasetDir = "/tmp/for-algorithms";
-        Filesystem::removeDirectory($datasetDir);
         mkdir($datasetDir);
 
         // Run algorithm and test results.
@@ -53,6 +52,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $results['exitCode']);
         $this->assertEquals($datasetDir, $results['stdout']);
         $this->assertEquals("", $results['stderr']);
+
+        Filesystem::removeDirectory($datasetDir);
     }
 
     /**
