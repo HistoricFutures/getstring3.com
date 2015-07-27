@@ -60,11 +60,20 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: TestRig\Models\Agent::pickAndAsk().
+     * Test: TestRig\Models\Agent::pickToAsk().
      */
-    public function testPickAndAsk()
+    public function testPickToAsk()
     {
-        $this->agent->pickAndAsk($this->log);
+        // With all agents in default tier=1, nobody to ask.
+        $toAsk = $this->agent->pickToAsk($this->log);
+        $this->assertNull($toAsk);
+        // Add a tier=2 agent: this will be our only to-ask candidate!
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $toAsk = $this->agent->pickToAsk($this->log);
+        $this->assertEquals($tier2Agent->getID(), $toAsk->getID());
+
+        $toAsk->respondTo($this->agent, $this->log);
+
         $logSoFar = $this->log->getLog();
 
         // Second log item should always be tied to the first by agent ID.
@@ -82,6 +91,9 @@ class AgentTest extends \PHPUnit_Framework_TestCase
      */
     public function testRespondTo()
     {
+        // Since we added tiers, we need a tier 2 agent for routing to happen.
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+
         $toAsk = new Agent($this->pathToDatabase);
         $toAsk->respondTo($this->agent, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
@@ -91,17 +103,17 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($first['from'], $this->agent->getID());
         $this->assertEquals($first['to'], $toAsk->getID());
 
-        // Re-ask with an agent with zero chance of re-routing.
-        $toAsk->data['probability_answer'] = 1;
+        // Re-ask with an agent with zero chance of acknowledging.
+        $toAsk->data['probability_no_ack'] = 1;
         $newLog = new Log();
         $toAsk->respondTo($this->agent, $newLog);
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
-        $lastItem = array_pop($logItems);
-        $this->assertArrayHasKey('answer', $lastItem);
+        $this->assertArrayNotHasKey('ack', $logItems[0]);
+        $this->assertArrayNotHasKey('ack', $logItems[0]);
 
-        // Re-ask with an agent with 1 chance of re-routing.
-        $toAsk->data['probability_answer'] = 0;
+        // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
+        $toAsk->data['probability_no_ack'] = 0;
         $newLog = new Log();
         $toAsk->respondTo($this->agent, $newLog);
         $logItems = $newLog->getLog();

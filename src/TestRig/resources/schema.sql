@@ -1,12 +1,17 @@
+-- @file
+-- Schema for all datasets.
 CREATE TABLE entity (
   id INTEGER PRIMARY KEY,
-  name VARCHAR(64),
+  name VARCHAR(64) NOT NULL,
+
   -- Three times in the Raw Responsive Data table.
   mean_ack_time INTEGER,
   mean_answer_time INTEGER,
   mean_routing_time INTEGER,
-  -- The probability we terminate the chain here.
-  probability_answer REAL
+
+  -- Tiers and internal structure.
+  tier INTEGER,
+  probability_no_ack REAL
 );
 -- An "empty" question table makes our id-based ORM work more easily.
 CREATE TABLE question (
@@ -17,7 +22,7 @@ CREATE TABLE ask (
   question INTEGER NOT NULL,
   entity_from INTEGER NOT NULL,
   entity_to INTEGER NOT NULL,
-  time_start INT,
+  time_start INT NOT NULL,
   time_ack INT,
   time_answer INT,
 

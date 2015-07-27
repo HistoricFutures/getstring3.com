@@ -84,10 +84,11 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey("questions", $dataset["recipe"]);
 
         // Ensure some data in SQLite database.
-        $this->assertEquals(
-            $dataset["database"]["entities"]["count"],
-            $dataset["recipe"]["populations"][0]["number"]
-        );
+        $expected = 0;
+        foreach ($dataset['recipe']['populations'] as $population) {
+            $expected += $population["number"];
+        }
+        $this->assertEquals($expected, $dataset["database"]["entities"]["count"]);
     }
 
     /**
@@ -138,7 +139,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     {
         $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
         $rawData = self::$model->readRawData($datasetDir);
-        $this->assertEquals(count($rawData['entity']), 20);
+        $this->assertEquals(count($rawData['entity']), 30);
     }
 
     /**

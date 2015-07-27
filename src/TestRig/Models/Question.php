@@ -98,8 +98,10 @@ class Question extends AbstractDBObject
     {
         // Generate a log from the agent(s).
         $log = new Log();
-        $initiator = Agent::pickRandom($this->path);
-        $initiator->pickAndAsk($log);
+        // Always start at tier=1.
+        $initiator = Agent::pickRandom($this->path, "tier = 1");
+        // Get a valid to-ask, and tell them to respond to our initiator.
+        $initiator->pickToAsk($log)->respondTo($initiator, $log);
 
         // Convert the log into the ask format.
         foreach ($log->getLog() as $logItem) {
