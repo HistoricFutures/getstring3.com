@@ -4,6 +4,7 @@ populations:
     mean_ack_time: 5
     mean_answer_time: 15
     mean_routing_time: 20
+    mean_extra_suppliers: 3
   - tier: 2
     number: 10
     mean_ack_time: 7
