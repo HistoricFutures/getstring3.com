@@ -64,6 +64,5 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $return);
         $this->assertEquals('', $stderr);
         $this->assertEquals('/bin/sh', trim($stdout));
-
     }
 }
