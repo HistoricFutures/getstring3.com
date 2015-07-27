@@ -88,9 +88,9 @@ abstract class AbstractFolderManager
     }
 
     /**
-     * Protected: return full path to a managed folder.
+     * Return full path to a managed folder.
      */
-    protected function fullPath($dir)
+    public function fullPath($dir)
     {
         return $this->rootDir . "/$dir";
     }

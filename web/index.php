@@ -28,15 +28,18 @@ $app->register(new Silex\Provider\FormServiceProvider());
 
 // Routing.
 $routes = array(
-    array('/',            'get',  'TestRig\\Controllers\\IndexController::get'),
-    array('/data',        'get',  'TestRig\\Controllers\\DataController::index'),
-    array('/data/new',    'match', 'TestRig\\Controllers\\DataController::create'),
-    array('/data/{path}', 'get',  'TestRig\\Controllers\\DataController::read'),
-    array('/data/{path}/delete', 'match',  'TestRig\\Controllers\\DataController::delete'),
-    array('/algo',        'get',  'TestRig\\Controllers\\AlgorithmController::index'),
-    array('/algo/new',    'match', 'TestRig\\Controllers\\AlgorithmController::create'),
-    array('/algo/{path}', 'get',  'TestRig\\Controllers\\AlgorithmController::read'),
-    array('/algo/{path}/delete', 'match',  'TestRig\\Controllers\\AlgorithmController::delete'),
+    array('/', 'get', 'TestRig\\Controllers\\IndexController::get'),
+
+    array('/data', 'get', 'TestRig\\Controllers\\DataController::index'),
+    array('/data/new', 'match', 'TestRig\\Controllers\\DataController::create'),
+    array('/data/{path}', 'get', 'TestRig\\Controllers\\DataController::read'),
+    array('/data/{path}/delete', 'match', 'TestRig\\Controllers\\DataController::delete'),
+
+    array('/algo', 'get', 'TestRig\\Controllers\\AlgorithmController::index'),
+    array('/algo/new', 'match', 'TestRig\\Controllers\\AlgorithmController::create'),
+    array('/algo/{path}', 'get', 'TestRig\\Controllers\\AlgorithmController::read'),
+    array('/algo/{path}/run', 'match', 'TestRig\\Controllers\\AlgorithmController::run'),
+    array('/algo/{path}/delete', 'match', 'TestRig\\Controllers\\AlgorithmController::delete'),
 );
 foreach ($routes as $route) {
     $app->{$route[1]}($route[0], $route[2]);

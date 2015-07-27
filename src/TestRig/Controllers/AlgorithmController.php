@@ -10,6 +10,8 @@ namespace TestRig\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use TestRig\Models\Algorithm;
+use TestRig\Models\Dataset;
+use TestRig\Models\Executor;
 
 /**
  * @class
@@ -126,6 +128,74 @@ class AlgorithmController
                 "items" => $this->model->index(),
                 "layout" => "algorithms.html",
                 "link_prefix" => "algo",
+            )
+        );
+    }
+
+    /**
+     * Handles GET/POST method: run algorithm against a dataset.
+     */
+    public function run(Request $request, Application $app)
+    {
+        // Initialize incoming data.
+        $path = $request->get("path");
+
+        // Get list of datasets for dropdown.
+        $dataset = new Dataset();
+        $datasetDropdown = array();
+        foreach ($dataset->index() as $datasetDir) {
+            $datasetDropdown[$datasetDir] = $datasetDir;
+        }
+
+        // Create a form with just a submit button.
+        $form = $app['form.factory']->createBuilder('form')
+            ->add('dataset', 'choice', array(
+                'label' => 'Choose a dataset',
+                'required' => true,
+                'choices' => $datasetDropdown,
+            ))
+            ->getForm();
+        $form->handleRequest($request);
+
+        // If form is submitted and (hence) valid, execute this algorithm.
+        if ($form->isValid()) {
+            $executor = new Executor();
+            $executor->read($path);
+
+            $response = $executor->run(
+                $path,
+                $dataset->fullPath($form['dataset']->getData())
+            );
+
+            if ($response['exitCode'] === 0) {
+                $stream = function () use ($response) {
+                    echo $response['stdout'];
+                };
+
+                return $app->stream(
+                    $stream,
+                    200,
+                    array(
+                        'Content-Type' => 'text/plain',
+                        'Content-length' => mb_strlen($response['stdout'], '8bit'),
+                        'Content-Disposition' => 'attachment; filename="output.txt"',
+                    )
+                );
+            }
+
+            // Otherwise, any errors, abort request and dump stdout/stderr.
+            $app->abort(500, "Execution errors: " . var_export($response, TRUE));
+        }
+
+        return $app['twig']->render(
+            "run.html",
+            array(
+                "title" => "run algorithm",
+                "form" => $form->createView(),
+                "path" => $path,
+                "layout" => "algorithms.html",
+                "link_prefix" => "algo",
+                "submit_text" => "Run algorithm",
             )
         );
     }
