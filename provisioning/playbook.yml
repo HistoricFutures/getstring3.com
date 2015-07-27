@@ -1,0 +1,34 @@
+# @file
+# Default Ansible playbook.
+
+---
+- hosts: all
+  sudo: true
+  tasks:
+    # Core LAMP stack.
+    - name: update apt cache
+      apt: update_cache=yes
+    - name: install apache
+      apt: name=apache2 state=present
+    - name: install mysql
+      apt: name=mysql-server state=present
+    - name: install php
+      apt: name=php5 state=present
+
+    # Extras
+    - name: install php-sqlite
+      apt: name=php5-sqlite state=present
+      notify:
+        - restart apache
+    - name: enable mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache
+    - name: replacement default apache conf
+      copy: src=000-default.conf dest=/etc/apache2/sites-available/000-default.conf owner=root mode=0644
+      notify:
+        - restart apache
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
