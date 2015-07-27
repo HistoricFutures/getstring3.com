@@ -65,14 +65,14 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     public function testPickToAsk()
     {
         // With all agents in default tier=1, nobody to ask.
-        $toAsk = $this->agent->pickToAsk($this->log);
-        $this->assertNull($toAsk);
+        $toAsks = $this->agent->pickToAsks($this->log);
+        $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
         $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
-        $toAsk = $this->agent->pickToAsk($this->log);
-        $this->assertEquals($tier2Agent->getID(), $toAsk->getID());
+        $toAsks = $this->agent->pickToAsks($this->log);
+        $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
 
-        $toAsk->respondTo($this->agent, $this->log);
+        $toAsks[0]->respondTo($this->agent, $this->log);
 
         $logSoFar = $this->log->getLog();
 
@@ -84,6 +84,11 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         else {
             $this->assertNotEmpty($logSoFar);
         }
+
+        // Increase our number of suppliers and expect
+        // more agents to come out of pickToAsk() (even if repeat for now.)
+        $this->agent->data['mean_extra_suppliers'] = 20;
+        $this->assertGreaterThan(5, count($this->agent->pickToAsks($this->log)));
     }
 
     /**

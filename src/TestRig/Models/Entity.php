@@ -65,6 +65,7 @@ class Entity extends AbstractDBObject
             case 'mean_extra_suppliers':
                 // Cut-off at four times the mean i.e. 1-9 suppliers (0-8 extra) peaks at 1 + (9-1)/4 = 3.
                 $this->data[$argumentName] = Generate::getNumber($argumentData, $argumentData * 4);
+                break;
 
             // Probabilities: 0, 1 or randomized.
             case 'probability_no_ack':
