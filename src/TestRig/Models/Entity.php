@@ -23,7 +23,7 @@ class Entity extends AbstractDBObject
         'mean_answer_time' => 5,
         'mean_routing_time' => 5,
         'tier' => 1,
-        'probability_answer' => 0.5,
+        'probability_no_ack' => 0,
     );
 
     /**
@@ -53,14 +53,24 @@ class Entity extends AbstractDBObject
                 $this->data[$argumentName] = $argumentData;
                 break;
 
+            // Times: randomized.
             case "mean_ack_time":
             case "mean_answer_time":
             case "mean_routing_time":
                 $this->data[$argumentName] = Generate::getTime($argumentData);
                 break;
 
-            case "probability_answer":
-                $this->data[$argumentName] = Generate::getProbability($argumentData);
+            // Probabilities: 0, 1 or randomized.
+            case "probability_no_ack":
+                switch ($argumentData * 1) {
+                case 0:
+                case 1:
+                    $this->data[$argumentName] = $argumentData;
+                    break;
+
+                default:
+                    $this->data[$argumentName] = Generate::getProbability($argumentData);
+                }
             }
         }
 

@@ -53,7 +53,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     {
         $summary = (new RawData($this->pathToDatabase))->getSummary();
         $this->assertArrayHasKey('entities', $summary);
-        foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_answer') as $key) {
+        foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack') as $key) {
             $this->assertArrayHasKey($key, $summary['entities']);
         }
     }
@@ -132,8 +132,8 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         // Check we have unique names.
         $entities = $rawData->getEntities();
         $this->assertNotEquals($entities[1]['name'], $entities[2]['name']);
-        // Check we have columns for mean response time, reask probability etc.
-        foreach (array('mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_answer') as $key) {
+        // Check we have columns for mean response time, no-ack probability etc.
+        foreach (array('mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack') as $key) {
             $this->assertArrayHasKey($key, $entities[1]);
             $this->assertNotNull($entities[1][$key]);
         }

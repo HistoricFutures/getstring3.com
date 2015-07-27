@@ -4,17 +4,15 @@ populations:
     mean_ack_time: 5
     mean_answer_time: 15
     mean_routing_time: 20
-    probability_answer: 0.7
   - tier: 2
     number: 10
     mean_ack_time: 7
     mean_answer_time: 21
     mean_routing_time: 28
-    probability_answer: 0.7
   - tier: 3
     number: 10
     mean_ack_time: 3
     mean_answer_time: 9
     mean_routing_time: 12
-    probability_answer: 0.7
+    probability_no_ack: 0.1
 questions: 50

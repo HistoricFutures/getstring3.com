@@ -9,9 +9,9 @@ CREATE TABLE entity (
   mean_answer_time INTEGER,
   mean_routing_time INTEGER,
 
-  -- Tiers and internal structure: probability_answer will become redundant.
+  -- Tiers and internal structure.
   tier INTEGER,
-  probability_answer REAL
+  probability_no_ack REAL
 );
 -- An "empty" question table makes our id-based ORM work more easily.
 CREATE TABLE question (
@@ -22,7 +22,7 @@ CREATE TABLE ask (
   question INTEGER NOT NULL,
   entity_from INTEGER NOT NULL,
   entity_to INTEGER NOT NULL,
-  time_start INT,
+  time_start INT NOT NULL,
   time_ack INT,
   time_answer INT,
 

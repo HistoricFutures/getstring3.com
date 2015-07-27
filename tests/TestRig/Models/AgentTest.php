@@ -103,17 +103,17 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($first['from'], $this->agent->getID());
         $this->assertEquals($first['to'], $toAsk->getID());
 
-        // Re-ask with an agent with zero chance of re-routing.
-        $toAsk->data['probability_answer'] = 1;
+        // Re-ask with an agent with zero chance of acknowledging.
+        $toAsk->data['probability_no_ack'] = 1;
         $newLog = new Log();
         $toAsk->respondTo($this->agent, $newLog);
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
-        $lastItem = array_pop($logItems);
-        $this->assertArrayHasKey('answer', $lastItem);
+        $this->assertArrayNotHasKey('ack', $logItems[0]);
+        $this->assertArrayNotHasKey('ack', $logItems[0]);
 
-        // Re-ask with an agent with 1 chance of re-routing.
-        $toAsk->data['probability_answer'] = 0;
+        // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
+        $toAsk->data['probability_no_ack'] = 0;
         $newLog = new Log();
         $toAsk->respondTo($this->agent, $newLog);
         $logItems = $newLog->getLog();

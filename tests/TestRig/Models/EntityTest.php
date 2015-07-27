@@ -50,7 +50,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($this->model->data['mean_answer_time']);
         $this->assertNotNull($this->model->data['mean_routing_time']);
         $this->assertNotNull($this->model->data['tier']);
-        $this->assertNotNull($this->model->data['probability_answer']);
+        $this->assertNotNull($this->model->data['probability_no_ack']);
     }
 
     /**

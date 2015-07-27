@@ -67,14 +67,21 @@ class Agent extends Entity
      */
     public function respondTo(Agent $from, Log $log)
     {
-        $probability = $this->data['probability_answer'];
+        $probability = $this->data['probability_no_ack'];
 
         // Now we have tiers, we have to check if we're the top tier or not.
         // If we don't get an askee, we're top tier!
         $toAsk = $this->pickToAsk($log);
 
-        // Answer directly and terminate chain....
-        if (Maths::evenlyRandomZeroOne() <= $probability || $toAsk === null) {
+        // Melters don't acknowledge or re-route; just respond NULL.
+        if (Maths::evenlyRandomZeroOne() <= $probability) {
+            $log->logInteraction(
+                $from->getID(),
+                $this->getID()
+            );
+        }
+        // Final tier have no $toAsk candidate: ack and answer.
+        elseif ($toAsk === null) {
             $log->logInteraction(
                 $from->getID(),
                 $this->getID(),
@@ -82,7 +89,7 @@ class Agent extends Entity
                 Generate::getTime($this->data['mean_answer_time'])
             );
         }
-        // ... Or acknowledge, wait routing time, then get the to-ask to respond.
+        // Otherwise ack, wait routing time, then route to to-ask in turn.
         else {
             $log->logInteraction(
                 $from->getID(),
