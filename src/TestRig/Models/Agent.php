@@ -91,16 +91,37 @@ class Agent extends Entity
         }
         // Otherwise ack, wait routing time, then route to to-ask in turn.
         else {
-            $log->logInteraction(
-                $from->getID(),
-                $this->getID(),
-                Generate::getTime($this->data['mean_ack_time'])
-            );
-            $log->timePasses(
-                Generate::getTime($this->data['mean_routing_time'])
-            );
+            // We might have to ask more than one supplier.
+            $toAsks = array($toAsk);
+            if ($this->data['mean_extra_suppliers']) {
+                // Work out how many for this actual chain.
+                $numSuppliers = Generate::getNumber(
+                    $this->data['mean_extra_suppliers'],
+                    $this->data['mean_extra_suppliers'] * 4
+                );
+                for ($i = 1; $i <= $numSuppliers; $i++) {
+                    $toAsks[] = $this->pickToAsk($log);
+                }
+            }
 
-            $toAsk->respondTo($this, $log);
+            // Rather than generate times, travel back in time, each time.
+            // Otherwise we'd have to take into account routing times etc.
+            $tZero = $log->timePasses();
+            foreach ($toAsks as $toAsk) {
+                // Rewind time to T-zero, then kick off bifurcated route.
+                $log->timeTravelTo($tZero);
+
+                $log->logInteraction(
+                    $from->getID(),
+                    $this->getID(),
+                    Generate::getTime($this->data['mean_ack_time'])
+                );
+                $log->timePasses(
+                    Generate::getTime($this->data['mean_routing_time'])
+                );
+
+                $toAsk->respondTo($this, $log);
+            }
         }
     }
 }

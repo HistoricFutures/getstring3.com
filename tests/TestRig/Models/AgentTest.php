@@ -123,20 +123,20 @@ class AgentTest extends \PHPUnit_Framework_TestCase
 
         // Re-ask with extra suppliers. Run ten times and average number
         // of suppliers toAsk picks must be greater than 10.
-        $toAsk->data['mean_extra_suppliers'] = 5;
+        $toAsk->data['mean_extra_suppliers'] = 2;
 
         $countSuppliers = 0;
         for ($i = 1; $i <= 10; $i++) {
             $newLog = new Log();
             $toAsk->respondTo($this->agent, $newLog);
             $logItems = $newLog->getLog();
-            // First log item will be agent->toAsk.
-            array_shift($logItems);
 
             // Count the ones from toAsk to other supplier(s).
-            while ($logItems && $logItems[0]['from'] === $toAsk->getID()) {
-                $countSuppliers++;
-                array_shift($logItems);
+            // Threading / time travel means they'll be in a funny order.
+            foreach ($logItems as $logItem) {
+                if ($logItem['from'] === $toAsk->getID()) {
+                    $countSuppliers++;
+                }
             }
         }
         $this->assertGreaterThan(10, $countSuppliers);

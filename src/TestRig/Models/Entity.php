@@ -22,6 +22,7 @@ class Entity extends AbstractDBObject
         'mean_ack_time' => 5,
         'mean_answer_time' => 5,
         'mean_routing_time' => 5,
+        'mean_extra_suppliers' => 0,
         'tier' => 1,
         'probability_no_ack' => 0,
     );
@@ -49,19 +50,24 @@ class Entity extends AbstractDBObject
 
             // Different callbacks based on argumentName.
             switch ($argumentName) {
-            case "tier":
+            case 'tier':
                 $this->data[$argumentName] = $argumentData;
                 break;
 
             // Times: randomized.
-            case "mean_ack_time":
-            case "mean_answer_time":
-            case "mean_routing_time":
+            case 'mean_ack_time':
+            case 'mean_answer_time':
+            case 'mean_routing_time':
                 $this->data[$argumentName] = Generate::getTime($argumentData);
                 break;
 
+            // Positive integers: randomized.
+            case 'mean_extra_suppliers':
+                // Cut-off at four times the mean i.e. 1-9 suppliers (0-8 extra) peaks at 1 + (9-1)/4 = 3.
+                $this->data[$argumentName] = Generate::getNumber($argumentData, $argumentData * 4);
+
             // Probabilities: 0, 1 or randomized.
-            case "probability_no_ack":
+            case 'probability_no_ack':
                 switch ($argumentData * 1) {
                 case 0:
                 case 1:

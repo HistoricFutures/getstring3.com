@@ -41,6 +41,7 @@ class RawData
         $meanAckTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_ack_time');
         $meanAnswerTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_answer_time');
         $meanRoutingTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_routing_time');
+        $meanExtraSuppliers = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_extra_suppliers');
         $probabilityNoAck = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_ack');
 
         $questionsCount = Database::getTableCount($this->path, 'question');
@@ -52,6 +53,7 @@ class RawData
                 'mean_ack_time' => $meanAckTime,
                 'mean_answer_time' => $meanAnswerTime,
                 'mean_routing_time' => $meanRoutingTime,
+                'mean_extra_suppliers' => $meanExtraSuppliers,
                 'probability_no_ack' => $probabilityNoAck,
             ),
             'questions' => array(

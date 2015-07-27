@@ -54,12 +54,12 @@ class Log
     /**
      * Increment internal clock.
      *
-     * @param float $timeDifference
+     * @param float $timeDifference = 0
      *   Time difference by which to increment internal clock.
      * @return float
      *   New internal time.
      */
-    public function timePasses($timeDifference)
+    public function timePasses($timeDifference = 0)
     {
         return ($this->timeSoFar += $timeDifference);
     }
@@ -73,5 +73,16 @@ class Log
     public function getLog()
     {
         return $this->log;
+    }
+
+    /**
+     * Travel back in time, to simulate parallel bifurcating routes.
+     *
+     * @param float $time
+     *    Internal clock time to travel back to.
+     */
+    public function timeTravelTo($time)
+    {
+        $this->timeSoFar = $time;
     }
 }
