@@ -184,7 +184,7 @@ class AlgorithmController
             }
 
             // Otherwise, any errors, abort request and dump stdout/stderr.
-            $app->abort(500, "Execution errors: " . var_export($response, TRUE));
+            $app->abort(500, "Execution errors: " . var_export($response, true));
         }
 
         return $app['twig']->render(
