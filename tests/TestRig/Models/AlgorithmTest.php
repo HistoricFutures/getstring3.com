@@ -69,6 +69,16 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         // Raw file present.
         $this->assertArrayHasKey("raw", $algorithm);
         $this->assertArrayHasKey("algorithm", $algorithm['raw']);
+
+        $this->assertArrayHasKey("format", $algorithm);
+        $this->assertEquals("php", $algorithm["format"]);
+
+        // Create a Python algorithm.
+        $dir = $this->createWithMock("py");
+
+        // Read the manifest.
+        $algorithm = self::$model->read($dir);
+        $this->assertEquals("py", $algorithm["format"]);
     }
 
     /**
