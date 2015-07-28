@@ -2,3 +2,5 @@ vendor/
 .env
 datasets/
 algorithms/
+.DS_Store
+algorithm/data
