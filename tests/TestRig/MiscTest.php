@@ -5,6 +5,8 @@
  * Test: aspects of codebase not covered by a single file.
  */
 
+namespace Tests;
+
 /**
  * @class
  * Test: aspects of codebase not covered by a single file.

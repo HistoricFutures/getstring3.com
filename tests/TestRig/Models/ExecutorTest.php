@@ -5,21 +5,24 @@
  * Test: TestRig\Models\Executor.
  */
 
-use Symfony\Component\Yaml\Dumper;
-use TestRig\Models\Dataset;
-use TestRig\Models\Executor;
+namespace Tests\Models;
+
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Executor.
  */
-class ExecutorTest extends \PHPUnit_Framework_TestCase
+class ExecutorTest extends AbstractTestCase
 {
     // To be replaced with new Executor() during setUpBeforeClass.
     public static $model = null;
     // Root directory for folders: we keep track too.
     private static $rootDir = null;
+
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Executor';
 
     /**
      * Set up before class: create root folder and Executor() handler class.
@@ -28,7 +31,6 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         self::$rootDir = getenv('DIR_ALGORITHMS');
         mkdir(self::$rootDir);
-        self::$model = new Executor();
     }
 
     /**
@@ -47,7 +49,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         mkdir($datasetDir);
 
         // Run algorithm and test results.
-        $results = self::$model->run($algorithmDir, $datasetDir);
+        $results = $this->testable->run($algorithmDir, $datasetDir);
 
         $this->assertEquals(0, $results['exitCode']);
         $this->assertEquals($datasetDir, $results['stdout']);
@@ -59,7 +61,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper: create an algorithm using mocking of UploadedFile.
      */
-    private function createWithMock($format = 'php', $text = null)
+    protected function createWithMock($format = 'php', $text = null)
     {
         // Mock up an UploadedFile, disabling its constructor.
         $mockBuilder = $this->getMockBuilder(
@@ -77,7 +79,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         // Squirrel away the bop data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_mock_storage = isset($text) ? $text : '<' . '?php echo "foo"; ';
-        return self::$model->create($format, $mockUploadedFile);
+        return $this->testable->create($format, $mockUploadedFile);
     }
 
     /**

@@ -22,16 +22,18 @@ class AgentTest extends AbstractTestCase
     // Log object to pass into agent go calls.
     private $log = null;
 
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Agent';
+    // And does it take the database path as __construct() argument?
+    protected $testableClassNeedsDatabase = true;
+
     /**
      * Set up.
      */
     public function setUp()
     {
         parent::setUp();
-
-        $this->agent = new Agent($this->pathToDatabase);
         $this->log = new Log();
-
         // Have 10 agents in total.
         for ($i = 1; $i < 10; $i++) {
             new Agent($this->pathToDatabase);
@@ -58,14 +60,14 @@ class AgentTest extends AbstractTestCase
     public function testPickToAsk()
     {
         // With all agents in default tier=1, nobody to ask.
-        $toAsks = $this->agent->pickToAsks($this->log);
+        $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
         $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
-        $toAsks = $this->agent->pickToAsks($this->log);
+        $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
 
-        $toAsks[0]->respondTo($this->agent, $this->log);
+        $toAsks[0]->respondTo($this->testable, $this->log);
 
         $logSoFar = $this->log->getLog();
 
@@ -80,8 +82,8 @@ class AgentTest extends AbstractTestCase
 
         // Increase our number of suppliers and expect
         // more agents to come out of pickToAsk() (even if repeat for now.)
-        $this->agent->data['mean_extra_suppliers'] = 20;
-        $this->assertGreaterThan(5, count($this->agent->pickToAsks($this->log)));
+        $this->testable->data['mean_extra_suppliers'] = 20;
+        $this->assertGreaterThan(5, count($this->testable->pickToAsks($this->log)));
     }
 
     /**
@@ -93,18 +95,18 @@ class AgentTest extends AbstractTestCase
         $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
 
         $toAsk = new Agent($this->pathToDatabase);
-        $toAsk->respondTo($this->agent, $this->log);
+        $toAsk->respondTo($this->testable, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
 
         // First log item should be our asker and toAsk.
         $first = array_shift($this->log->getLog());
-        $this->assertEquals($first['from'], $this->agent->getID());
+        $this->assertEquals($first['from'], $this->testable->getID());
         $this->assertEquals($first['to'], $toAsk->getID());
 
         // Re-ask with an agent with zero chance of acknowledging.
         $toAsk->data['probability_no_ack'] = 1;
         $newLog = new Log();
-        $toAsk->respondTo($this->agent, $newLog);
+        $toAsk->respondTo($this->testable, $newLog);
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
         $this->assertArrayNotHasKey('ack', $logItems[0]);
@@ -113,7 +115,7 @@ class AgentTest extends AbstractTestCase
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
         $newLog = new Log();
-        $toAsk->respondTo($this->agent, $newLog);
+        $toAsk->respondTo($this->testable, $newLog);
         $logItems = $newLog->getLog();
         $this->assertGreaterThan(1, count($logItems));
         $lastItem = array_pop($logItems);
@@ -126,7 +128,7 @@ class AgentTest extends AbstractTestCase
         $countSuppliers = 0;
         for ($i = 1; $i <= 10; $i++) {
             $newLog = new Log();
-            $toAsk->respondTo($this->agent, $newLog);
+            $toAsk->respondTo($this->testable, $newLog);
             $logItems = $newLog->getLog();
 
             // Count the ones from toAsk to other supplier(s).

@@ -5,20 +5,25 @@
  * Test: TestRig\Models\Dataset.
  */
 
+namespace Tests\Models;
+
 use Symfony\Component\Yaml\Dumper;
-use TestRig\Models\Dataset;
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Dataset.
  */
-class DatasetTest extends \PHPUnit_Framework_TestCase
+class DatasetTest extends AbstractTestCase
 {
     // To be replaced with new Dataset() during setUpBeforeClass.
     public static $model = null;
     // Directory for datasets: we keep track too.
     private static $dir = null;
+
+    // Do we create a testable object? Needs fully namespaced class.
+    protected $testableClass = 'TestRig\Models\Dataset';
 
     /**
      * Set up before class: create dataset folder and Dataset() handler class.
@@ -27,7 +32,6 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     {
         self::$dir = getenv('DIR_DATASETS');
         mkdir(self::$dir);
-        self::$model = new Dataset();
     }
 
     /**
@@ -64,7 +68,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock($recipe);
 
         // Read the manifest.
-        $dataset = self::$model->read($datasetDir);
+        $dataset = $this->testable->read($datasetDir);
 
         // Assert manifest contents as expected.
         // Raw files both present.
@@ -100,7 +104,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock();
 
         // Now delete.
-        self::$model->delete($datasetDir);
+        $this->testable->delete($datasetDir);
 
         // Assert all files are gone.
         $this->assertFalse(file_exists(self::$dir . "/$datasetDir"));
@@ -116,7 +120,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir2 = $this->createWithMock();
 
         // Obtain an index.
-        $datasets = self::$model->index();
+        $datasets = $this->testable->index();
 
         // Assert our new datasets are found.
         $this->assertContains($datasetDir, $datasets);
@@ -128,7 +132,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      */
     public function testPathToDatabase()
     {
-        $path = self::$model->pathToDatabase("foo");
+        $path = $this->testable->pathToDatabase("foo");
         $this->assertTrue(strpos($path, "foo/dataset.sqlite3") > 0);
     }
 
@@ -138,7 +142,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     public function testReadRawData()
     {
         $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
-        $rawData = self::$model->readRawData($datasetDir);
+        $rawData = $this->testable->readRawData($datasetDir);
         $this->assertEquals(count($rawData['entity']), 30);
 
         // Test population labels.
@@ -180,7 +184,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         // Squirrel away the data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_storage = $recipe;
-        return self::$model->create($mockUploadedFile);
+        return $this->testable->create($mockUploadedFile);
     }
 
     /**

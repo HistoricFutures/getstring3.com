@@ -5,20 +5,25 @@
  * Test: TestRig\Models\Algorithm.
  */
 
+namespace Tests\Models;
+
 use Symfony\Component\Yaml\Dumper;
-use TestRig\Models\Algorithm;
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Algorithm.
  */
-class AlgorithmTest extends \PHPUnit_Framework_TestCase
+class AlgorithmTest extends AbstractTestCase
 {
     // To be replaced with new Algorithm() during setUpBeforeClass.
     public static $model = null;
     // Root directory for folders: we keep track too.
     private static $rootDir = null;
+
+    // Do we create a testable object? Needs fully namespaced class.
+    protected $testableClass = 'TestRig\Models\Algorithm';
 
     /**
      * Set up before class: create root folder and Algorithm() handler class.
@@ -27,7 +32,6 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
     {
         self::$rootDir = getenv('DIR_ALGORITHMS');
         mkdir(self::$rootDir);
-        self::$model = new Algorithm();
     }
 
     /**
@@ -64,7 +68,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         $dir = $this->createWithMock();
 
         // Read the manifest.
-        $algorithm = self::$model->read($dir);
+        $algorithm = $this->testable->read($dir);
         // Assert manifest contents as expected.
         // Raw file present.
         $this->assertArrayHasKey("raw", $algorithm);
@@ -77,7 +81,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         $dir = $this->createWithMock("py");
 
         // Read the manifest.
-        $algorithm = self::$model->read($dir);
+        $algorithm = $this->testable->read($dir);
         $this->assertEquals("py", $algorithm["format"]);
     }
 
@@ -90,7 +94,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         $dir = $this->createWithMock();
 
         // Now delete.
-        self::$model->delete($dir);
+        $this->testable->delete($dir);
 
         // Assert all files are gone.
         $this->assertFalse(file_exists(self::$rootDir . "/$dir"));
@@ -106,7 +110,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         $dir2 = $this->createWithMock();
 
         // Obtain an index.
-        $folders = self::$model->index();
+        $folders = $this->testable->index();
 
         // Assert our new folders are found.
         $this->assertContains($dir, $folders);
@@ -134,7 +138,7 @@ class AlgorithmTest extends \PHPUnit_Framework_TestCase
         // Squirrel away the data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_mock_storage = "<" . "?php echo 'foo'; ";
-        return self::$model->create($format, $mockUploadedFile);
+        return $this->testable->create($format, $mockUploadedFile);
     }
 
     /**
