@@ -65,14 +65,14 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     public function testPickToAsk()
     {
         // With all agents in default tier=1, nobody to ask.
-        $toAsk = $this->agent->pickToAsk($this->log);
-        $this->assertNull($toAsk);
+        $toAsks = $this->agent->pickToAsks($this->log);
+        $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
         $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
-        $toAsk = $this->agent->pickToAsk($this->log);
-        $this->assertEquals($tier2Agent->getID(), $toAsk->getID());
+        $toAsks = $this->agent->pickToAsks($this->log);
+        $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
 
-        $toAsk->respondTo($this->agent, $this->log);
+        $toAsks[0]->respondTo($this->agent, $this->log);
 
         $logSoFar = $this->log->getLog();
 
@@ -84,6 +84,11 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         else {
             $this->assertNotEmpty($logSoFar);
         }
+
+        // Increase our number of suppliers and expect
+        // more agents to come out of pickToAsk() (even if repeat for now.)
+        $this->agent->data['mean_extra_suppliers'] = 20;
+        $this->assertGreaterThan(5, count($this->agent->pickToAsks($this->log)));
     }
 
     /**
@@ -120,5 +125,25 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(1, count($logItems));
         $lastItem = array_pop($logItems);
         $this->assertArrayHasKey('answer', $lastItem);
+
+        // Re-ask with extra suppliers. Run ten times and average number
+        // of suppliers toAsk picks must be greater than 10.
+        $toAsk->data['mean_extra_suppliers'] = 2;
+
+        $countSuppliers = 0;
+        for ($i = 1; $i <= 10; $i++) {
+            $newLog = new Log();
+            $toAsk->respondTo($this->agent, $newLog);
+            $logItems = $newLog->getLog();
+
+            // Count the ones from toAsk to other supplier(s).
+            // Threading / time travel means they'll be in a funny order.
+            foreach ($logItems as $logItem) {
+                if ($logItem['from'] === $toAsk->getID()) {
+                    $countSuppliers++;
+                }
+            }
+        }
+        $this->assertGreaterThan(10, $countSuppliers);
     }
 }

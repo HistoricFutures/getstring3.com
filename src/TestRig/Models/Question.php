@@ -100,8 +100,13 @@ class Question extends AbstractDBObject
         $log = new Log();
         // Always start at tier=1.
         $initiator = Agent::pickRandom($this->path, "tier = 1");
-        // Get a valid to-ask, and tell them to respond to our initiator.
-        $initiator->pickToAsk($log)->respondTo($initiator, $log);
+        // Get valid to-asks, keep asking each one, and rewind time as
+        // per in Agent::respondTo().
+        $tZero = $log->timePasses();
+        foreach ($initiator->pickToAsks($log) as $toAsk) {
+            $log->timeTravelTo($tZero);
+            $toAsk->respondTo($initiator, $log);
+        }
 
         // Convert the log into the ask format.
         foreach ($log->getLog() as $logItem) {

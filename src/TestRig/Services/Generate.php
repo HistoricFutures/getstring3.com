@@ -69,4 +69,30 @@ class Generate
         }
         return Maths::binomialNoiseZeroOne($expectedMean, $stdDev);
     }
+
+
+    /**
+     * Generate a Poissonian integer with mean and upper cutoff.
+     *
+     * Note that the upper cutoff will inevitably shift the resulting mean.
+     *
+     * @param int $mean
+     *   Mean of underlying Poissonian distribution.
+     * @param int $cutoff = 0
+     *   Maximum value (inclusive) that we can return, for finite tail.
+     *   Zero means no cutoff.
+     * @return int
+     *   Random value.
+     */
+    public static function getNumber($mean, $cutoff = 0)
+    {
+        $value = Maths::poissonianNoise($mean);
+
+        // If value is above cutoff, re-try.
+        while ($cutoff && ($value > $cutoff)) {
+            $value = Maths::poissonianNoise($mean);
+        }
+
+        return $value;
+    }
 }

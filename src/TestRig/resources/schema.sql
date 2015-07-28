@@ -9,6 +9,9 @@ CREATE TABLE entity (
   mean_answer_time INTEGER,
   mean_routing_time INTEGER,
 
+  -- Bifurcating questions with extra suppliers.
+  mean_extra_suppliers INTEGER,
+
   -- Tiers and internal structure.
   tier INTEGER,
   probability_no_ack REAL

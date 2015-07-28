@@ -47,19 +47,39 @@ class Agent extends Entity
     }
 
     /**
-     * Pick another valid agent to ask the question.
+     * Pick valid agents to ask the question, including potentially many suppliers.
      *
      * Questions can be commenced by calling this directly on an agent.
      *
      * @param Log $log
      *   Log for the entire question chain. This could include filters e.g.
      *   all asked IDs so far, so we don't re-ask the same agent.
-     * @return mixed
-     *   If a to-ask is found, return Agent object; otherwise null.
+     * @return array
+     *   If to-asks are found, return an array of those Agents.
      */
-    public function pickToAsk(Log $log)
+    public function pickToAsks(Log $log)
     {
-        return Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1));
+        // Try to get one to-ask; if we can't, we know there are none.
+        $toAsks = array(
+            Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1))
+        );
+        if (!$toAsks[0]) {
+            return array();
+        }
+
+        // We might have to ask more than one supplier.
+        if ($this->data['mean_extra_suppliers']) {
+            // Work out how many for this actual chain.
+            $numSuppliers = Generate::getNumber(
+                $this->data['mean_extra_suppliers'],
+                $this->data['mean_extra_suppliers'] * 4
+            );
+            for ($i = 1; $i <= $numSuppliers; $i++) {
+                $toAsks[] = Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1));
+            }
+        }
+
+        return $toAsks;
     }
 
     /**
@@ -71,7 +91,7 @@ class Agent extends Entity
 
         // Now we have tiers, we have to check if we're the top tier or not.
         // If we don't get an askee, we're top tier!
-        $toAsk = $this->pickToAsk($log);
+        $toAsks = $this->pickToAsks($log);
 
         // Melters don't acknowledge or re-route; just respond NULL.
         if (Maths::evenlyRandomZeroOne() <= $probability) {
@@ -81,7 +101,7 @@ class Agent extends Entity
             );
         }
         // Final tier have no $toAsk candidate: ack and answer.
-        elseif ($toAsk === null) {
+        elseif (!$toAsks) {
             $log->logInteraction(
                 $from->getID(),
                 $this->getID(),
@@ -91,16 +111,24 @@ class Agent extends Entity
         }
         // Otherwise ack, wait routing time, then route to to-ask in turn.
         else {
-            $log->logInteraction(
-                $from->getID(),
-                $this->getID(),
-                Generate::getTime($this->data['mean_ack_time'])
-            );
-            $log->timePasses(
-                Generate::getTime($this->data['mean_routing_time'])
-            );
+            // Rather than generate times, travel back in time, each time.
+            // Otherwise we'd have to take into account routing times etc.
+            $tZero = $log->timePasses();
+            foreach ($toAsks as $toAsk) {
+                // Rewind time to T-zero, then kick off bifurcated route.
+                $log->timeTravelTo($tZero);
 
-            $toAsk->respondTo($this, $log);
+                $log->logInteraction(
+                    $from->getID(),
+                    $this->getID(),
+                    Generate::getTime($this->data['mean_ack_time'])
+                );
+                $log->timePasses(
+                    Generate::getTime($this->data['mean_routing_time'])
+                );
+
+                $toAsk->respondTo($this, $log);
+            }
         }
     }
 }

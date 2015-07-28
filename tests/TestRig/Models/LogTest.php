@@ -62,4 +62,21 @@ class LogTest extends \PHPUnit_Framework_TestCase
         // the structure in more depth during testLogInteraction().
         $this->assertTrue(is_array($this->model->getLog()));
     }
+    /**
+     * Test:: TestRig\Models\Log::timeTravelTo().
+     */
+    public function testTimeTravelTo()
+    {
+        $this->model->timeTravelTo(50);
+        $this->assertEquals(50, $this->model->timePasses());
+        $this->model->logInteraction(1, 2);
+        $this->model->timeTravelTo(25);
+        $this->assertEquals(25, $this->model->timePasses());
+        $this->model->logInteraction(1, 2);
+
+        // Ensure logs in the "right" wrong order too!
+        $log = $this->model->getLog();
+        $this->assertEquals(50, $log[0]['start']);
+        $this->assertEquals(25, $log[1]['start']);
+    }
 }

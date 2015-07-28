@@ -44,7 +44,7 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_float($value));
 
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++) {
+        for ($i = 1; $i < $trials; $i++) {
             $value += Generate::getTime($mean);
         }
         $this->assertGreaterThanOrEqual(
@@ -72,8 +72,37 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         $value = Generate::getProbability($mean, $stdDev);
         $this->assertTrue(is_float($value));
         // We already have one value, so get 999 more.
-        for ($i = 0; $i < $trials; $i++) {
+        for ($i = 1; $i < $trials; $i++) {
             $value += Generate::getProbability($mean, $stdDev);
+        }
+
+        $this->assertGreaterThanOrEqual(
+            $mean * (1 - $this->binomialZeroOneDelta),
+            $value / $trials,
+            "Binomial 0-1 noise value (unluckily?) low: test again?"
+        );
+        $this->assertLessThanOrEqual(
+            $mean * (1 + $this->binomialZeroOneDelta),
+            $value / $trials,
+            "Binomial 0-1 noise value (unluckily?) high: test again?"
+        );
+    }
+
+    /**
+     * Test: \TestRig\Services\Generate::getNumber().
+     */
+    public function testGetNumber()
+    {
+        // If cutoff isn't working, a high mean will show it up.
+        $mean = 10;
+        $cutoff = 5;
+        $this->assertLessThanOrEqual($cutoff, Generate::getNumber($mean, $cutoff));
+
+        // Remove cutoff and check regression to mean.
+        $value = 0;
+        $trials = 100;
+        for ($i = 1; $i <= $trials; $i++) {
+            $value += Generate::getNumber($mean);
         }
 
         $this->assertGreaterThanOrEqual(
