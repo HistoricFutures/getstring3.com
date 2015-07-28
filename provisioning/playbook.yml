@@ -15,7 +15,7 @@
     - name: install php
       apt: name=php5 state=present
 
-    # Extras
+    # Extras for Apache/PHP functionalitty.
     - name: install php-sqlite
       apt: name=php5-sqlite state=present
       notify:
@@ -28,6 +28,12 @@
       copy: src=000-default.conf dest=/etc/apache2/sites-available/000-default.conf owner=root mode=0644
       notify:
         - restart apache
+
+    # Manage vendor PHP packages with composer.
+    - name: install composer
+      shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+    - name: install composer dependencies
+      composer: command=install working_dir=/www-data
 
   handlers:
     - name: restart apache
