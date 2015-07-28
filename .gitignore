@@ -4,3 +4,4 @@ datasets/
 algorithms/
 .DS_Store
 algorithm/data
+algorithm/.ipynb_checkpoints
