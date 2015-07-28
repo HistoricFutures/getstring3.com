@@ -53,6 +53,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     {
         $summary = (new RawData($this->pathToDatabase))->getSummary();
         $this->assertArrayHasKey('entities', $summary);
+        $this->assertArrayHasKey('populations', $summary);
         foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack', 'mean_extra_suppliers') as $key) {
             $this->assertArrayHasKey($key, $summary['entities']);
         }

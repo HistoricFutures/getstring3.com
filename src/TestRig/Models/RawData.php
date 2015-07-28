@@ -37,6 +37,7 @@ class RawData
      */
     public function getSummary()
     {
+        // Entity summary properties.
         $entityCount = Database::getTableCount($this->path, 'entity');
         $meanAckTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_ack_time');
         $meanAnswerTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_answer_time');
@@ -44,6 +45,10 @@ class RawData
         $meanExtraSuppliers = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_extra_suppliers');
         $probabilityNoAck = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_ack');
 
+        // Population summary properties (unique population labels).
+        $populationCount = Database::getTableAggregate($this->path, 'entity', 'count', 'DISTINCT population');
+
+        // Question/ask summary properties.
         $questionsCount = Database::getTableCount($this->path, 'question');
         $asksCount = Database::getTableCount($this->path, 'ask');
 
@@ -55,6 +60,9 @@ class RawData
                 'mean_routing_time' => $meanRoutingTime,
                 'mean_extra_suppliers' => $meanExtraSuppliers,
                 'probability_no_ack' => $probabilityNoAck,
+            ),
+            'populations' => array(
+                'count' => $populationCount,
             ),
             'questions' => array(
                 'count' => $questionsCount,
