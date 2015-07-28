@@ -24,14 +24,6 @@ class EntityTest extends AbstractTestCase
     protected $testableClassNeedsDatabase = true;
 
     /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * Test: \TestRig\Models\Entity::__construct().
      */
     public function testConstruct()

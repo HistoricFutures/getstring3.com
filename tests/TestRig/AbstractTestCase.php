@@ -45,8 +45,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
             // Some testables need to access the database.
             if ($this->testableClassNeedsDatabase) {
                 $this->testable = new $this->testableClass($this->pathToDatabase);
-            }
-            else {
+            } else {
                 $this->testable = new $this->testableClass();
             }
         }

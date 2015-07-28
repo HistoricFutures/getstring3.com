@@ -33,11 +33,12 @@ class AgentTest extends AbstractTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->log = new Log();
-        // Have 10 agents in total.
+        // Have 10 agents in total: we can't test behaviours with just one.
         for ($i = 1; $i < 10; $i++) {
             new Agent($this->pathToDatabase);
         }
+        // Logs are how we reconstruct agent behaviour history.
+        $this->log = new Log();
     }
 
     /**
