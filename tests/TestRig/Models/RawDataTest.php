@@ -4,21 +4,26 @@
  * @file
  * Test: TestRig\Models\RawData.
  */
+
+namespace Tests\Models;
+
 use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Models\Dataset;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\RawData.
  */
-class RawDataTest extends \PHPUnit_Framework_TestCase
+class RawDataTest extends AbstractTestCase
 {
     // Dataset helper created in ::setUpBeforeClass().
     private static $dataset = null;
+
     // Create and tear down database for each test.
-    private $pathToDatabase = '/tmp/for-rawdata.sqlite3';
+    protected $pathToDatabase = '/tmp/for-rawdata.sqlite3';
 
     /**
      * Set up before class.
@@ -28,22 +33,6 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         self::$dataset = new Dataset();
-    }
-
-    /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        Database::create($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
     }
 
     /**

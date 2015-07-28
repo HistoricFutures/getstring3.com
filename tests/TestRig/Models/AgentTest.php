@@ -5,20 +5,20 @@
  * Test: TestRig\Models\Agent.
  */
 
+namespace Tests\Models;
+
 use TestRig\Models\Agent;
 use TestRig\Models\Log;
-use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Agent.
  */
-class AgentTest extends \PHPUnit_Framework_TestCase
+class AgentTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-agent.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-agent.sqlite3";
     // Log object to pass into agent go calls.
     private $log = null;
 
@@ -27,7 +27,8 @@ class AgentTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->conn = Database::create($this->pathToDatabase);
+        parent::setUp();
+
         $this->agent = new Agent($this->pathToDatabase);
         $this->log = new Log();
 
@@ -35,14 +36,6 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         for ($i = 1; $i < 10; $i++) {
             new Agent($this->pathToDatabase);
         }
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
     }
 
     /**

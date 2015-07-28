@@ -5,36 +5,28 @@
  * Test: TestRig\Models\Question.
  */
 
+namespace Tests\Models;
+
 use TestRig\Models\Question;
 use TestRig\Models\Entity;
-use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Question.
  */
-class QuestionTest extends \PHPUnit_Framework_TestCase
+class QuestionTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-question.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-question.sqlite3";
 
     /**
      * Set up.
      */
     public function setUp()
     {
-        $this->conn = Database::create($this->pathToDatabase);
+        parent::setUp();
         $this->model = new Question($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
     }
 
     /**
@@ -79,7 +71,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         try {
             $this->model->update();
             $this->fail('Questions should not be updatable.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 

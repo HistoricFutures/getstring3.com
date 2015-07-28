@@ -5,36 +5,28 @@
  * Test: TestRig\Models\Entity.
  */
 
+namespace Tests\Models;
+
 use TestRig\Models\Entity;
-use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Entity.
  */
 
-class EntityTest extends \PHPUnit_Framework_TestCase
+class EntityTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-entity.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-entity.sqlite3";
 
     /**
      * Set up.
      */
     public function setUp()
     {
-        $this->conn = Database::create($this->pathToDatabase);
+        parent::setUp();
         $this->model = new Entity($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
     }
 
     /**
