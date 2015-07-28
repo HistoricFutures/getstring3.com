@@ -16,37 +16,20 @@ use Tests\AbstractTestCase;
  */
 class ExecutorTest extends AbstractTestCase
 {
-    // To be replaced with new Executor() during setUpBeforeClass.
-    public static $model = null;
-    // Root directory for folders: we keep track too.
-    private static $rootDir = null;
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = 'DIR_ALGORITHMS';
 
     // Do we create a testable model?
     protected $testableClass = 'TestRig\Models\Executor';
 
     /**
-     * Set up before class: create root folder and Executor() handler class.
+     * Test: TestRig\Models\Executor::run().
      */
-    public static function setUpBeforeClass()
-    {
-        self::$rootDir = getenv('DIR_ALGORITHMS');
-        mkdir(self::$rootDir);
-    }
-
-    /**
-     * Tear down after class: delete root folder.
-     */
-    public static function tearDownAfterClass()
-    {
-        Filesystem::removeDirectory(self::$rootDir);
-    }
-
     public function testRun()
     {
         // Create an algorithm and a fake dataset.
         $algorithmDir = $this->createWithMock("php", '<' . '?php echo $argv[1];');
-        $datasetDir = "/tmp/for-algorithms";
-        mkdir($datasetDir);
+        $datasetDir = "/tmp/this-never-gets-accessed-anyway";
 
         // Run algorithm and test results.
         $results = $this->testable->run($algorithmDir, $datasetDir);
@@ -54,8 +37,6 @@ class ExecutorTest extends AbstractTestCase
         $this->assertEquals(0, $results['exitCode']);
         $this->assertEquals($datasetDir, $results['stdout']);
         $this->assertEquals("", $results['stderr']);
-
-        Filesystem::removeDirectory($datasetDir);
     }
 
     /**

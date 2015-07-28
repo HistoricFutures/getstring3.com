@@ -15,6 +15,10 @@ use TestRig\Services\Database;
  */
 abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = null;
+    protected static $containingDir = null;
+
     // Create and tear down database for each test.
     protected $pathToDatabase = null;
     // Database connection.
@@ -27,6 +31,29 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
     // Files/folders to unlink in tearDown.
     protected $toUnlink = array();
+
+    /**
+     * Set up before class.
+     */
+    public static function setUpBeforeClass()
+    {
+        if (static::$containingDirEnvVar) {
+            static::$containingDir = getenv(static::$containingDirEnvVar);
+            if (static::$containingDir) {
+                mkdir(static::$containingDir);
+            }
+        }
+    }
+
+    /**
+     * Tear down after class: delete root folder.
+     */
+    public static function tearDownAfterClass()
+    {
+        if (static::$containingDir) {
+            exec("rm -rf " . static::$containingDir);
+        }
+    }
 
     /**
      * Set up.

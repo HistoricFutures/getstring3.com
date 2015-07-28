@@ -19,9 +19,6 @@ use Tests\AbstractTestCase;
  */
 class RawDataTest extends AbstractTestCase
 {
-    // Dataset helper created in ::setUpBeforeClass().
-    private static $dataset = null;
-
     // Create and tear down database for each test.
     protected $pathToDatabase = '/tmp/for-rawdata.sqlite3';
 

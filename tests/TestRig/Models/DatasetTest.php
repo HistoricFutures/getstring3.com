@@ -17,30 +17,11 @@ use Tests\AbstractTestCase;
  */
 class DatasetTest extends AbstractTestCase
 {
-    // To be replaced with new Dataset() during setUpBeforeClass.
-    public static $model = null;
-    // Directory for datasets: we keep track too.
-    private static $dir = null;
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = 'DIR_DATASETS';
 
     // Do we create a testable object? Needs fully namespaced class.
     protected $testableClass = 'TestRig\Models\Dataset';
-
-    /**
-     * Set up before class: create dataset folder and Dataset() handler class.
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$dir = getenv('DIR_DATASETS');
-        mkdir(self::$dir);
-    }
-
-    /**
-     * Tear down after class: delete dataset folder.
-     */
-    public static function tearDownAfterClass()
-    {
-        Filesystem::removeDirectory(self::$dir);
-    }
 
     /**
      * Test: TestRig\Models\Dataset::create().
@@ -52,9 +33,9 @@ class DatasetTest extends AbstractTestCase
         $datasetDir = $this->createWithMock();
 
         // Assert we've got a manifest.
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/recipe.yaml"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/dataset.sqlite3"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/recipe.yaml"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/dataset.sqlite3"));
     }
 
     /**
@@ -75,7 +56,7 @@ class DatasetTest extends AbstractTestCase
         $this->assertArrayHasKey("raw", $dataset);
         $this->assertArrayHasKey("recipe", $dataset['raw']);
         $this->assertStringEqualsFile(
-          self::$dir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
+          self::$containingDir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
         );
 
         // Parsed data from reecipe.yaml present?
@@ -107,7 +88,7 @@ class DatasetTest extends AbstractTestCase
         $this->testable->delete($datasetDir);
 
         // Assert all files are gone.
-        $this->assertFalse(file_exists(self::$dir . "/$datasetDir"));
+        $this->assertFalse(file_exists(self::$containingDir . "/$datasetDir"));
     }
     
     /**

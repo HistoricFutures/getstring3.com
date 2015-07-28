@@ -17,30 +17,11 @@ use Tests\AbstractTestCase;
  */
 class AlgorithmTest extends AbstractTestCase
 {
-    // To be replaced with new Algorithm() during setUpBeforeClass.
-    public static $model = null;
-    // Root directory for folders: we keep track too.
-    private static $rootDir = null;
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = 'DIR_ALGORITHMS';
 
     // Do we create a testable object? Needs fully namespaced class.
     protected $testableClass = 'TestRig\Models\Algorithm';
-
-    /**
-     * Set up before class: create root folder and Algorithm() handler class.
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$rootDir = getenv('DIR_ALGORITHMS');
-        mkdir(self::$rootDir);
-    }
-
-    /**
-     * Tear down after class: delete root folder.
-     */
-    public static function tearDownAfterClass()
-    {
-        Filesystem::removeDirectory(self::$rootDir);
-    }
 
     /**
      * Test: TestRig\Models\Algorithm::create().
@@ -52,12 +33,12 @@ class AlgorithmTest extends AbstractTestCase
         $dir = $this->createWithMock();
 
         // Assert we've got a manifest.
-        $this->assertTrue(file_exists(self::$rootDir . "/$dir"));
-        $this->assertTrue(file_exists(self::$rootDir . "/$dir/algorithm.php"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$dir"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$dir/algorithm.php"));
 
         // Create with a different format.
         $dir = $this->createWithMock("py");
-        $this->assertTrue(file_exists(self::$rootDir . "/$dir/algorithm.py"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$dir/algorithm.py"));
     }
 
     /**
@@ -97,7 +78,7 @@ class AlgorithmTest extends AbstractTestCase
         $this->testable->delete($dir);
 
         // Assert all files are gone.
-        $this->assertFalse(file_exists(self::$rootDir . "/$dir"));
+        $this->assertFalse(file_exists(self::$containingDir . "/$dir"));
     }
     
     /**
