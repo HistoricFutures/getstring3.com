@@ -46,10 +46,12 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->model->data['id']);
 
         // Default properties.
+
         $this->assertNotNull($this->model->data['mean_ack_time']);
         $this->assertNotNull($this->model->data['mean_answer_time']);
         $this->assertNotNull($this->model->data['mean_routing_time']);
         $this->assertNotNull($this->model->data['mean_extra_suppliers']);
+        $this->assertNotNull($this->model->data['population']);
         $this->assertNotNull($this->model->data['tier']);
         $this->assertNotNull($this->model->data['probability_no_ack']);
     }

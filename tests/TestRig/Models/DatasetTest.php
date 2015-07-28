@@ -75,9 +75,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         );
 
         // Parsed data from reecipe.yaml present?
-        $this->assertArrayHasKey("recipe", $dataset);
-        $this->assertArrayHasKey("populations", $dataset["recipe"]);
-        $this->assertArrayHasKey(0, $dataset["recipe"]["populations"]);
+        $this->assertarrayhaskey(0, $dataset["recipe"]["populations"]);
         $this->assertArrayHasKey(
             "number", $dataset["recipe"]["populations"][0]
         );
@@ -89,6 +87,8 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
             $expected += $population["number"];
         }
         $this->assertEquals($expected, $dataset["database"]["entities"]["count"]);
+        // Ensure populations labelled.
+        $this->assertEquals(count($dataset['recipe']['populations']), $dataset['database']['populations']['count']);
     }
 
     /**
@@ -140,6 +140,23 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
         $rawData = self::$model->readRawData($datasetDir);
         $this->assertEquals(count($rawData['entity']), 30);
+
+        // Test population labels.
+        foreach ($rawData['entity'] as $entityData) {
+            switch ($entityData['tier']) {
+            case 1:
+                $this->assertEquals("Lowest tier", $entityData['population']);
+                break;
+            case 2:
+                $this->assertEquals("Tier 2", $entityData['population']);
+                break;
+            case 3:
+                $this->assertEquals("Tier 3", $entityData['population']);
+                break;
+            default:
+                $this->fail("Unexpected tier in recipe.yaml.");
+            }
+        }
     }
 
     /**

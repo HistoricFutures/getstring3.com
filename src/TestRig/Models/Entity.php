@@ -24,6 +24,7 @@ class Entity extends AbstractDBObject
         'mean_routing_time' => 5,
         'mean_extra_suppliers' => 0,
         'tier' => 1,
+        'label' => '<DEFAULT>',
         'probability_no_ack' => 0,
     );
 
@@ -50,6 +51,16 @@ class Entity extends AbstractDBObject
 
             // Different callbacks based on argumentName.
             switch ($argumentName) {
+
+            // Population label: verbatim, but default means use tier.
+            case 'label':
+                if ($argumentData === '<DEFAULT>') {
+                    $argumentData = 'Tier ' . $this->data['tier'];
+                }
+                $this->data['population'] = $argumentData;
+                break;
+
+            // Tier: verbatim number.
             case 'tier':
                 $this->data[$argumentName] = $argumentData;
                 break;
