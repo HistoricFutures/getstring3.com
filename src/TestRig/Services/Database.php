@@ -60,8 +60,21 @@ class Database
 
     /**
      * Get arbitrary aggregate data on a table.
+     *
+     * @param string $path
+     *   Path to the SQLite3 file.
+     * @param string $table
+     *   Table name (unescaped).
+     * @param string $aggregate
+     *   Aggregate function (unescaped).
+     * @param string $column
+     *   Column to run aggregate on (unescaped).
+     * @param array $groupBy = null
+     *   Column(s) to group by before aggregation.
+     * @return mixed
+     *   Scalar string or integer reflecting aggregate function.
      */
-    public static function getTableAggregate($path, $table, $aggregate, $column)
+    public static function getTableAggregate($path, $table, $aggregate, $column, $groupBy = null)
     {
         // Get connection and escape arguments.
         $conn = self::getConn($path);
@@ -70,7 +83,11 @@ class Database
         $column = \SQLite3::escapeString($column);
 
         // Make query and return first value we find.
-        $results = $conn->query("SELECT $aggregate($column) AS result FROM $table");
+        $sql = "SELECT $aggregate($column) AS result FROM $table";
+        if ($groupBy) {
+            $sql .= " GROUP BY " . implode(", ", $groupBy);
+        }
+        $results = $conn->query($sql);
         while ($row = $results->fetchArray()) {
             return $row['result'];
         }
