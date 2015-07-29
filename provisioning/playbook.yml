@@ -1,0 +1,40 @@
+# @file
+# Default Ansible playbook.
+
+---
+- hosts: all
+  sudo: true
+  tasks:
+    # Core LAMP stack.
+    - name: update apt cache
+      apt: update_cache=yes
+    - name: install apache
+      apt: name=apache2 state=present
+    - name: install mysql
+      apt: name=mysql-server state=present
+    - name: install php
+      apt: name=php5 state=present
+
+    # Extras for Apache/PHP functionalitty.
+    - name: install php-sqlite
+      apt: name=php5-sqlite state=present
+      notify:
+        - restart apache
+    - name: enable mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache
+    - name: replacement default apache conf
+      copy: src=000-default.conf dest=/etc/apache2/sites-available/000-default.conf owner=root mode=0644
+      notify:
+        - restart apache
+
+    # Manage vendor PHP packages with composer.
+    - name: install composer
+      shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+    - name: install composer dependencies
+      composer: command=install working_dir=/www-data
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
