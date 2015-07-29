@@ -4,54 +4,35 @@
  * @file
  * Test: TestRig\Models\RawData.
  */
+
+namespace Tests\Models;
+
 use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Models\Dataset;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\RawData.
  */
-class RawDataTest extends \PHPUnit_Framework_TestCase
+class RawDataTest extends AbstractTestCase
 {
-    // Dataset helper created in ::setUpBeforeClass().
-    private static $dataset = null;
     // Create and tear down database for each test.
-    private $pathToDatabase = '/tmp/for-rawdata.sqlite3';
+    protected $pathToDatabase = '/tmp/for-rawdata.sqlite3';
 
-    /**
-     * Set up before class.
-     *
-     * Create Dataset helper.
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$dataset = new Dataset();
-    }
-
-    /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        Database::create($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
-    }
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\RawData';
+    // And does it take the database path as __construct() argument?
+    protected $testableClassNeedsDatabase = true;
 
     /**
      * Test: \TestRig\Models\RawData::getSummary().
      */
     public function testGetSummary()
     {
-        $summary = (new RawData($this->pathToDatabase))->getSummary();
+        $summary = $this->testable->getSummary();
         $this->assertArrayHasKey('entities', $summary);
         $this->assertArrayHasKey('populations', $summary);
         foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack', 'mean_extra_suppliers') as $key) {
@@ -68,9 +49,6 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         $numTier2 = 20;
         $numQuestions = 50;
 
-        // Raw data bucket.
-        $rawData = new RawData($this->pathToDatabase);
-
         // Try to build broken recipes.
         // 1. With no questions.
         $recipeNoQuestions = array(
@@ -79,7 +57,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
             ),
         );
         try {
-            $rawData->populate($recipeNoQuestions);
+            $this->testable->populate($recipeNoQuestions);
             $this->fail('Could build recipe with no questions.');
         } catch (DatasetIntegrityException $e) {
         }
@@ -88,7 +66,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
             'questions' => $numQuestions,
         );
         try {
-            $rawData->populate($recipeNoPopulations);
+            $this->testable->populate($recipeNoPopulations);
             $this->fail('Could build recipe with no populations.');
         } catch (DatasetIntegrityException $e) {
         }
@@ -100,7 +78,7 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
             'questions' => $numQuestions,
         );
         try {
-            $rawData->populate($recipeBrokenTiers);
+            $this->testable->populate($recipeBrokenTiers);
             $this->fail('Could build recipe with broken tiers.');
         } catch (DatasetIntegrityException $e) {
         }
@@ -115,23 +93,23 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
         );
 
         // Every time we populate, total should increase by two numbers.
-        $rawData->populate($recipe);
-        $summary = $rawData->getSummary();
+        $this->testable->populate($recipe);
+        $summary = $this->testable->getSummary();
 
         // Check overall counts of entities and questions.
         $this->assertEquals($numTier1 + $numTier2, $summary['entities']['count']);
         $this->assertEquals($numQuestions, $summary['questions']['count']);
 
         // Populate a second time.
-        $rawData->populate($recipe);
-        $summary = $rawData->getSummary();
+        $this->testable->populate($recipe);
+        $summary = $this->testable->getSummary();
 
         // Check overall counts of entities and questions.
         $this->assertEquals(($numTier1 + $numTier2) * 2, $summary['entities']['count']);
         $this->assertEquals($numQuestions * 2, $summary['questions']['count']);
 
         // Check we have unique names.
-        $entities = $rawData->getEntities();
+        $entities = $this->testable->getEntities();
         $this->assertNotEquals($entities[1]['name'], $entities[2]['name']);
         // Check we have columns for mean response time, no-ack probability etc.
         foreach (array('mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack') as $key) {
@@ -153,12 +131,11 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     public function testGetEntities()
     {
         // Attach to the database and insert an entity.
-        $rawData = new RawData($this->pathToDatabase);
         $record = array('name' => 'Get Entities '.uniqid());
         Database::writeRecord($this->pathToDatabase, 'entity', $record);
 
         // Get entities out of database and check ours is among them.
-        $entities = (new RawData($this->pathToDatabase))->getEntities();
+        $entities = $this->testable->getEntities();
         $this->assertArrayHasKey($record['id'], $entities);
         $this->assertEquals($record['name'], $entities[$record['id']]['name']);
 
@@ -172,15 +149,14 @@ class RawDataTest extends \PHPUnit_Framework_TestCase
     public function testExport()
     {
         // Attach to the database and insert an entity.
-        $rawData = new RawData($this->pathToDatabase);
         $record = array('name' => 'Get Entities '.uniqid());
         Database::writeRecord($this->pathToDatabase, 'entity', $record);
 
         // All data back.
-        $allEntities = $rawData->export(array('entity' => 'all'));
+        $allEntities = $this->testable->export(array('entity' => 'all'));
         $this->assertEquals($allEntities['entity'][0]['name'], $record['name']);
 
-        $count = $rawData->export(array('entity' => 'anything_else'));
+        $count = $this->testable->export(array('entity' => 'anything_else'));
         $this->assertEquals($count['entity'][0]['count'], 1);
     }
 }

@@ -5,37 +5,23 @@
  * Test: TestRig\Models\Entity.
  */
 
-use TestRig\Models\Entity;
-use TestRig\Services\Database;
+namespace Tests\Models;
+
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Entity.
  */
-
-class EntityTest extends \PHPUnit_Framework_TestCase
+class EntityTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-entity.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-entity.sqlite3";
 
-    /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        $this->conn = Database::create($this->pathToDatabase);
-        $this->model = new Entity($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
-    }
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Entity';
+    // And does it take the database path as __construct() argument?
+    protected $testableClassNeedsDatabase = true;
 
     /**
      * Test: \TestRig\Models\Entity::__construct().
@@ -43,17 +29,17 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         // We should always have an entity.
-        $this->assertEquals(1, $this->model->data['id']);
+        $this->assertEquals(1, $this->testable->data['id']);
 
         // Default properties.
 
-        $this->assertNotNull($this->model->data['mean_ack_time']);
-        $this->assertNotNull($this->model->data['mean_answer_time']);
-        $this->assertNotNull($this->model->data['mean_routing_time']);
-        $this->assertNotNull($this->model->data['mean_extra_suppliers']);
-        $this->assertNotNull($this->model->data['population']);
-        $this->assertNotNull($this->model->data['tier']);
-        $this->assertNotNull($this->model->data['probability_no_ack']);
+        $this->assertNotNull($this->testable->data['mean_ack_time']);
+        $this->assertNotNull($this->testable->data['mean_answer_time']);
+        $this->assertNotNull($this->testable->data['mean_routing_time']);
+        $this->assertNotNull($this->testable->data['mean_extra_suppliers']);
+        $this->assertNotNull($this->testable->data['population']);
+        $this->assertNotNull($this->testable->data['tier']);
+        $this->assertNotNull($this->testable->data['probability_no_ack']);
     }
 
     /**
@@ -61,12 +47,12 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate()
     {
-        $oldName = $this->model->data['name'];
+        $oldName = $this->testable->data['name'];
 
         // Create a new entity and confirm its newness.
-        $this->model->create();
-        $this->assertEquals(2, $this->model->data['id']);
-        $this->assertNotEquals($oldName, $this->model->data['name']);
+        $this->testable->create();
+        $this->assertEquals(2, $this->testable->data['id']);
+        $this->assertNotEquals($oldName, $this->testable->data['name']);
     }
 
     /**
@@ -74,17 +60,17 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        $oldName = $this->model->data['name'];
+        $oldName = $this->testable->data['name'];
 
         // Create a new entity and bind to it, but then re-bind to the
         // entity with ID=1.
-        $this->model->create();
-        $this->model->read(1);
-        $this->assertEquals($oldName, $this->model->data['name']);
+        $this->testable->create();
+        $this->testable->read(1);
+        $this->assertEquals($oldName, $this->testable->data['name']);
 
         // Read a record that doesn't exist.
-        $this->model->read(5);
-        $this->assertNull($this->model->data);
+        $this->testable->read(5);
+        $this->assertNull($this->testable->data);
     }
 
     /**
@@ -94,10 +80,10 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     {
         $newName = "Test " . uniqid();
 
-        $this->model->data['name'] = $newName;
-        $this->model->update();
-        $this->model->read(1);
-        $this->assertEquals($newName, $this->model->data['name']);
+        $this->testable->data['name'] = $newName;
+        $this->testable->update();
+        $this->testable->read(1);
+        $this->assertEquals($newName, $this->testable->data['name']);
     }
 
     /**
@@ -105,9 +91,9 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $this->model->delete();
-        $this->model->read(1);
-        $this->assertNull($this->model->data);
+        $this->testable->delete();
+        $this->testable->read(1);
+        $this->assertNull($this->testable->data);
     }
 
     /**
@@ -115,9 +101,9 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetID()
     {
-        $id = $this->model->getID();
-        $this->assertEquals($id, $this->model->data['id']);
-        $this->model->data['id'] = 5;
-        $this->assertNotEquals($id, $this->model->data['id']);
+        $id = $this->testable->getID();
+        $this->assertEquals($id, $this->testable->data['id']);
+        $this->testable->data['id'] = 5;
+        $this->assertNotEquals($id, $this->testable->data['id']);
     }
 }

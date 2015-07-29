@@ -5,22 +5,17 @@
  * Test: TestRig\Services\Maths.
  */
 
+namespace Tests\Services;
+
 use TestRig\Services\Maths;
+use Tests\AbstractStatsTestCase;
 
 /**
  * @class
  * Test: TestRig\Services\Maths.
  */
-class MathsTest extends \PHPUnit_Framework_TestCase
+class MathsTest extends AbstractStatsTestCase
 {
-    // Thresholds for "expected randomness".
-    // Poissonian is generally wider as stddev = mean unavoidably.
-    private $poissonianDelta = 0.05;
-    private $gaussianDelta = 0.004;
-    private $binomialDelta = 0.002;
-    // Quite wide standard deviation on the 0-1 binomial.
-    private $binomialZeroOneDelta = 0.08;
-
     /**
      * Test: TestRig\Services\Maths::testPoissonianNoise().
      */
@@ -39,12 +34,12 @@ class MathsTest extends \PHPUnit_Framework_TestCase
             $value += Maths::poissonianNoise($mean);
         }
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->poissonianDelta),
+            $mean * (1 - $this->deltas['normal']),
             $value / $trials,
             "Poissonian noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->poissonianDelta),
+            $mean * (1 + $this->deltas['normal']),
             $value / $trials,
             "Poissonian noise value (unluckily?) high: test again?"
         );
@@ -74,12 +69,12 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($mean, $value, "Gaussian noise equals the mean. Unlucky?");
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->gaussianDelta),
+            $mean * (1 - $this->deltas['thin']),
             $value,
             "Gaussian noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->gaussianDelta),
+            $mean * (1 + $this->deltas['thin']),
             $value,
             "Gaussian noise value (unluckily?) high: test again?"
         );
@@ -126,12 +121,12 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->binomialZeroOneDelta),
+            $mean * (1 - $this->deltas['wide']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->binomialZeroOneDelta),
+            $mean * (1 + $this->deltas['wide']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) high: test again?"
         );
@@ -156,12 +151,12 @@ class MathsTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $n * $p * (1 - $this->binomialDelta),
+            $n * $p * (1 - $this->deltas['thinnest']),
             $value / $trials,
             "Binomial noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $n * $p * (1 + $this->binomialDelta),
+            $n * $p * (1 + $this->deltas['thinnest']),
             $value / $trials,
             "Binomial noise value (unluckily?) high: test again?"
         );

@@ -5,21 +5,19 @@
  * Test: TestRig\Models\Log.
  */
 
+namespace Tests\Models;
+
 use TestRig\Models\Log;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Log.
  */
-class LogTest extends \PHPUnit_Framework_TestCase
+class LogTest extends AbstractTestCase
 {
-    /**
-     * Set up
-     */
-    public function setUp()
-    {
-        $this->model = new Log();
-    }
+    // Do we create a testable object? Needs fully namespaced class.
+    protected $testableClass = 'TestRig\Models\Log';
 
     /**
      * Test:: TestRig\Models\Log::logInteraction().
@@ -27,11 +25,11 @@ class LogTest extends \PHPUnit_Framework_TestCase
     public function testLogInteraction()
     {
         // Queue up a couple of log items.
-        $this->model->logInteraction("A", "B", 50);
-        $this->model->logInteraction("C", "D", 20, 15);
+        $this->testable->logInteraction("A", "B", 50);
+        $this->testable->logInteraction("C", "D", 20, 15);
 
         // Now check they're logged properly, with incrementing time.
-        $log = $this->model->getLog();
+        $log = $this->testable->getLog();
         $this->assertEquals("A", $log[0]["from"]);
         $this->assertEquals("B", $log[0]["to"]);
         $this->assertEquals(0, $log[0]["start"]);
@@ -48,9 +46,9 @@ class LogTest extends \PHPUnit_Framework_TestCase
      */
     public function testTimePasses()
     {
-        $this->assertEquals(0, $this->model->timePasses(0));
-        $this->assertEquals(10, $this->model->timePasses(10));
-        $this->assertEquals(20, $this->model->timePasses(10));
+        $this->assertEquals(0, $this->testable->timePasses(0));
+        $this->assertEquals(10, $this->testable->timePasses(10));
+        $this->assertEquals(20, $this->testable->timePasses(10));
     }
 
     /**
@@ -60,22 +58,22 @@ class LogTest extends \PHPUnit_Framework_TestCase
     {
         // Not much to do here; just check return value. We'll check
         // the structure in more depth during testLogInteraction().
-        $this->assertTrue(is_array($this->model->getLog()));
+        $this->assertTrue(is_array($this->testable->getLog()));
     }
     /**
      * Test:: TestRig\Models\Log::timeTravelTo().
      */
     public function testTimeTravelTo()
     {
-        $this->model->timeTravelTo(50);
-        $this->assertEquals(50, $this->model->timePasses());
-        $this->model->logInteraction(1, 2);
-        $this->model->timeTravelTo(25);
-        $this->assertEquals(25, $this->model->timePasses());
-        $this->model->logInteraction(1, 2);
+        $this->testable->timeTravelTo(50);
+        $this->assertEquals(50, $this->testable->timePasses());
+        $this->testable->logInteraction(1, 2);
+        $this->testable->timeTravelTo(25);
+        $this->assertEquals(25, $this->testable->timePasses());
+        $this->testable->logInteraction(1, 2);
 
         // Ensure logs in the "right" wrong order too!
-        $log = $this->model->getLog();
+        $log = $this->testable->getLog();
         $this->assertEquals(50, $log[0]['start']);
         $this->assertEquals(25, $log[1]['start']);
     }

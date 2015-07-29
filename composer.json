@@ -13,6 +13,9 @@
     "require-dev": {
     },
     "autoload": {
-        "psr-4": {"TestRig\\": "src/TestRig/"}
+        "psr-4": {
+            "TestRig\\": "src/TestRig/",
+            "Tests\\": "tests/TestRig/"
+        }
     }   
 }
