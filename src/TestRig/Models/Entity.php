@@ -8,6 +8,7 @@
 namespace TestRig\Models;
 
 use TestRig\Services\Generate;
+use TestRig\Services\Maths;
 
 /**
  * @class
@@ -19,12 +20,18 @@ class Entity extends AbstractDBObject
     protected $table = "entity";
     // Default arguments.
     private $defaultArguments = array(
+        // Try to match order in schema.sql here, but we need tier first so
+        // case 'label': works below.
+        'tier' => 1,
+        'label' => '<DEFAULT>',
+        'is_sourcing' => false,
+
         'mean_ack_time' => 5,
         'mean_answer_time' => 5,
         'mean_routing_time' => 5,
+
         'mean_extra_suppliers' => 0,
-        'tier' => 1,
-        'label' => '<DEFAULT>',
+
         'probability_no_ack' => 0,
     );
 
@@ -63,6 +70,17 @@ class Entity extends AbstractDBObject
             // Tier: verbatim number.
             case 'tier':
                 $this->data[$argumentName] = $argumentData;
+                break;
+
+            // Is this a sourcing agent? Randomized based on incoming
+            // probability, but from then on a boolean.
+            case 'is_sourcing':
+                $this->data[$argumentName] = $argumentData;
+                if (isset($arguments['probability_is_sourcing'])) {
+                    $this->data[$argumentName] = (
+                        Maths::evenlyRandomZeroOne() <= $arguments['probability_is_sourcing']
+                    );
+                }
                 break;
 
             // Times: randomized.

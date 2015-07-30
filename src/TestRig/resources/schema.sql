@@ -7,6 +7,7 @@ CREATE TABLE entity (
   -- Tiers and internal structure.
   population VARCHAR(64),
   tier INTEGER,
+  is_sourcing INTEGER(1),
 
   -- Three times in the Raw Responsive Data table.
   mean_ack_time INTEGER,

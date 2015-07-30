@@ -53,6 +53,15 @@ class EntityTest extends AbstractTestCase
         $this->testable->create();
         $this->assertEquals(2, $this->testable->data['id']);
         $this->assertNotEquals($oldName, $this->testable->data['name']);
+
+        // Test probability_is_sourcing and effect on is_sourcing.
+        $this->assertFalse($this->testable->data['is_sourcing']);
+        $this->testable->create(array('probability_is_sourcing' => 1));
+        $this->assertTrue($this->testable->data['is_sourcing']);
+
+        // Reload and confirm SQLite3's integer-y-ness "booleans".
+        $this->testable->read($this->testable->getID());
+        $this->assertSame(1, $this->testable->data['is_sourcing']);
     }
 
     /**
