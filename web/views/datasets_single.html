@@ -37,17 +37,18 @@
     <section class="dataset dataset--raw-data">
         <h2>All entities</h2>
         <table>
-<tr><th>ID</th><th>Name</th><th>Population</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Mean suppliers</th><th>Tier</th><th>Probability of not acknowledging</th></tr>
+          <tr><th>ID</th><th>Name</th><th>Population</th><th>Tier</th><th>Sourcing?</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Mean suppliers</th><th>Probability of not acknowledging</th></tr>
             {% for entity in more_info.entity %}
             <tr>
               <td>{{ entity.id }}</td>
               <td>{{ entity.name }}</td>
               <td>{{ entity.population }}</td>
+              <td>{{ entity.tier }}</td>
+              <td>{{ entity.is_sourcing ? 'sourcing' : 'normal' }}</td>
               <td>{{ entity.mean_ack_time }}</td>
               <td>{{ entity.mean_answer_time }}</td>
               <td>{{ entity.mean_routing_time }}</td>
               <td>{{ entity.mean_extra_suppliers + 1 }}</td>
-              <td>{{ entity.tier }}</td>
               <td>{{ entity.probability_no_ack }}</td>
             </tr>
             {% endfor %}
@@ -55,11 +56,12 @@
                 <td>Summary:</td>
                 <td>{{ database.entities.count }}</td>
                 <td>{{ database.populations.count }}</td>
+                <td></td>
+                <td></td>
                 <td>{{ database.entities.mean_ack_time }}</td>
                 <td>{{ database.entities.mean_answer_time }}</td>
                 <td>{{ database.entities.mean_routing_time }}</td>
                 <td>{{ database.entities.mean_extra_suppliers + 1 }}</td>
-                <td></td>
                 <td>{{ database.entities.probability_no_ack }}</td>
             </tr>
         </table>
