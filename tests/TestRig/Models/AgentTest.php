@@ -85,6 +85,12 @@ class AgentTest extends AbstractTestCase
         // more agents to come out of pickToAsk() (even if repeat for now.)
         $this->testable->data['mean_extra_suppliers'] = 20;
         $this->assertGreaterThan(5, count($this->testable->pickToAsks($this->log)));
+
+        // Make this agent a sourcing agent and ensure it gets data from same tier.
+        $this->testable->data['mean_extra_suppliers'] = 0;
+        $this->testable->data['is_sourcing'] = true;
+        $source = $this->testable->pickToAsks($this->log);
+        $this->assertEquals($this->testable->data['tier'], $source[0]->data['tier']);
     }
 
     /**

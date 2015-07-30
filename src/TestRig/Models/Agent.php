@@ -59,9 +59,11 @@ class Agent extends Entity
      */
     public function pickToAsks(Log $log)
     {
-        // Try to get one to-ask; if we can't, we know there are none.
+        // Try to get one to-ask; if we can't even get one, return empty array.
+        // Sourcing agents get to-asks from the same tier as them.
+        $toAskTier = $this->data['tier'] + ($this->data['is_sourcing'] ? 0 : 1);
         $toAsks = array(
-            Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1))
+            Agent::pickRandom($this->path, "tier = $toAskTier")
         );
         if (!$toAsks[0]) {
             return array();
@@ -75,7 +77,7 @@ class Agent extends Entity
                 $this->data['mean_extra_suppliers'] * 4
             );
             for ($i = 1; $i <= $numSuppliers; $i++) {
-                $toAsks[] = Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1));
+                $toAsks[] = Agent::pickRandom($this->path, "tier = $toAskTier");
             }
         }
 

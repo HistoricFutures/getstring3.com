@@ -62,9 +62,9 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     {
         // Create path to database.
         if ($this->pathToDatabase) {
-            $this->conn = Database::create($this->pathToDatabase);
             // Put it on the list of files to unlink when we tear down.
-            $this->toUnlink[] = $this->pathToDatabase;
+            $this->registerForUnlinking($this->pathToDatabase);
+            $this->conn = Database::create($this->pathToDatabase);
         }
 
         // Create a testable to test?
@@ -84,6 +84,17 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         foreach ($this->toUnlink as $toUnlink) {
+            unlink($toUnlink);
+        }
+    }
+
+    /**
+     * Register a file for unlinking (and make sure it doesn't exist).
+     */
+    protected function registerForUnlinking($toUnlink)
+    {
+        $this->toUnlink[] = $toUnlink;
+        if (file_exists($toUnlink)) {
             unlink($toUnlink);
         }
     }
