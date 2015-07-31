@@ -4,9 +4,8 @@ CREATE TABLE entity (
   id INTEGER PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
 
-  -- Tiers and internal structure.
+  -- Internal structure: tiers now in their own table.
   population VARCHAR(64),
-  tier INTEGER,
   is_sourcing INTEGER(1),
 
   -- Three times in the Raw Responsive Data table.
@@ -19,6 +18,12 @@ CREATE TABLE entity (
 
   -- Probabilities for agent control flow.
   probability_no_ack REAL
+);
+CREATE TABLE entity_tier (
+  entity INTEGER NOT NULL,
+  tier INTEGER NOT NULL,
+
+  FOREIGN KEY(entity) REFERENCES entity(id)
 );
 -- An "empty" question table makes our id-based ORM work more easily.
 CREATE TABLE question (
