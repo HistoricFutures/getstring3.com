@@ -143,4 +143,12 @@ class DatabaseTest extends AbstractTestCase
         $record = Database::readRecord($this->pathToDatabase, "entity", $record['id']);
         $this->assertNull($record);
     }
+
+    /**
+     * Test: TestRig\Services\Database::deleteWhere().
+     */
+    public function testDeleteWhere()
+    {
+        $this->markTestIncomplete("Not written.");
+    }
 }
