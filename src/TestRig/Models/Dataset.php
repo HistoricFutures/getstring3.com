@@ -104,6 +104,6 @@ class Dataset extends AbstractFolderManager
     public function readRawData($datasetDir)
     {
         $rawData = new RawData($this->pathToDatabase($datasetDir));
-        return $rawData->export(array("entity" => "all"));
+        return $rawData->export(array("entity" => "extended"));
     }
 }

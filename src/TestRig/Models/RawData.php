@@ -147,6 +147,10 @@ class RawData
                 $sql = 'SELECT * FROM entity ORDER BY id';
                 break;
 
+            case 'extended':
+                $sql = 'SELECT * FROM entity e LEFT JOIN entity_tier et ON e.id = et.entity ORDER BY e.id, et.tier';
+                break;
+
             default:
                 $sql = 'SELECT COUNT(*) AS count FROM entity';
             }
@@ -156,6 +160,22 @@ class RawData
                 $export['entity'][] = $row;
             }
         }
+        if (isset($options['entity_tier'])) {
+            switch ($options['entity_tier']) {
+            case 'all':
+                $sql = 'SELECT * FROM entity_tier ORDER BY entity, tier';
+                break;
+
+            default:
+                $sql = 'SELECT COUNT(*) AS count FROM entity_tier';
+            }
+
+            $results = Database::getConn($this->path)->query($sql);
+            while ($row = $results->fetchArray()) {
+                $export['entity_tier'][] = $row;
+            }
+        }
+
 
         return $export;
     }
