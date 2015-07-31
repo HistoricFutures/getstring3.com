@@ -149,6 +149,19 @@ class DatabaseTest extends AbstractTestCase
      */
     public function testDeleteWhere()
     {
-        $this->markTestIncomplete("Not written.");
+        // Write two records.
+        $record1 = array("name" => "Delete Where 1");
+        Database::writeRecord($this->pathToDatabase, "entity", $record1);
+        $record2 = array("name" => "Delete Where 2");
+        Database::writeRecord($this->pathToDatabase, "entity", $record2);
+
+        // Only delete one.
+        Database::deleteWhere($this->pathToDatabase, "entity", array("name" => "Delete Where 2"));
+
+        // Check that it's gone, but the other remains.
+        $record2new = Database::readRecord($this->pathToDatabase, "entity", $record2['id']);
+        $this->assertNull($record2new);
+        $record1new = Database::readRecord($this->pathToDatabase, "entity", $record1['id']);
+        $this->assertEquals($record1['id'], $record1new['id']);
     }
 }

@@ -38,7 +38,8 @@ class Agent extends Entity
         }
 
         // Getting a random row from a SQLite table is a hack!
-        $randomID = $conn->querySingle("SELECT id FROM entity WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+        $randomID = $conn->querySingle("SELECT e.id FROM entity e INNER JOIN entity_tier et ON et.entity = e.id WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+
         // Now we're putting filters in, we could end up with no suitable candidate.
         if (!$randomID) {
             return null;
@@ -61,7 +62,7 @@ class Agent extends Entity
     {
         // Try to get one to-ask; if we can't even get one, return empty array.
         // Sourcing agents get to-asks from the same tier as them.
-        $toAskTier = $this->data['tier'] + ($this->data['is_sourcing'] ? 0 : 1);
+        $toAskTier = $this->data['tiers'][0] + ($this->data['is_sourcing'] ? 0 : 1);
         $toAsks = array(
             Agent::pickRandom($this->path, "tier = $toAskTier")
         );

@@ -38,7 +38,7 @@ class EntityTest extends AbstractTestCase
         $this->assertNotNull($this->testable->data['mean_routing_time']);
         $this->assertNotNull($this->testable->data['mean_extra_suppliers']);
         $this->assertNotNull($this->testable->data['population']);
-        $this->assertNotNull($this->testable->data['tier']);
+        $this->assertNotNull($this->testable->data['tiers']);
         $this->assertNotNull($this->testable->data['probability_no_ack']);
     }
 
@@ -62,6 +62,9 @@ class EntityTest extends AbstractTestCase
         // Reload and confirm SQLite3's integer-y-ness "booleans".
         $this->testable->read($this->testable->getID());
         $this->assertSame(1, $this->testable->data['is_sourcing']);
+
+        // Tiers should be an array.
+        $this->assertEquals(1, $this->testable->data['tiers'][0]);
     }
 
     /**
@@ -78,7 +81,7 @@ class EntityTest extends AbstractTestCase
         $this->assertEquals($oldName, $this->testable->data['name']);
 
         // Read a record that doesn't exist.
-        $this->testable->read(5);
+        $this->testable->read(200);
         $this->assertNull($this->testable->data);
     }
 

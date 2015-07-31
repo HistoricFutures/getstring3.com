@@ -135,14 +135,15 @@ class Entity extends AbstractDBObject
     public function read($id)
     {
         parent::read($id);
-        $this->retrieveTiers();
+        if ($this->getID()) {
+            $this->retrieveTiers();
+        }
     }
 
     /**
      * Overrides ::update().
      *
      * Update entity while dealing with tiers in other table.
-     *
      */
     public function update()
     {
@@ -154,6 +155,19 @@ class Entity extends AbstractDBObject
 
         // Save non-scalars.
         $this->insertTiers($tiers);
+    }
+    /**
+     * Overrides ::delete().
+     *
+     * Delete entity and also cascade-delete tiers.
+     */
+    public function delete()
+    {
+        // Save zero tiers: removes existing ones.
+        $this->insertTiers(array());
+
+        // Call parent method to update this record in the DB.
+        parent::delete();
     }
 
     /**

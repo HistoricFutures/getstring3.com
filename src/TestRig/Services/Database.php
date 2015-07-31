@@ -315,7 +315,7 @@ class Database
 
         $sql = "DELETE FROM $table WHERE 1 = 1 ";
         $arguments = array();
-        foreach ($arguments as $column => $rawValue) {
+        foreach ($wheres as $column => $rawValue) {
             $column = \SQLite3::EscapeString($column);
             $sql .= " AND $column = :$column ";
             $arguments[":$column"] = $rawValue;

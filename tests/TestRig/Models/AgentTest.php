@@ -64,12 +64,10 @@ class AgentTest extends AbstractTestCase
         $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
         $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
-
         $toAsks[0]->respondTo($this->testable, $this->log);
-
         $logSoFar = $this->log->getLog();
 
         // Second log item should always be tied to the first by agent ID.
@@ -85,12 +83,13 @@ class AgentTest extends AbstractTestCase
         // more agents to come out of pickToAsk() (even if repeat for now.)
         $this->testable->data['mean_extra_suppliers'] = 20;
         $this->assertGreaterThan(5, count($this->testable->pickToAsks($this->log)));
+        // var_dump($this->testable->pickToAsks($this->log));
 
         // Make this agent a sourcing agent and ensure it gets data from same tier.
         $this->testable->data['mean_extra_suppliers'] = 0;
         $this->testable->data['is_sourcing'] = true;
         $source = $this->testable->pickToAsks($this->log);
-        $this->assertEquals($this->testable->data['tier'], $source[0]->data['tier']);
+        $this->assertEquals($this->testable->data['tiers'][0], $source[0]->data['tiers'][0]);
     }
 
     /**
