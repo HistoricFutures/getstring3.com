@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use TestRig\Exceptions\TierIntegrityException;
 use TestRig\Services\Database;
 use TestRig\Services\Generate;
 use TestRig\Services\Maths;
@@ -17,6 +18,9 @@ use TestRig\Services\Maths;
  */
 class Agent extends Entity
 {
+    // Vertical (multi-tiered) agents need a concept of tier context.
+    private $tierContext = null;
+
     /**
      * Pick a random agent and return: class method.
      *
@@ -62,7 +66,7 @@ class Agent extends Entity
     {
         // Try to get one to-ask; if we can't even get one, return empty array.
         // Sourcing agents get to-asks from the same tier as them.
-        $toAskTier = $this->data['tiers'][0] + ($this->data['is_sourcing'] ? 0 : 1);
+        $toAskTier = $this->getTierContext() + ($this->data['is_sourcing'] ? 0 : 1);
         $toAsks = array(
             Agent::pickRandom($this->path, "tier = $toAskTier")
         );
@@ -80,6 +84,11 @@ class Agent extends Entity
             for ($i = 1; $i <= $numSuppliers; $i++) {
                 $toAsks[] = Agent::pickRandom($this->path, "tier = $toAskTier");
             }
+        }
+
+        // Set tier context on all of our to-asks.
+        foreach ($toAsks as $toAsk) {
+            $toAsk->setTierContext($toAskTier);
         }
 
         return $toAsks;
@@ -133,5 +142,42 @@ class Agent extends Entity
                 $toAsk->respondTo($this, $log);
             }
         }
+    }
+
+    /**
+     * Set the tier context that this agent is operating in.
+     *
+     * Vertical agents can be in more than one tier, but within the
+     * context of a particular ask, they will be being asked in their
+     * role as an agent of tier N. So we need an idea of tier context.
+     *
+     * @param int $tier
+     *   Tier context. Must be a valid tier.
+     * @throws TierIntegrityException
+     */
+    public function setTierContext($tier)
+    {
+        if (!in_array($tier, $this->data['tiers'])) {
+            throw new TierIntegrityException("Tried to set invalid tier context '$tier'.");
+        }
+
+        $this->tierContext = $tier;
+    }
+
+    /**
+     * Get the tier context that this agent is operating in.
+     *
+     * See #setTierContext() for more information.
+     *
+     * @return int
+     *   Current tier context or sets as lowest tier if not yet set.
+     */
+    public function getTierContext()
+    {
+        if ($this->tierContext === null) {
+            $this->setTierContext(min($this->data['tiers']));
+        }
+
+        return $this->tierContext;
     }
 }

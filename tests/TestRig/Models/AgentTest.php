@@ -7,6 +7,7 @@
 
 namespace Tests\Models;
 
+use TestRig\Exceptions\TierIntegrityException;
 use TestRig\Models\Agent;
 use TestRig\Models\Log;
 use Tests\AbstractTestCase;
@@ -147,5 +148,48 @@ class AgentTest extends AbstractTestCase
             }
         }
         $this->assertGreaterThan(10, $countSuppliers);
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::setTierContext().
+     */
+    public function testSetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+
+        $verticalAgent->setTierContext(1);
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $verticalAgent->setTierContext(3);
+        $this->assertEquals(3, $verticalAgent->getTierContext());
+
+        // Set some invalid tiers.
+        foreach (array(5, "not a tier", "", 0) as $invalidTier) {
+            try {
+                $verticalAgent->setTierContext($invalidTier);
+                $this->fail("Could set tier to be invalid '$invalidTier'.");
+            } catch (TierIntegrityException $e) {
+            }
+        }
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::getTierContext().
+     */
+    public function testGetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+        $log = new Log();
+
+        $toAsks = $verticalAgent->pickToAsks($log);
+        $toAsks2 = $toAsks[0]->pickToAsks($log);
+
+        // All the same agent.
+        $this->assertEquals($toAsks[0]->getID(), $verticalAgent->getID());
+        $this->assertEquals($toAsks2[0]->getID(), $verticalAgent->getID());
+
+        // But tier context should change.
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $this->assertEquals(2, $toAsks[0]->getTierContext());
+        $this->assertEquals(3, $toAsks2[0]->getTierContext());
     }
 }
