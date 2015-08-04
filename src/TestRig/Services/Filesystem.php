@@ -66,4 +66,50 @@ class Filesystem
 
         return proc_close($proc);
     }
+
+    /**
+     * Retrieve information about the current codebase's git revision.
+     *
+     * @param string $dir = null
+     *   Directory to query for git information. Defaults to pwd.
+     * @return array
+     *   Array with keys revision, branch and tag, plus any error reporting.
+     */
+    public static function retrieveGitstamp($dir = null)
+    {
+        // Ensure input and output defined.
+        if ($dir === null) {
+            $dir = getcwd();
+        }
+        $output = [];
+
+        // Assemble a "master command" for all git work.
+        $dir = escapeshellarg($dir);
+        $gitCommand = "git --git-dir=$dir/.git --work-tree=$dir";
+        // Subcommands for the particular return values.
+        $gitSubCommands = [
+            'revision' => 'rev-parse HEAD',
+            'branch' => 'rev-parse --abbrev-ref HEAD',
+            // Tag least likely to work (if no tags) so put last.
+            'tag' => 'describe --tags',
+        ];
+
+        // Loop over subcommands; quit if there's an error.
+        foreach ($gitSubCommands as $outputType => $gitSubCommand) {
+            $output['exitCode'] = static::execCommand(
+                "$gitCommand $gitSubCommand",
+                $outputText,
+                $output['error']
+            );
+            // Trimming is just so much easier in PHP than bash!
+            $output[$outputType] = trim($outputText);
+
+            // Any problems, quit now so they can be diagnosed.
+            if ($output['exitCode']) {
+                return $output;
+            }
+        }
+
+        return $output;
+    }
 }
