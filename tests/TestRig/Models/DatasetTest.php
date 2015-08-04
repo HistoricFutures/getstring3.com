@@ -36,6 +36,7 @@ class DatasetTest extends AbstractTestCase
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir"));
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/recipe.yaml"));
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/dataset.sqlite3"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/gitstamp.yaml"));
     }
 
     /**
@@ -52,14 +53,19 @@ class DatasetTest extends AbstractTestCase
         $dataset = $this->testable->read($datasetDir);
 
         // Assert manifest contents as expected.
-        // Raw files both present.
+        // Raw files all present
         $this->assertArrayHasKey("raw", $dataset);
+        $this->assertArrayHasKey("gitstamp", $dataset['raw']);
         $this->assertArrayHasKey("recipe", $dataset['raw']);
         $this->assertStringEqualsFile(
-          self::$containingDir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
+            self::$containingDir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
         );
 
-        // Parsed data from reecipe.yaml present?
+        // Gitstamp present and parsed?
+        $this->assertArrayHasKey("gitstamp", $dataset);
+        $this->assertArrayHasKey("revision", $dataset['gitstamp']);
+
+        // Parsed data from recipe.yaml present?
         $this->assertarrayhaskey(0, $dataset["recipe"]["populations"]);
         $this->assertArrayHasKey(
             "number", $dataset["recipe"]["populations"][0]

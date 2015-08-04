@@ -81,21 +81,32 @@ class FilesystemTest extends AbstractTestCase
         mkdir($dir);
 
         Filesystem::execCommand(
-            "cd $dir && git init && touch test.txt && git add . && git commit -m 'First' && git tag -a 1.0.0 -m 'Tag'",
+            "cd $dir && git init && touch test.txt && git add . && git commit -m 'First'",
             $stdout,
             $stderr
         );
-
         $gitInfo = Filesystem::retrieveGitstamp($dir);
+
         $this->assertGreaterThan(
             0,
             strpos($stdout, substr($gitInfo['revision'], 0, 7)),
-            "Could not match revision to git repository creation STDOUT."
+            'Could not match revision to git repository creation STDOUT./'
         );
         $this->assertEquals('master', $gitInfo['branch']);
-        $this->assertEquals('1.0.0', $gitInfo['tag']);
-        // Also no errors!
+        // Not tagged yet.
+        $this->assertEquals('', $gitInfo['tag']);
+        // Also no errors: the "no tags" 128 error should be caught.
         $this->assertEquals(0, $gitInfo['exitCode']);
         $this->assertEquals('', $gitInfo['error']);
+
+        // Tag and assert it comes through.
+        Filesystem::execCommand(
+            "cd $dir && git tag -a 1.0.0 -m 'Tag'",
+            $stdout,
+            $stderr
+        );
+        $gitInfo = Filesystem::retrieveGitstamp($dir);
+
+        $this->assertEquals('1.0.0', $gitInfo['tag']);
     }
 }

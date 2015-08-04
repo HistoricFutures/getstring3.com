@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block content %}
+<section class="dataset dataset--raw-gitstamp">
+  <h2>Gitstamp</h2>
+  {% if raw.gitstamp is defined %}
+    <pre>{{ raw.gitstamp }}</pre>
+  {% else %}
+    <p style="error">Not found!</p>
+  {% endif %}
+</section>
 <section class="dataset dataset--raw-recipe">
   <h2>Recipe</h2>
   {% if raw.recipe is defined %}

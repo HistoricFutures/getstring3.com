@@ -85,7 +85,7 @@ class Filesystem
 
         // Assemble a "master command" for all git work.
         $dir = escapeshellarg($dir);
-        $gitCommand = "git --git-dir=$dir/.git --work-tree=$dir";
+        $gitCommand = "git --work-tree=$dir";
         // Subcommands for the particular return values.
         $gitSubCommands = [
             'revision' => 'rev-parse HEAD',
@@ -106,8 +106,15 @@ class Filesystem
 
             // Any problems, quit now so they can be diagnosed.
             if ($output['exitCode']) {
-                return $output;
+                break;
             }
+        }
+
+        // If the error is 128 and tag === '', it's not really an error,
+        // just that no tags have been created yet in this repository.
+        if (array_key_exists('tag', $output) && $output['exitCode'] === 128) {
+            $output['error'] = "";
+            $output['exitCode'] = 0;
         }
 
         return $output;

@@ -8,6 +8,7 @@
 namespace TestRig\Models;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Yaml\Parser;
 
 /**
  * @class
@@ -52,6 +53,14 @@ class Algorithm extends AbstractFolderManager
             $fullPath,
             array("algorithm" => "algorithm")
         );
+
+        // We're very likely to need a YAML parser.
+        $yaml = new Parser();
+
+        // Parse gitstamp into a structured array.
+        if (isset($metadata['raw']['gitstamp'])) {
+            $metadata["gitstamp"] = $yaml->parse($metadata["raw"]["gitstamp"]);
+        }
 
         // Implicit file format in extension.
         foreach (glob("$fullPath/algorithm.*") as $file) {
