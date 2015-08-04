@@ -140,7 +140,7 @@ class QuestionTest extends AbstractTestCase
     {
         // Create a few new entities.
         for ($i = 1; $i <= 5; $i++) {
-            new Entity($this->pathToDatabase, null, array("tier" => $i));
+            new Entity($this->pathToDatabase, null, array("tiers" => [$i]));
         }
         // Create a new question chain.
         $this->testable->generateAsks();
@@ -154,7 +154,7 @@ class QuestionTest extends AbstractTestCase
         $tier = 1;
         foreach ($asks as $ask) {
             $entity = new Entity($this->pathToDatabase, $ask['entity_from']);
-            $this->assertEquals($tier, $entity->data['tier'], "Expected tier $tier; got tier {$entity->data['tier']}");
+            $this->assertEquals([$tier], $entity->data['tiers'], "Expected tier [$tier]; got tiers [" . implode(", ", $entity->data['tiers']) . ']');
             $tier++;
         }
     }

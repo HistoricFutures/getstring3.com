@@ -97,8 +97,10 @@ class AgentTest extends AbstractTestCase
     public function testRespondTo()
     {
         // Since we added tiers, we need a tier 2 agent for routing to happen.
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
 
+        // We're actually forcing a tier-1 agent to ask a tier-1 agent here.
+        // That's OK, but toAsk will then ask tier 2 as it's not a sourcing agent.
         $toAsk = new Agent($this->pathToDatabase);
         $toAsk->respondTo($this->testable, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
@@ -115,7 +117,6 @@ class AgentTest extends AbstractTestCase
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
         $this->assertArrayNotHasKey('ack', $logItems[0]);
-        $this->assertArrayNotHasKey('ack', $logItems[0]);
 
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
@@ -124,6 +125,7 @@ class AgentTest extends AbstractTestCase
         $logItems = $newLog->getLog();
         $this->assertGreaterThan(1, count($logItems));
         $lastItem = array_pop($logItems);
+        $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayHasKey('answer', $lastItem);
 
         // Re-ask with extra suppliers. Run ten times and average number
