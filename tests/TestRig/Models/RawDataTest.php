@@ -151,6 +151,8 @@ class RawDataTest extends AbstractTestCase
         // Attach to the database and insert an entity.
         $record = array('name' => 'Get Entities '.uniqid());
         Database::writeRecord($this->pathToDatabase, 'entity', $record);
+        $tierRecord = array("entity" => $record['id'], "tier" => 5);
+        Database::writeRecord($this->pathToDatabase, 'entity_tier', $tierRecord);
 
         // All data back.
         $allEntities = $this->testable->export(array('entity' => 'all'));
@@ -158,5 +160,9 @@ class RawDataTest extends AbstractTestCase
 
         $count = $this->testable->export(array('entity' => 'anything_else'));
         $this->assertEquals($count['entity'][0]['count'], 1);
+
+        // Another table.
+        $allTiers = $this->testable->export(array('entity_tier' => 'all'));
+        $this->assertEquals($allTiers['entity_tier'][0]['tier'], $tierRecord['tier']);
     }
 }

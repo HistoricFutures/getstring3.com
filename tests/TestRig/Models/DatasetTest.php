@@ -124,10 +124,17 @@ class DatasetTest extends AbstractTestCase
     {
         $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
         $rawData = $this->testable->readRawData($datasetDir);
-        $this->assertEquals(count($rawData['entity']), 30);
+        // We should have one vertical agent in all 3 tiers, hence 32 not 30.
+        $this->assertEquals(count($rawData['entity']), 32);
 
-        // Test population labels.
+        // Test population labels: vertical agent will be weird.
+        $verticalAgentData = array();
         foreach ($rawData['entity'] as $entityData) {
+            if ($entityData['population'] == "Vertical agent") {
+                $verticalAgentData[] = $entityData;
+                continue;
+            }
+
             switch ($entityData['tier']) {
             case 1:
                 $this->assertEquals("Lowest tier", $entityData['population']);
@@ -141,6 +148,12 @@ class DatasetTest extends AbstractTestCase
             default:
                 $this->fail("Unexpected tier in recipe.yaml.");
             }
+        }
+
+        // Check vertical agent's tier properties are consistent.
+        for ($i = 0; $i < 3; $i++) {
+            $this->assertEquals($i+1, $verticalAgentData[$i]['tier']);
+            $this->assertEquals($verticalAgentData[0]['id'], $verticalAgentData[$i]['id']);
         }
     }
 

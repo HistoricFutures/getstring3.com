@@ -7,6 +7,7 @@
 
 namespace Tests\Models;
 
+use TestRig\Exceptions\TierIntegrityException;
 use TestRig\Models\Agent;
 use TestRig\Models\Log;
 use Tests\AbstractTestCase;
@@ -64,12 +65,10 @@ class AgentTest extends AbstractTestCase
         $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
         $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
-
         $toAsks[0]->respondTo($this->testable, $this->log);
-
         $logSoFar = $this->log->getLog();
 
         // Second log item should always be tied to the first by agent ID.
@@ -90,7 +89,7 @@ class AgentTest extends AbstractTestCase
         $this->testable->data['mean_extra_suppliers'] = 0;
         $this->testable->data['is_sourcing'] = true;
         $source = $this->testable->pickToAsks($this->log);
-        $this->assertEquals($this->testable->data['tier'], $source[0]->data['tier']);
+        $this->assertEquals($this->testable->data['tiers'][0], $source[0]->data['tiers'][0]);
     }
 
     /**
@@ -99,8 +98,10 @@ class AgentTest extends AbstractTestCase
     public function testRespondTo()
     {
         // Since we added tiers, we need a tier 2 agent for routing to happen.
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
 
+        // We're actually forcing a tier-1 agent to ask a tier-1 agent here.
+        // That's OK, but toAsk will then ask tier 2 as it's not a sourcing agent.
         $toAsk = new Agent($this->pathToDatabase);
         $toAsk->respondTo($this->testable, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
@@ -117,7 +118,6 @@ class AgentTest extends AbstractTestCase
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
         $this->assertArrayNotHasKey('ack', $logItems[0]);
-        $this->assertArrayNotHasKey('ack', $logItems[0]);
 
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
@@ -126,6 +126,7 @@ class AgentTest extends AbstractTestCase
         $logItems = $newLog->getLog();
         $this->assertGreaterThan(1, count($logItems));
         $lastItem = array_pop($logItems);
+        $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayHasKey('answer', $lastItem);
 
         // Re-ask with extra suppliers. Run ten times and average number
@@ -147,5 +148,48 @@ class AgentTest extends AbstractTestCase
             }
         }
         $this->assertGreaterThan(10, $countSuppliers);
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::setTierContext().
+     */
+    public function testSetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+
+        $verticalAgent->setTierContext(1);
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $verticalAgent->setTierContext(3);
+        $this->assertEquals(3, $verticalAgent->getTierContext());
+
+        // Set some invalid tiers.
+        foreach (array(5, "not a tier", "", 0) as $invalidTier) {
+            try {
+                $verticalAgent->setTierContext($invalidTier);
+                $this->fail("Could set tier to be invalid '$invalidTier'.");
+            } catch (TierIntegrityException $e) {
+            }
+        }
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::getTierContext().
+     */
+    public function testGetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+        $log = new Log();
+
+        $toAsks = $verticalAgent->pickToAsks($log);
+        $toAsks2 = $toAsks[0]->pickToAsks($log);
+
+        // All the same agent.
+        $this->assertEquals($toAsks[0]->getID(), $verticalAgent->getID());
+        $this->assertEquals($toAsks2[0]->getID(), $verticalAgent->getID());
+
+        // But tier context should change.
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $this->assertEquals(2, $toAsks[0]->getTierContext());
+        $this->assertEquals(3, $toAsks2[0]->getTierContext());
     }
 }
