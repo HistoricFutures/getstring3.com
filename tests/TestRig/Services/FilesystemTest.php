@@ -90,7 +90,7 @@ class FilesystemTest extends AbstractTestCase
         $this->assertGreaterThan(
             0,
             strpos($stdout, substr($gitInfo['revision'], 0, 7)),
-            'Could not match revision to git repository creation STDOUT./'
+            'Could not match revision to git repository creation STDOUT.'
         );
         $this->assertEquals('master', $gitInfo['branch']);
         // Not tagged yet.

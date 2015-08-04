@@ -83,9 +83,18 @@ class Filesystem
         }
         $output = [];
 
+        // To ensure git finds all the necessary files we have to set both
+        // work-tree and git-dir. But what IS the git-dir? Recurse upwards.
+        while ($dir != "/") {
+            if (file_exists("$dir/.git")) {
+                break;
+            }
+            $dir = dirname($dir);
+        }
+
         // Assemble a "master command" for all git work.
         $dir = escapeshellarg($dir);
-        $gitCommand = "git --work-tree=$dir";
+        $gitCommand = "git --work-tree=$dir --git-dir=$dir/.git";
         // Subcommands for the particular return values.
         $gitSubCommands = [
             'revision' => 'rev-parse HEAD',
