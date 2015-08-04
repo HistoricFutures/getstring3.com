@@ -44,6 +44,7 @@ class RawData
         $meanRoutingTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_routing_time');
         $meanExtraSuppliers = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_extra_suppliers');
         $probabilityNoAck = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_ack');
+        $probabilityNoAnswer = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_answer');
 
         // Population summary properties (unique population labels).
         $populationCount = Database::getTableAggregate($this->path, 'entity', 'count', 'DISTINCT population');
@@ -60,6 +61,7 @@ class RawData
                 'mean_routing_time' => $meanRoutingTime,
                 'mean_extra_suppliers' => $meanExtraSuppliers,
                 'probability_no_ack' => $probabilityNoAck,
+                'probability_no_answer' => $probabilityNoAnswer,
             ),
             'populations' => array(
                 'count' => $populationCount,

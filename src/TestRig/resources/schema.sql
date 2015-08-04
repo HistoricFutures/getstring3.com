@@ -17,7 +17,8 @@ CREATE TABLE entity (
   mean_extra_suppliers INTEGER,
 
   -- Probabilities for agent control flow.
-  probability_no_ack REAL
+  probability_no_ack REAL,
+  probability_no_answer REAL
 );
 CREATE TABLE entity_tier (
   entity INTEGER NOT NULL,
