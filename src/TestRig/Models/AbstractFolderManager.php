@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use Symfony\Component\Yaml\Dumper;
 use TestRig\Services\Filesystem;
 
 /**
@@ -52,8 +53,15 @@ abstract class AbstractFolderManager
             $fullPath = $this->fullPath($dir);
         }
 
-        // Start folder on disk and make known what folder it's in.
+        // Start folder on disk and gitstamp it.
         mkdir($this->rootDir . "/$dir");
+        $gitInfo = Filesystem::retrieveGitstamp();
+        $dumper = new Dumper();
+        file_put_contents(
+            $this->rootDir . "/$dir/gitstamp.yaml",
+            $dumper->dump($gitInfo)
+        );
+
         return $dir;
     }
 
@@ -108,6 +116,7 @@ abstract class AbstractFolderManager
     protected function parseFileContents($fullPath, $basenames = array())
     {
         $rawFiles = array();
+        $basenames['gitstamp'] = 'gitstamp.yaml';
         foreach (glob("$fullPath/*") as $resource) {
             $basename = strtolower(str_replace("$fullPath/", "", $resource));
             foreach ($basenames as $rawFileKey => $basenameWeWant) {

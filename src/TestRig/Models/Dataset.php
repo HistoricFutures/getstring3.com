@@ -53,9 +53,15 @@ class Dataset extends AbstractFolderManager
             array('readme' => 'readme.txt', 'recipe' => 'recipe.yaml')
         );
 
+        // We're very likely to need a YAML parser.
+        $yaml = new Parser();
+
+        // Parse gitstamp into a structured array.
+        if (isset($metadata['raw']['gitstamp'])) {
+            $metadata["gitstamp"] = $yaml->parse($metadata["raw"]["gitstamp"]);
+        }
         // Parse any existing recipe into a structured array.
         if (isset($metadata['raw']['recipe'])) {
-            $yaml = new Parser();
             $metadata["recipe"] = $yaml->parse($metadata["raw"]["recipe"]);
         }
 

@@ -5,14 +5,20 @@
  * Test: TestRig\Services\Filesystem.
  */
 
+namespace Tests\Services;
+
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Services\Filesystem.
  */
-class FilesystemTest extends \PHPUnit_Framework_TestCase
+class FilesystemTest extends AbstractTestCase
 {
+    // Create a containing directory before object instantiated.
+    protected static $containingDir = '/tmp/for-filesystem';
+
     /**
      * Test: TestRig\Services\Filesystem::removeDirectory().
      */
@@ -64,5 +70,43 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $return);
         $this->assertEquals('', $stderr);
         $this->assertEquals('/bin/sh', trim($stdout));
+    }
+
+    /**
+     * Test: TestRig\Services\Filesystem::retrieveGitstamp().
+     */
+    public function testRetrieveGitstamp()
+    {
+        $dir = static::$containingDir;
+        mkdir($dir);
+
+        Filesystem::execCommand(
+            "cd $dir && git init && touch test.txt && git add . && git commit -m 'First'",
+            $stdout,
+            $stderr
+        );
+        $gitInfo = Filesystem::retrieveGitstamp($dir);
+
+        $this->assertGreaterThan(
+            0,
+            strpos($stdout, substr($gitInfo['revision'], 0, 7)),
+            'Could not match revision to git repository creation STDOUT./'
+        );
+        $this->assertEquals('master', $gitInfo['branch']);
+        // Not tagged yet.
+        $this->assertEquals('', $gitInfo['tag']);
+        // Also no errors: the "no tags" 128 error should be caught.
+        $this->assertEquals(0, $gitInfo['exitCode']);
+        $this->assertEquals('', $gitInfo['error']);
+
+        // Tag and assert it comes through.
+        Filesystem::execCommand(
+            "cd $dir && git tag -a 1.0.0 -m 'Tag'",
+            $stdout,
+            $stderr
+        );
+        $gitInfo = Filesystem::retrieveGitstamp($dir);
+
+        $this->assertEquals('1.0.0', $gitInfo['tag']);
     }
 }

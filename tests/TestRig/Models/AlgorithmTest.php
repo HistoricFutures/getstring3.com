@@ -35,6 +35,7 @@ class AlgorithmTest extends AbstractTestCase
         // Assert we've got a manifest.
         $this->assertTrue(file_exists(self::$containingDir . "/$dir"));
         $this->assertTrue(file_exists(self::$containingDir . "/$dir/algorithm.php"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$dir/gitstamp.yaml"));
 
         // Create with a different format.
         $dir = $this->createWithMock("py");
@@ -51,19 +52,23 @@ class AlgorithmTest extends AbstractTestCase
         // Read the manifest.
         $algorithm = $this->testable->read($dir);
         // Assert manifest contents as expected.
-        // Raw file present.
-        $this->assertArrayHasKey("raw", $algorithm);
-        $this->assertArrayHasKey("algorithm", $algorithm['raw']);
+        // Raw files present.
+        $this->assertArrayHasKey('raw', $algorithm);
+        $this->assertArrayHasKey('algorithm', $algorithm['raw']);
+        $this->assertArrayHasKey('gitstamp', $algorithm['raw']);
 
-        $this->assertArrayHasKey("format", $algorithm);
-        $this->assertEquals("php", $algorithm["format"]);
+        // Other data.
+        $this->assertArrayHasKey('gitstamp', $algorithm);
+        $this->assertArrayHasKey('revision', $algorithm['gitstamp']);
+        $this->assertArrayHasKey('format', $algorithm);
+        $this->assertEquals('php', $algorithm['format']);
 
         // Create a Python algorithm.
-        $dir = $this->createWithMock("py");
+        $dir = $this->createWithMock('py');
 
         // Read the manifest.
         $algorithm = $this->testable->read($dir);
-        $this->assertEquals("py", $algorithm["format"]);
+        $this->assertEquals('py', $algorithm['format']);
     }
 
     /**

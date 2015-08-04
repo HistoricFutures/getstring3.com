@@ -66,4 +66,57 @@ class Filesystem
 
         return proc_close($proc);
     }
+
+    /**
+     * Retrieve information about the current codebase's git revision.
+     *
+     * @param string $dir = null
+     *   Directory to query for git information. Defaults to pwd.
+     * @return array
+     *   Array with keys revision, branch and tag, plus any error reporting.
+     */
+    public static function retrieveGitstamp($dir = null)
+    {
+        // Ensure input and output defined.
+        if ($dir === null) {
+            $dir = getcwd();
+        }
+        $output = [];
+
+        // Assemble a "master command" for all git work.
+        $dir = escapeshellarg($dir);
+        $gitCommand = "git --work-tree=$dir";
+        // Subcommands for the particular return values.
+        $gitSubCommands = [
+            'revision' => 'rev-parse HEAD',
+            'branch' => 'rev-parse --abbrev-ref HEAD',
+            // Tag least likely to work (if no tags) so put last.
+            'tag' => 'describe --tags',
+        ];
+
+        // Loop over subcommands; quit if there's an error.
+        foreach ($gitSubCommands as $outputType => $gitSubCommand) {
+            $output['exitCode'] = static::execCommand(
+                "$gitCommand $gitSubCommand",
+                $outputText,
+                $output['error']
+            );
+            // Trimming is just so much easier in PHP than bash!
+            $output[$outputType] = trim($outputText);
+
+            // Any problems, quit now so they can be diagnosed.
+            if ($output['exitCode']) {
+                break;
+            }
+        }
+
+        // If the error is 128 and tag === '', it's not really an error,
+        // just that no tags have been created yet in this repository.
+        if (array_key_exists('tag', $output) && $output['exitCode'] === 128) {
+            $output['error'] = "";
+            $output['exitCode'] = 0;
+        }
+
+        return $output;
+    }
 }
