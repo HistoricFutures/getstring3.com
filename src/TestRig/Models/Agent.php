@@ -106,6 +106,11 @@ class Agent extends Entity
         // If we don't get an askee, we're top tier!
         $toAsks = $this->pickToAsks($log);
 
+        // Calculate a time multiplier now, based on the agent is responding
+        // to itself or not.
+        $askingSelf = ($from->getID() === $this->getID());
+        $timeRatio = $askingSelf ? $this->data['self_time_ratio'] : 1;
+
         // Melters don't acknowledge or re-route; just respond NULL.
         if (Maths::evenlyRandomZeroOne() <= $noAck) {
             $log->logInteraction(
@@ -113,42 +118,52 @@ class Agent extends Entity
                 $this->getID()
             );
         }
+
         // Final tier have no $toAsk candidate: ack and (if suitable) answer.
         elseif (!$toAsks) {
             if (Maths::evenlyRandomZeroOne() <= $noAnswer) {
                 $log->logInteraction(
                     $from->getID(),
                     $this->getID(),
-                    Generate::getTime($this->data['mean_ack_time'])
+                    Generate::getTime($this->data['mean_ack_time']) * $timeRatio
                 );
             } else {
                 $log->logInteraction(
                     $from->getID(),
                     $this->getID(),
-                    Generate::getTime($this->data['mean_ack_time']),
-                    Generate::getTime($this->data['mean_answer_time'])
+                    Generate::getTime($this->data['mean_ack_time']) * $timeRatio,
+                    Generate::getTime($this->data['mean_answer_time']) * $timeRatio
                 );
             }
         }
         // Otherwise ack, wait routing time, then route to to-ask in turn.
         else {
-            // Rather than generate times, travel back in time, each time.
+            // Log this agent's acknowledgement of the ask just once.
+            $log->logInteraction(
+                $from->getID(),
+                $this->getID(),
+                Generate::getTime($this->data['mean_ack_time']) * $timeRatio
+            );
+
+            // Rather than generate times, we travel back in time, each time.
             // Otherwise we'd have to take into account routing times etc.
             $tZero = $log->timePasses();
+
+            // Now, for each to-ask, rewind time to T-zero, then kick off
+            // bifurcated route.
             foreach ($toAsks as $toAsk) {
-                // Rewind time to T-zero, then kick off bifurcated route.
                 $log->timeTravelTo($tZero);
 
-                $log->logInteraction(
-                    $from->getID(),
-                    $this->getID(),
-                    Generate::getTime($this->data['mean_ack_time'])
-                );
+                // We want a different time ratio for routing, because we're
+                // no longer considering the ask $from=>$this, but rather
+                // the new ask $this=>$toAsk.
+                $routingToSelf = ($this->getID() === $toAsk->getID());
+                $routingTimeRatio = $routingToSelf ? $this->data['self_time_ratio'] : 1;
                 $log->timePasses(
-                    Generate::getTime($this->data['mean_routing_time'])
+                    Generate::getTime($this->data['mean_routing_time']) * $routingTimeRatio
                 );
 
-                $toAsk->respondTo($this, $log);
+                $toAsk->respondTo($this, $log, true);
             }
         }
     }

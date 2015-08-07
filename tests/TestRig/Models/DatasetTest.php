@@ -165,7 +165,7 @@ class DatasetTest extends AbstractTestCase
             $this->assertEquals($i+1, $verticalAgentData[$i]['tier']);
             $this->assertEquals($verticalAgentData[0]['id'], $verticalAgentData[$i]['id']);
             // self_time_ratio should not be 1, because we've changed it.
-            $this->assertNotEquals(1, $entityData['self_time_ratio']);
+            $this->assertEquals(0.5, $verticalAgentData[$i]['self_time_ratio']);
         }
     }
 

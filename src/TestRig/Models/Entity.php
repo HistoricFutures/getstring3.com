@@ -30,6 +30,7 @@ class Entity extends AbstractDBObject
         'mean_ack_time' => 5,
         'mean_answer_time' => 5,
         'mean_routing_time' => 5,
+        'self_time_ratio' => 1,
 
         'mean_extra_suppliers' => 0,
 
@@ -73,7 +74,9 @@ class Entity extends AbstractDBObject
                 break;
 
             // Tier: verbatim number.
+            // Self-time ratio multiplier: verbatim number.
             case 'tiers':
+            case 'self_time_ratio':
                 $this->data[$argumentName] = $argumentData;
                 break;
 

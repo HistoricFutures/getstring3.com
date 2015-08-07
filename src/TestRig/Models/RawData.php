@@ -42,6 +42,7 @@ class RawData
         $meanAckTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_ack_time');
         $meanAnswerTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_answer_time');
         $meanRoutingTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_routing_time');
+        $selfTimeRatio = Database::getTableAggregate($this->path, 'entity', 'avg', 'self_time_ratio');
         $meanExtraSuppliers = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_extra_suppliers');
         $probabilityNoAck = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_ack');
         $probabilityNoAnswer = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_answer');
@@ -59,6 +60,7 @@ class RawData
                 'mean_ack_time' => $meanAckTime,
                 'mean_answer_time' => $meanAnswerTime,
                 'mean_routing_time' => $meanRoutingTime,
+                'self_time_ratio' => $selfTimeRatio,
                 'mean_extra_suppliers' => $meanExtraSuppliers,
                 'probability_no_ack' => $probabilityNoAck,
                 'probability_no_answer' => $probabilityNoAnswer,
