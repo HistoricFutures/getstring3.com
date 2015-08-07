@@ -121,11 +121,7 @@ class AgentTest extends AbstractTestCase
 
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
-        $newLog = new Log();
-        $toAsk->respondTo($this->testable, $newLog);
-        $logItems = $newLog->getLog();
-        $this->assertGreaterThan(1, count($logItems));
-        $lastItem = array_pop($logItems);
+        $lastItem = $this->respondToAndGetLastLogItem($toAsk);
         // We only have 1 tier-2 agent, so we have to end up there.
         $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
         $this->assertArrayHasKey('ack', $lastItem);
@@ -134,18 +130,32 @@ class AgentTest extends AbstractTestCase
         // Set our sole tier2Agent to never answer, and re-run the test.
         $tier2Agent->data['probability_no_answer'] = 1;
         $tier2Agent->update();
-        $newLog = new Log();
-        $toAsk->respondTo($this->testable, $newLog);
-        $logItems = $newLog->getLog();
-        $lastItem = array_pop($logItems);
+        $lastItem = $this->respondToAndGetLastLogItem($toAsk);
         // Our last item should no longer have an answer.
         $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
         $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayNotHasKey('answer', $lastItem);
-
         // Re-set tier2Agent back to always answering.
         $tier2Agent->data['probability_no_answer'] = 0;
         $tier2Agent->update();
+
+        // Turn our tier2agent into a vertical agent
+        $tier2Agent->data['tiers'] = [2, 3];
+        $tier2Agent->update();
+        // Now it should always reply to itself.
+        $lastItem = $this->respondToAndGetLastLogItem($toAsk);
+        $this->assertEquals($lastItem['from'], $lastItem['to']);
+        foreach (array('start', 'ack', 'answer') as $time) {
+            $this->assertGreaterThan(0, $lastItem[$time]);
+        }
+        // Set its internal routing times etc. to zero and re-run.
+        $tier2Agent->data['self_time_ratio'] = 0;
+        $tier2Agent->update();
+        $lastItem = $this->respondToAndGetLastLogItem($toAsk);
+        $this->assertEquals($lastItem['from'], $lastItem['to']);
+        foreach (array('start', 'ack', 'answer') as $time) {
+            $this->assertEquals(0, $lastItem[$time]);
+        }
 
         // Re-ask with extra suppliers. Run ten times and average number
         // of suppliers toAsk picks must be greater than 10.
@@ -209,5 +219,28 @@ class AgentTest extends AbstractTestCase
         $this->assertEquals(1, $verticalAgent->getTierContext());
         $this->assertEquals(2, $toAsks[0]->getTierContext());
         $this->assertEquals(3, $toAsks2[0]->getTierContext());
+    }
+
+    /**
+     * Private helper function: get last log item.
+     *
+     * Avoids a lot of boilerplate above.
+     *
+     * @param Agent $toAsk
+     *   Agent to call ->respondTo($this->testable, ...) on.
+     * @param Log $log = null
+     *   Log object; creates a new one if not provided.
+     * @return array
+     *   Last log entry via array_pop().
+     */
+    private function respondToAndGetLastLogItem(Agent $toAsk, Log $log = null)
+    {
+        if ($log === null) {
+            $log = new Log();
+        }
+
+        $toAsk->respondTo($this->testable, $log);
+        $logItems = $log->getLog();
+        return array_pop($logItems);
     }
 }

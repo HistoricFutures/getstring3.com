@@ -141,6 +141,9 @@ class DatasetTest extends AbstractTestCase
                 continue;
             }
 
+            // self_time_ratio defaults to 1.
+            $this->assertEquals(1, $entityData['self_time_ratio']);
+
             switch ($entityData['tier']) {
             case 1:
                 $this->assertEquals("Lowest tier", $entityData['population']);
@@ -156,10 +159,13 @@ class DatasetTest extends AbstractTestCase
             }
         }
 
-        // Check vertical agent's tier properties are consistent.
+        // Check vertical agent's properties are consistent.
         for ($i = 0; $i < 3; $i++) {
+            // Tiers and IDs should all be the same.
             $this->assertEquals($i+1, $verticalAgentData[$i]['tier']);
             $this->assertEquals($verticalAgentData[0]['id'], $verticalAgentData[$i]['id']);
+            // self_time_ratio should not be 1, because we've changed it.
+            $this->assertNotEquals(1, $entityData['self_time_ratio']);
         }
     }
 
