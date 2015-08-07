@@ -18,6 +18,7 @@ populations:
     mean_ack_time: 5
     mean_answer_time: 15
     mean_routing_time: 20
+    self_time_ratio: 0.5
   - tiers: [3]
     number: 10
     mean_ack_time: 3

@@ -12,6 +12,8 @@ CREATE TABLE entity (
   mean_ack_time INTEGER,
   mean_answer_time INTEGER,
   mean_routing_time INTEGER,
+  -- Ratio for multiplying times when responding to self.
+  self_time_ratio INTEGER,
 
   -- Bifurcating questions with extra suppliers.
   mean_extra_suppliers INTEGER,

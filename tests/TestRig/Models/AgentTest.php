@@ -121,11 +121,7 @@ class AgentTest extends AbstractTestCase
 
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
-        $newLog = new Log();
-        $toAsk->respondTo($this->testable, $newLog);
-        $logItems = $newLog->getLog();
-        $this->assertGreaterThan(1, count($logItems));
-        $lastItem = array_pop($logItems);
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
         // We only have 1 tier-2 agent, so we have to end up there.
         $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
         $this->assertArrayHasKey('ack', $lastItem);
@@ -134,18 +130,35 @@ class AgentTest extends AbstractTestCase
         // Set our sole tier2Agent to never answer, and re-run the test.
         $tier2Agent->data['probability_no_answer'] = 1;
         $tier2Agent->update();
-        $newLog = new Log();
-        $toAsk->respondTo($this->testable, $newLog);
-        $logItems = $newLog->getLog();
-        $lastItem = array_pop($logItems);
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
         // Our last item should no longer have an answer.
         $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
         $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayNotHasKey('answer', $lastItem);
-
         // Re-set tier2Agent back to always answering.
         $tier2Agent->data['probability_no_answer'] = 0;
         $tier2Agent->update();
+
+        // Turn our tier2agent into a vertical agent
+        $tier2Agent->data['tiers'] = [2, 3];
+        $tier2Agent->update();
+        // Now it should always reply to itself.
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
+        $this->assertEquals($lastItem['from'], $lastItem['to']);
+        foreach (array('ack', 'answer') as $time) {
+            $this->assertNotEquals($lastItem['start'], $lastItem[$time], "Time $time was not equal to start");
+        }
+        // Set its internal routing times etc. to zero and re-run.
+        $tier2Agent->data['self_time_ratio'] = 0;
+        $tier2Agent->update();
+        $lastItems = $this->respondToAndGetLogItems($toAsk, null, [1, 2]);
+        // Ack and answer should be the same (zero difference from start).
+        // Routing should be the same, but this is measured as time between
+        // previous item's ack and this item's start.
+        foreach (array('ack', 'answer') as $time) {
+            $this->assertEquals($lastItems[2]['start'], $lastItems[2][$time], "Vertical agent's internal time $time was not equal to start: response took time!");
+            $this->assertEquals($lastItems[1]['ack'], $lastItems[2][$time], "Vertical agent's internal time $time was not equal to previous log item's ack: routing took time!");
+        }
 
         // Re-ask with extra suppliers. Run ten times and average number
         // of suppliers toAsk picks must be greater than 10.
@@ -209,5 +222,41 @@ class AgentTest extends AbstractTestCase
         $this->assertEquals(1, $verticalAgent->getTierContext());
         $this->assertEquals(2, $toAsks[0]->getTierContext());
         $this->assertEquals(3, $toAsks2[0]->getTierContext());
+    }
+
+    /**
+     * Private helper function: get last log item.
+     *
+     * Avoids a lot of boilerplate above.
+     *
+     * @param Agent $toAsk
+     *   Agent to call ->respondTo($this->testable, ...) on.
+     * @param Log $log = null
+     *   Log object; creates a new one if not provided.
+     * @param mixed $which = 'last'
+     *   Which items to return; defaults to 'last'. Array of keys returns them.
+     * @return array
+     *   Last log entry via array_pop().
+     */
+    private function respondToAndGetLogItems(Agent $toAsk, Log $log = null, $which = 'last')
+    {
+        if ($log === null) {
+            $log = new Log();
+        }
+
+        $toAsk->respondTo($this->testable, $log);
+        $logItems = $log->getLog();
+
+        // By default, return last item in log.
+        if (!is_array($which)) {
+            return array_pop($logItems);
+        }
+
+        // If an array specified, try to return those items.
+        $toReturn = array();
+        foreach ($which as $key) {
+            $toReturn[$key] = $logItems[$key];
+        }
+        return $toReturn;
     }
 }
