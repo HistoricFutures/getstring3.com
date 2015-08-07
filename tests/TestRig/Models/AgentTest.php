@@ -126,8 +126,26 @@ class AgentTest extends AbstractTestCase
         $logItems = $newLog->getLog();
         $this->assertGreaterThan(1, count($logItems));
         $lastItem = array_pop($logItems);
+        // We only have 1 tier-2 agent, so we have to end up there.
+        $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
         $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayHasKey('answer', $lastItem);
+
+        // Set our sole tier2Agent to never answer, and re-run the test.
+        $tier2Agent->data['probability_no_answer'] = 1;
+        $tier2Agent->update();
+        $newLog = new Log();
+        $toAsk->respondTo($this->testable, $newLog);
+        $logItems = $newLog->getLog();
+        $lastItem = array_pop($logItems);
+        // Our last item should no longer have an answer.
+        $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
+        $this->assertArrayHasKey('ack', $lastItem);
+        $this->assertArrayNotHasKey('answer', $lastItem);
+
+        // Re-set tier2Agent back to always answering.
+        $tier2Agent->data['probability_no_answer'] = 0;
+        $tier2Agent->update();
 
         // Re-ask with extra suppliers. Run ten times and average number
         // of suppliers toAsk picks must be greater than 10.
