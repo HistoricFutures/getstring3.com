@@ -34,6 +34,7 @@ class Entity extends AbstractDBObject
         'mean_extra_suppliers' => 0,
 
         'probability_no_ack' => 0,
+        'probability_no_answer' => 0,
     );
 
     /**
@@ -102,6 +103,7 @@ class Entity extends AbstractDBObject
 
             // Probabilities: 0, 1 or randomized.
             case 'probability_no_ack':
+            case 'probability_no_answer':
                 switch ($argumentData * 1) {
                 case 0:
                 case 1:
