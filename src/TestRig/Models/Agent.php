@@ -7,6 +7,7 @@
 
 namespace TestRig\Models;
 
+use TestRig\Exceptions\TierIntegrityException;
 use TestRig\Services\Database;
 use TestRig\Services\Generate;
 use TestRig\Services\Maths;
@@ -17,6 +18,9 @@ use TestRig\Services\Maths;
  */
 class Agent extends Entity
 {
+    // Vertical (multi-tiered) agents need a concept of tier context.
+    private $tierContext = null;
+
     /**
      * Pick a random agent and return: class method.
      *
@@ -38,7 +42,8 @@ class Agent extends Entity
         }
 
         // Getting a random row from a SQLite table is a hack!
-        $randomID = $conn->querySingle("SELECT id FROM entity WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+        $randomID = $conn->querySingle("SELECT e.id FROM entity e INNER JOIN entity_tier et ON et.entity = e.id WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+
         // Now we're putting filters in, we could end up with no suitable candidate.
         if (!$randomID) {
             return null;
@@ -59,9 +64,11 @@ class Agent extends Entity
      */
     public function pickToAsks(Log $log)
     {
-        // Try to get one to-ask; if we can't, we know there are none.
+        // Try to get one to-ask; if we can't even get one, return empty array.
+        // Sourcing agents get to-asks from the same tier as them.
+        $toAskTier = $this->getTierContext() + ($this->data['is_sourcing'] ? 0 : 1);
         $toAsks = array(
-            Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1))
+            Agent::pickRandom($this->path, "tier = $toAskTier")
         );
         if (!$toAsks[0]) {
             return array();
@@ -75,8 +82,13 @@ class Agent extends Entity
                 $this->data['mean_extra_suppliers'] * 4
             );
             for ($i = 1; $i <= $numSuppliers; $i++) {
-                $toAsks[] = Agent::pickRandom($this->path, "tier = " . ($this->data['tier'] + 1));
+                $toAsks[] = Agent::pickRandom($this->path, "tier = $toAskTier");
             }
+        }
+
+        // Set tier context on all of our to-asks.
+        foreach ($toAsks as $toAsk) {
+            $toAsk->setTierContext($toAskTier);
         }
 
         return $toAsks;
@@ -87,48 +99,109 @@ class Agent extends Entity
      */
     public function respondTo(Agent $from, Log $log)
     {
-        $probability = $this->data['probability_no_ack'];
+        $noAck = $this->data['probability_no_ack'];
+        $noAnswer = $this->data['probability_no_answer'];
 
         // Now we have tiers, we have to check if we're the top tier or not.
         // If we don't get an askee, we're top tier!
         $toAsks = $this->pickToAsks($log);
 
+        // Calculate a time multiplier now, based on the agent is responding
+        // to itself or not.
+        $askingSelf = ($from->getID() === $this->getID());
+        $timeRatio = $askingSelf ? $this->data['self_time_ratio'] : 1;
+
         // Melters don't acknowledge or re-route; just respond NULL.
-        if (Maths::evenlyRandomZeroOne() <= $probability) {
+        if (Maths::evenlyRandomZeroOne() <= $noAck) {
             $log->logInteraction(
                 $from->getID(),
                 $this->getID()
             );
         }
-        // Final tier have no $toAsk candidate: ack and answer.
-        elseif (!$toAsks) {
-            $log->logInteraction(
-                $from->getID(),
-                $this->getID(),
-                Generate::getTime($this->data['mean_ack_time']),
-                Generate::getTime($this->data['mean_answer_time'])
-            );
-        }
-        // Otherwise ack, wait routing time, then route to to-ask in turn.
-        else {
-            // Rather than generate times, travel back in time, each time.
-            // Otherwise we'd have to take into account routing times etc.
-            $tZero = $log->timePasses();
-            foreach ($toAsks as $toAsk) {
-                // Rewind time to T-zero, then kick off bifurcated route.
-                $log->timeTravelTo($tZero);
 
+        // Final tier have no $toAsk candidate: ack and (if suitable) answer.
+        elseif (!$toAsks) {
+            if (Maths::evenlyRandomZeroOne() <= $noAnswer) {
                 $log->logInteraction(
                     $from->getID(),
                     $this->getID(),
-                    Generate::getTime($this->data['mean_ack_time'])
+                    Generate::getTime($this->data['mean_ack_time']) * $timeRatio
                 );
-                $log->timePasses(
-                    Generate::getTime($this->data['mean_routing_time'])
+            } else {
+                $log->logInteraction(
+                    $from->getID(),
+                    $this->getID(),
+                    Generate::getTime($this->data['mean_ack_time']) * $timeRatio,
+                    Generate::getTime($this->data['mean_answer_time']) * $timeRatio
                 );
-
-                $toAsk->respondTo($this, $log);
             }
         }
+        // Otherwise ack, wait routing time, then route to to-ask in turn.
+        else {
+            // Log this agent's acknowledgement of the ask just once.
+            $log->logInteraction(
+                $from->getID(),
+                $this->getID(),
+                Generate::getTime($this->data['mean_ack_time']) * $timeRatio
+            );
+
+            // Rather than generate times, we travel back in time, each time.
+            // Otherwise we'd have to take into account routing times etc.
+            $tZero = $log->timePasses();
+
+            // Now, for each to-ask, rewind time to T-zero, then kick off
+            // bifurcated route.
+            foreach ($toAsks as $toAsk) {
+                $log->timeTravelTo($tZero);
+
+                // We want a different time ratio for routing, because we're
+                // no longer considering the ask $from=>$this, but rather
+                // the new ask $this=>$toAsk.
+                $routingToSelf = ($this->getID() === $toAsk->getID());
+                $routingTimeRatio = $routingToSelf ? $this->data['self_time_ratio'] : 1;
+                $log->timePasses(
+                    Generate::getTime($this->data['mean_routing_time']) * $routingTimeRatio
+                );
+
+                $toAsk->respondTo($this, $log, true);
+            }
+        }
+    }
+
+    /**
+     * Set the tier context that this agent is operating in.
+     *
+     * Vertical agents can be in more than one tier, but within the
+     * context of a particular ask, they will be being asked in their
+     * role as an agent of tier N. So we need an idea of tier context.
+     *
+     * @param int $tier
+     *   Tier context. Must be a valid tier.
+     * @throws TierIntegrityException
+     */
+    public function setTierContext($tier)
+    {
+        if (!in_array($tier, $this->data['tiers'])) {
+            throw new TierIntegrityException("Tried to set invalid tier context '$tier'.");
+        }
+
+        $this->tierContext = $tier;
+    }
+
+    /**
+     * Get the tier context that this agent is operating in.
+     *
+     * See #setTierContext() for more information.
+     *
+     * @return int
+     *   Current tier context or sets as lowest tier if not yet set.
+     */
+    public function getTierContext()
+    {
+        if ($this->tierContext === null) {
+            $this->setTierContext(min($this->data['tiers']));
+        }
+
+        return $this->tierContext;
     }
 }

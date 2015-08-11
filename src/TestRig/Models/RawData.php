@@ -42,8 +42,10 @@ class RawData
         $meanAckTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_ack_time');
         $meanAnswerTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_answer_time');
         $meanRoutingTime = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_routing_time');
+        $selfTimeRatio = Database::getTableAggregate($this->path, 'entity', 'avg', 'self_time_ratio');
         $meanExtraSuppliers = Database::getTableAggregate($this->path, 'entity', 'avg', 'mean_extra_suppliers');
         $probabilityNoAck = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_ack');
+        $probabilityNoAnswer = Database::getTableAggregate($this->path, 'entity', 'avg', 'probability_no_answer');
 
         // Population summary properties (unique population labels).
         $populationCount = Database::getTableAggregate($this->path, 'entity', 'count', 'DISTINCT population');
@@ -58,8 +60,10 @@ class RawData
                 'mean_ack_time' => $meanAckTime,
                 'mean_answer_time' => $meanAnswerTime,
                 'mean_routing_time' => $meanRoutingTime,
+                'self_time_ratio' => $selfTimeRatio,
                 'mean_extra_suppliers' => $meanExtraSuppliers,
                 'probability_no_ack' => $probabilityNoAck,
+                'probability_no_answer' => $probabilityNoAnswer,
             ),
             'populations' => array(
                 'count' => $populationCount,
@@ -147,6 +151,10 @@ class RawData
                 $sql = 'SELECT * FROM entity ORDER BY id';
                 break;
 
+            case 'extended':
+                $sql = 'SELECT * FROM entity e LEFT JOIN entity_tier et ON e.id = et.entity ORDER BY e.id, et.tier';
+                break;
+
             default:
                 $sql = 'SELECT COUNT(*) AS count FROM entity';
             }
@@ -156,6 +164,22 @@ class RawData
                 $export['entity'][] = $row;
             }
         }
+        if (isset($options['entity_tier'])) {
+            switch ($options['entity_tier']) {
+            case 'all':
+                $sql = 'SELECT * FROM entity_tier ORDER BY entity, tier';
+                break;
+
+            default:
+                $sql = 'SELECT COUNT(*) AS count FROM entity_tier';
+            }
+
+            $results = Database::getConn($this->path)->query($sql);
+            while ($row = $results->fetchArray()) {
+                $export['entity_tier'][] = $row;
+            }
+        }
+
 
         return $export;
     }

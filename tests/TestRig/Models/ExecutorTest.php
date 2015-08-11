@@ -5,61 +5,44 @@
  * Test: TestRig\Models\Executor.
  */
 
-use Symfony\Component\Yaml\Dumper;
-use TestRig\Models\Dataset;
-use TestRig\Models\Executor;
+namespace Tests\Models;
+
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Executor.
  */
-class ExecutorTest extends \PHPUnit_Framework_TestCase
+class ExecutorTest extends AbstractTestCase
 {
-    // To be replaced with new Executor() during setUpBeforeClass.
-    public static $model = null;
-    // Root directory for folders: we keep track too.
-    private static $rootDir = null;
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = 'DIR_ALGORITHMS';
+
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Executor';
 
     /**
-     * Set up before class: create root folder and Executor() handler class.
+     * Test: TestRig\Models\Executor::run().
      */
-    public static function setUpBeforeClass()
-    {
-        self::$rootDir = getenv('DIR_ALGORITHMS');
-        mkdir(self::$rootDir);
-        self::$model = new Executor();
-    }
-
-    /**
-     * Tear down after class: delete root folder.
-     */
-    public static function tearDownAfterClass()
-    {
-        Filesystem::removeDirectory(self::$rootDir);
-    }
-
     public function testRun()
     {
         // Create an algorithm and a fake dataset.
         $algorithmDir = $this->createWithMock("php", '<' . '?php echo $argv[1];');
-        $datasetDir = "/tmp/for-algorithms";
-        mkdir($datasetDir);
+        $datasetDir = "/tmp/this-never-gets-accessed-anyway";
 
         // Run algorithm and test results.
-        $results = self::$model->run($algorithmDir, $datasetDir);
+        $results = $this->testable->run($algorithmDir, $datasetDir);
 
         $this->assertEquals(0, $results['exitCode']);
         $this->assertEquals($datasetDir, $results['stdout']);
         $this->assertEquals("", $results['stderr']);
-
-        Filesystem::removeDirectory($datasetDir);
     }
 
     /**
      * Helper: create an algorithm using mocking of UploadedFile.
      */
-    private function createWithMock($format = 'php', $text = null)
+    protected function createWithMock($format = 'php', $text = null)
     {
         // Mock up an UploadedFile, disabling its constructor.
         $mockBuilder = $this->getMockBuilder(
@@ -77,7 +60,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         // Squirrel away the bop data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_mock_storage = isset($text) ? $text : '<' . '?php echo "foo"; ';
-        return self::$model->create($format, $mockUploadedFile);
+        return $this->testable->create($format, $mockUploadedFile);
     }
 
     /**

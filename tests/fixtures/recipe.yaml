@@ -1,17 +1,25 @@
 populations:
-  - tier: 1
+  - tiers: [1]
     label: "Lowest tier"
     number: 10
     mean_ack_time: 5
     mean_answer_time: 15
     mean_routing_time: 20
     mean_extra_suppliers: 2
-  - tier: 2
-    number: 10
+  - tiers: [2]
+    number: 9
     mean_ack_time: 7
     mean_answer_time: 21
     mean_routing_time: 28
-  - tier: 3
+    probability_is_sourcing: 0.2
+  - tiers: [1, 2, 3]
+    label: "Vertical agent"
+    number: 1
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    self_time_ratio: 0.5
+  - tiers: [3]
     number: 10
     mean_ack_time: 3
     mean_answer_time: 9

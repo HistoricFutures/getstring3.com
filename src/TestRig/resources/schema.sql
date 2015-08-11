@@ -4,20 +4,29 @@ CREATE TABLE entity (
   id INTEGER PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
 
-  -- Tiers and internal structure.
+  -- Internal structure: tiers now in their own table.
   population VARCHAR(64),
-  tier INTEGER,
+  is_sourcing INTEGER(1),
 
   -- Three times in the Raw Responsive Data table.
   mean_ack_time INTEGER,
   mean_answer_time INTEGER,
   mean_routing_time INTEGER,
+  -- Ratio for multiplying times when responding to self.
+  self_time_ratio INTEGER,
 
   -- Bifurcating questions with extra suppliers.
   mean_extra_suppliers INTEGER,
 
   -- Probabilities for agent control flow.
-  probability_no_ack REAL
+  probability_no_ack REAL,
+  probability_no_answer REAL
+);
+CREATE TABLE entity_tier (
+  entity INTEGER NOT NULL,
+  tier INTEGER NOT NULL,
+
+  FOREIGN KEY(entity) REFERENCES entity(id)
 );
 -- An "empty" question table makes our id-based ORM work more easily.
 CREATE TABLE question (

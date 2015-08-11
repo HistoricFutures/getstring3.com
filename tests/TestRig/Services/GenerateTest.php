@@ -5,21 +5,18 @@
  * Test: TestRig\Services\Generate.
  */
 
+namespace Tests\Services;
+
 use TestRig\Services\Generate;
+use Tests\AbstractStatsTestCase;
 
 /**
  * @class
  * Test: TestRig\Services\Generate.
  */
 
-class GenerateTest extends \PHPUnit_Framework_TestCase
+class GenerateTest extends AbstractStatsTestCase
 {
-    // Thresholds for "expected randomness".
-    // Exponential is generally wider as stddev = mean unavoidably.
-    private $exponentialDelta = 0.1;
-    // Quite wide standard deviation on the 0-1 binomial.
-    private $binomialZeroOneDelta = 0.08;
-
     /**
      * Test: \TestRig\Services\Generate::getEntityName().
      */
@@ -48,12 +45,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             $value += Generate::getTime($mean);
         }
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->exponentialDelta),
+            $mean * (1 - $this->deltas['widest']),
             $value / $trials,
             "Noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->exponentialDelta),
+            $mean * (1 + $this->deltas['widest']),
             $value / $trials,
             "Noise value (unluckily?) high: test again?"
         );
@@ -77,12 +74,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->binomialZeroOneDelta),
+            $mean * (1 - $this->deltas['wide']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->binomialZeroOneDelta),
+            $mean * (1 + $this->deltas['wide']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) high: test again?"
         );
@@ -106,12 +103,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertGreaterThanOrEqual(
-            $mean * (1 - $this->binomialZeroOneDelta),
+            $mean * (1 - $this->deltas['normal']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) low: test again?"
         );
         $this->assertLessThanOrEqual(
-            $mean * (1 + $this->binomialZeroOneDelta),
+            $mean * (1 + $this->deltas['normal']),
             $value / $trials,
             "Binomial 0-1 noise value (unluckily?) high: test again?"
         );

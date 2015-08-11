@@ -5,37 +5,24 @@
  * Test: TestRig\Models\Question.
  */
 
-use TestRig\Models\Question;
+namespace Tests\Models;
+
 use TestRig\Models\Entity;
-use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Question.
  */
-class QuestionTest extends \PHPUnit_Framework_TestCase
+class QuestionTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-question.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-question.sqlite3";
 
-    /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        $this->conn = Database::create($this->pathToDatabase);
-        $this->model = new Question($this->pathToDatabase);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
-    }
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Question';
+    // And does it take the database path as __construct() argument?
+    protected $testableClassNeedsDatabase = true;
 
     /**
      * Test: \TestRig\Models\Question::__construct().
@@ -43,7 +30,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         // We should always have an entity.
-        $this->assertEquals(1, $this->model->data['id']);
+        $this->assertEquals(1, $this->testable->data['id']);
     }
 
     /**
@@ -52,8 +39,8 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testCreate()
     {
         // Create a new entity and confirm its newness.
-        $this->model->create();
-        $this->assertEquals(2, $this->model->data['id']);
+        $this->testable->create();
+        $this->assertEquals(2, $this->testable->data['id']);
     }
 
     /**
@@ -63,12 +50,12 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     {
         // Create a new entity and bind to it, but then re-bind to the
         // entity with ID=1.
-        $this->model->create();
-        $this->model->read(1);
+        $this->testable->create();
+        $this->testable->read(1);
 
         // Read a record that doesn't exist.
-        $this->model->read(5);
-        $this->assertNull($this->model->data);
+        $this->testable->read(5);
+        $this->assertNull($this->testable->data);
     }
 
     /**
@@ -77,9 +64,9 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         try {
-            $this->model->update();
+            $this->testable->update();
             $this->fail('Questions should not be updatable.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
@@ -88,9 +75,9 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $this->model->delete();
-        $this->model->read(1);
-        $this->assertNull($this->model->data);
+        $this->testable->delete();
+        $this->testable->read(1);
+        $this->assertNull($this->testable->data);
     }
 
     /**
@@ -98,10 +85,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetID()
     {
-        $id = $this->model->getID();
-        $this->assertEquals($id, $this->model->data['id']);
-        $this->model->data['id'] = 5;
-        $this->assertNotEquals($id, $this->model->data['id']);
+        $id = $this->testable->getID();
+        $this->assertEquals($id, $this->testable->data['id']);
+        $this->testable->data['id'] = 5;
+        $this->assertNotEquals($id, $this->testable->data['id']);
     }
 
     /**
@@ -112,28 +99,28 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $from = new Entity($this->pathToDatabase);
         $to = new Entity($this->pathToDatabase);
         $ask = array(
-            'question' => $this->model->getID(),
+            'question' => $this->testable->getID(),
             'entity_from' => $from->getID(),
             'entity_to' => $from->getID(),
             'time_start' => 50,
             'time_ack' => 100,
         );
-        $this->model->addAsk($ask);
+        $this->testable->addAsk($ask);
 
         // ID should be retrieved.
         $this->assertArrayHasKey('id', $ask);
         // And ask should be on the list.
-        $asks = $this->model->getAsks();
+        $asks = $this->testable->getAsks();
         $this->assertEquals($ask['id'], $asks[0]['id']);
-        $this->assertEquals($this->model->getID(), $asks[0]['question']);
+        $this->assertEquals($this->testable->getID(), $asks[0]['question']);
 
         // Asks should be preserved across reloads.
-        $this->model->read(1);
-        $asks = $this->model->getAsks();
+        $this->testable->read(1);
+        $asks = $this->testable->getAsks();
         $this->assertEquals($ask['id'], $asks[0]['id']);
         // But not if the reload is of an question that doesn't exist!
-        $this->model->read(5);
-        $this->assertEmpty($this->model->getAsks());
+        $this->testable->read(5);
+        $this->assertEmpty($this->testable->getAsks());
     }
 
     /**
@@ -142,8 +129,8 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testGetAsks()
     {
         // Confirm ask is at least an array.
-        $this->assertTrue(is_array($this->model->getAsks()));
-        $this->assertEmpty($this->model->getAsks());
+        $this->assertTrue(is_array($this->testable->getAsks()));
+        $this->assertEmpty($this->testable->getAsks());
     }
 
     /**
@@ -153,11 +140,11 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     {
         // Create a few new entities.
         for ($i = 1; $i <= 5; $i++) {
-            new Entity($this->pathToDatabase, null, array("tier" => $i));
+            new Entity($this->pathToDatabase, null, array("tiers" => [$i]));
         }
         // Create a new question chain.
-        $this->model->generateAsks();
-        $asks = $this->model->getAsks();
+        $this->testable->generateAsks();
+        $asks = $this->testable->getAsks();
 
         // Ensure we have at least one ask.
         $this->assertNotEmpty($asks);
@@ -167,7 +154,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $tier = 1;
         foreach ($asks as $ask) {
             $entity = new Entity($this->pathToDatabase, $ask['entity_from']);
-            $this->assertEquals($tier, $entity->data['tier'], "Expected tier $tier; got tier {$entity->data['tier']}");
+            $this->assertEquals([$tier], $entity->data['tiers'], "Expected tier [$tier]; got tiers [" . implode(", ", $entity->data['tiers']) . ']');
             $tier++;
         }
     }

@@ -63,8 +63,18 @@ class AbstractDBObject
      */
     public function read($id)
     {
-        $this->id = $id;
-        $this->data = Database::readRecord($this->path, $this->table, $this->id);
+        // Unbind from existing row.
+        $this->id = null;
+
+        // Try to bind to a new row.
+        $this->data = Database::readRecord($this->path, $this->table, $id);
+
+        // Only set ID internally if we've been able to bind to a record.
+        // This is of especial concern when we need to get records from
+        // other tables following binding.
+        if ($this->data) {
+            $this->id = $id;
+        }
     }
 
     /**

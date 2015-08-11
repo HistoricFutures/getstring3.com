@@ -5,35 +5,21 @@
  * Test: TestRig\Services\Database.
  */
 
+namespace Tests\Services;
+
 use TestRig\Services\Database;
 use TestRig\Exceptions\MissingDatasetFileException;
 use TestRig\Exceptions\MissingTableException;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Services\Database.
  */
-class DatabaseTest extends \PHPUnit_Framework_TestCase
+class DatabaseTest extends AbstractTestCase
 {
-    // Path to temporary database file.
-    private $path = null;
-
-    /**
-     * Set up.
-     */
-    public function setUp()
-    {
-        $this->path = "/tmp/testrig-" . getmypid() . ".sqlite3";
-        Database::create($this->path);
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->path);
-    }
+    // Create and tear down database for each test.
+    protected $pathToDatabase = '/tmp/for-database.sqlite3';
 
     /**
      * Test: TestRig\Services\Database::getConn().
@@ -71,10 +57,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         }
 
         // Check database even exists.
-        $this->assertFileExists($this->path);
+        $this->assertFileExists($this->pathToDatabase);
 
         // Now connect to it and look for the entity table.
-        $conn = Database::getConn($this->path);
+        $conn = Database::getConn($this->pathToDatabase);
         try {
             $conn->exec("SELECT * FROM entity");
         } catch (Exception $e) {
@@ -90,10 +76,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTableCount()
     {
-        $this->assertEquals(Database::getTableCount($this->path, "entity"), 0);
+        $this->assertEquals(Database::getTableCount($this->pathToDatabase, "entity"), 0);
         try {
-            Database::getTableCount($this->path, "not_a_table");
-        } catch (TestRig\Exceptions\MissingTableException $e) {
+            Database::getTableCount($this->pathToDatabase, "not_a_table");
+        } catch (\TestRig\Exceptions\MissingTableException $e) {
         }
     }
 
@@ -104,11 +90,11 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     {
         // Write record and ensure we get an ID back.
         $record = array("name" => "Test " . uniqid());
-        Database::writeRecord($this->path, "entity", $record);
+        Database::writeRecord($this->pathToDatabase, "entity", $record);
         $this->assertEquals(1, $record["id"]);
 
         // Get the row from the database and check names match.
-        $results = Database::getConn($this->path)->query("SELECT * FROM entity WHERE id = 1");
+        $results = Database::getConn($this->pathToDatabase)->query("SELECT * FROM entity WHERE id = 1");
         $row = $results->fetchArray();
         $this->assertEquals($record["name"], $row["name"]);
     }
@@ -120,9 +106,9 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     {
         // Write record and ensure we get an ID back.
         $record = array("name" => "Test " . uniqid());
-        Database::writeRecord($this->path, "entity", $record);
+        Database::writeRecord($this->pathToDatabase, "entity", $record);
 
-        $newRecord = Database::readRecord($this->path, "entity", $record['id']);
+        $newRecord = Database::readRecord($this->pathToDatabase, "entity", $record['id']);
         $this->assertEquals($record['name'], $newRecord['name']);
     }
 
@@ -133,12 +119,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     {
         // Write record.
         $record = array("name" => "Test " . uniqid());
-        Database::writeRecord($this->path, "entity", $record);
+        Database::writeRecord($this->pathToDatabase, "entity", $record);
 
         // Change the name and re-read.
         $newName = "Test " . uniqid();
-        Database::updateRecord($this->path, "entity", $record['id'], array("name" => $newName));
-        $newRecord = Database::readRecord($this->path, "entity", $record['id']);
+        Database::updateRecord($this->pathToDatabase, "entity", $record['id'], array("name" => $newName));
+        $newRecord = Database::readRecord($this->pathToDatabase, "entity", $record['id']);
 
         $this->assertEquals($newName, $newRecord['name']);
     }
@@ -150,11 +136,32 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     {
         // Write record.
         $record = array("name" => "Test " . uniqid());
-        Database::writeRecord($this->path, "entity", $record);
+        Database::writeRecord($this->pathToDatabase, "entity", $record);
 
         // Delete record and check we can't find it any more.
-        Database::deleteRecord($this->path, "entity", $record['id']);
-        $record = Database::readRecord($this->path, "entity", $record['id']);
+        Database::deleteRecord($this->pathToDatabase, "entity", $record['id']);
+        $record = Database::readRecord($this->pathToDatabase, "entity", $record['id']);
         $this->assertNull($record);
+    }
+
+    /**
+     * Test: TestRig\Services\Database::deleteWhere().
+     */
+    public function testDeleteWhere()
+    {
+        // Write two records.
+        $record1 = array("name" => "Delete Where 1");
+        Database::writeRecord($this->pathToDatabase, "entity", $record1);
+        $record2 = array("name" => "Delete Where 2");
+        Database::writeRecord($this->pathToDatabase, "entity", $record2);
+
+        // Only delete one.
+        Database::deleteWhere($this->pathToDatabase, "entity", array("name" => "Delete Where 2"));
+
+        // Check that it's gone, but the other remains.
+        $record2new = Database::readRecord($this->pathToDatabase, "entity", $record2['id']);
+        $this->assertNull($record2new);
+        $record1new = Database::readRecord($this->pathToDatabase, "entity", $record1['id']);
+        $this->assertEquals($record1['id'], $record1new['id']);
     }
 }

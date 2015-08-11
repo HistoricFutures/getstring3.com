@@ -5,38 +5,23 @@
  * Test: TestRig\Models\Dataset.
  */
 
+namespace Tests\Models;
+
 use Symfony\Component\Yaml\Dumper;
-use TestRig\Models\Dataset;
 use TestRig\Services\Filesystem;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Dataset.
  */
-class DatasetTest extends \PHPUnit_Framework_TestCase
+class DatasetTest extends AbstractTestCase
 {
-    // To be replaced with new Dataset() during setUpBeforeClass.
-    public static $model = null;
-    // Directory for datasets: we keep track too.
-    private static $dir = null;
+    // Create a containing directory before object instantiated?
+    protected static $containingDirEnvVar = 'DIR_DATASETS';
 
-    /**
-     * Set up before class: create dataset folder and Dataset() handler class.
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$dir = getenv('DIR_DATASETS');
-        mkdir(self::$dir);
-        self::$model = new Dataset();
-    }
-
-    /**
-     * Tear down after class: delete dataset folder.
-     */
-    public static function tearDownAfterClass()
-    {
-        Filesystem::removeDirectory(self::$dir);
-    }
+    // Do we create a testable object? Needs fully namespaced class.
+    protected $testableClass = 'TestRig\Models\Dataset';
 
     /**
      * Test: TestRig\Models\Dataset::create().
@@ -48,9 +33,10 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock();
 
         // Assert we've got a manifest.
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/recipe.yaml"));
-        $this->assertTrue(file_exists(self::$dir . "/$datasetDir/dataset.sqlite3"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/recipe.yaml"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/dataset.sqlite3"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/gitstamp.yaml"));
     }
 
     /**
@@ -64,17 +50,22 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock($recipe);
 
         // Read the manifest.
-        $dataset = self::$model->read($datasetDir);
+        $dataset = $this->testable->read($datasetDir);
 
         // Assert manifest contents as expected.
-        // Raw files both present.
+        // Raw files all present
         $this->assertArrayHasKey("raw", $dataset);
+        $this->assertArrayHasKey("gitstamp", $dataset['raw']);
         $this->assertArrayHasKey("recipe", $dataset['raw']);
         $this->assertStringEqualsFile(
-          self::$dir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
+            self::$containingDir . "/$datasetDir/recipe.yaml", $dataset["raw"]["recipe"]
         );
 
-        // Parsed data from reecipe.yaml present?
+        // Gitstamp present and parsed?
+        $this->assertArrayHasKey("gitstamp", $dataset);
+        $this->assertArrayHasKey("revision", $dataset['gitstamp']);
+
+        // Parsed data from recipe.yaml present?
         $this->assertarrayhaskey(0, $dataset["recipe"]["populations"]);
         $this->assertArrayHasKey(
             "number", $dataset["recipe"]["populations"][0]
@@ -100,10 +91,10 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir = $this->createWithMock();
 
         // Now delete.
-        self::$model->delete($datasetDir);
+        $this->testable->delete($datasetDir);
 
         // Assert all files are gone.
-        $this->assertFalse(file_exists(self::$dir . "/$datasetDir"));
+        $this->assertFalse(file_exists(self::$containingDir . "/$datasetDir"));
     }
     
     /**
@@ -116,7 +107,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         $datasetDir2 = $this->createWithMock();
 
         // Obtain an index.
-        $datasets = self::$model->index();
+        $datasets = $this->testable->index();
 
         // Assert our new datasets are found.
         $this->assertContains($datasetDir, $datasets);
@@ -128,7 +119,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
      */
     public function testPathToDatabase()
     {
-        $path = self::$model->pathToDatabase("foo");
+        $path = $this->testable->pathToDatabase("foo");
         $this->assertTrue(strpos($path, "foo/dataset.sqlite3") > 0);
     }
 
@@ -138,11 +129,21 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
     public function testReadRawData()
     {
         $datasetDir = $this->createWithMock('tests/fixtures/recipe.yaml');
-        $rawData = self::$model->readRawData($datasetDir);
-        $this->assertEquals(count($rawData['entity']), 30);
+        $rawData = $this->testable->readRawData($datasetDir);
+        // We should have one vertical agent in all 3 tiers, hence 32 not 30.
+        $this->assertEquals(count($rawData['entity']), 32);
 
-        // Test population labels.
+        // Test population labels: vertical agent will be weird.
+        $verticalAgentData = array();
         foreach ($rawData['entity'] as $entityData) {
+            if ($entityData['population'] == "Vertical agent") {
+                $verticalAgentData[] = $entityData;
+                continue;
+            }
+
+            // self_time_ratio defaults to 1.
+            $this->assertEquals(1, $entityData['self_time_ratio']);
+
             switch ($entityData['tier']) {
             case 1:
                 $this->assertEquals("Lowest tier", $entityData['population']);
@@ -156,6 +157,15 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
             default:
                 $this->fail("Unexpected tier in recipe.yaml.");
             }
+        }
+
+        // Check vertical agent's properties are consistent.
+        for ($i = 0; $i < 3; $i++) {
+            // Tiers and IDs should all be the same.
+            $this->assertEquals($i+1, $verticalAgentData[$i]['tier']);
+            $this->assertEquals($verticalAgentData[0]['id'], $verticalAgentData[$i]['id']);
+            // self_time_ratio should not be 1, because we've changed it.
+            $this->assertEquals(0.5, $verticalAgentData[$i]['self_time_ratio']);
         }
     }
 
@@ -180,7 +190,7 @@ class DatasetTest extends \PHPUnit_Framework_TestCase
         // Squirrel away the data array, so our mock callback can
         // access it later on and clear it.
         $this->temporary_storage = $recipe;
-        return self::$model->create($mockUploadedFile);
+        return $this->testable->create($mockUploadedFile);
     }
 
     /**

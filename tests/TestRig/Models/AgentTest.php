@@ -5,44 +5,41 @@
  * Test: TestRig\Models\Agent.
  */
 
+namespace Tests\Models;
+
+use TestRig\Exceptions\TierIntegrityException;
 use TestRig\Models\Agent;
 use TestRig\Models\Log;
-use TestRig\Services\Database;
+use Tests\AbstractTestCase;
 
 /**
  * @class
  * Test: TestRig\Models\Agent.
  */
-class AgentTest extends \PHPUnit_Framework_TestCase
+class AgentTest extends AbstractTestCase
 {
     // Create and tear down database for each test.
-    private $pathToDatabase = "/tmp/for-agent.sqlite3";
-    // Database connection.
-    private $conn = null;
+    protected $pathToDatabase = "/tmp/for-agent.sqlite3";
     // Log object to pass into agent go calls.
     private $log = null;
+
+    // Do we create a testable model?
+    protected $testableClass = 'TestRig\Models\Agent';
+    // And does it take the database path as __construct() argument?
+    protected $testableClassNeedsDatabase = true;
 
     /**
      * Set up.
      */
     public function setUp()
     {
-        $this->conn = Database::create($this->pathToDatabase);
-        $this->agent = new Agent($this->pathToDatabase);
-        $this->log = new Log();
-
-        // Have 10 agents in total.
+        parent::setUp();
+        // Have 10 agents in total: we can't test behaviours with just one.
         for ($i = 1; $i < 10; $i++) {
             new Agent($this->pathToDatabase);
         }
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        unlink($this->pathToDatabase);
+        // Logs are how we reconstruct agent behaviour history.
+        $this->log = new Log();
     }
 
     /**
@@ -65,15 +62,13 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     public function testPickToAsk()
     {
         // With all agents in default tier=1, nobody to ask.
-        $toAsks = $this->agent->pickToAsks($this->log);
+        $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEmpty($toAsks);
         // Add a tier=2 agent: this will be our only to-ask candidate!
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
-        $toAsks = $this->agent->pickToAsks($this->log);
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
+        $toAsks = $this->testable->pickToAsks($this->log);
         $this->assertEquals($tier2Agent->getID(), $toAsks[0]->getID());
-
-        $toAsks[0]->respondTo($this->agent, $this->log);
-
+        $toAsks[0]->respondTo($this->testable, $this->log);
         $logSoFar = $this->log->getLog();
 
         // Second log item should always be tied to the first by agent ID.
@@ -87,8 +82,14 @@ class AgentTest extends \PHPUnit_Framework_TestCase
 
         // Increase our number of suppliers and expect
         // more agents to come out of pickToAsk() (even if repeat for now.)
-        $this->agent->data['mean_extra_suppliers'] = 20;
-        $this->assertGreaterThan(5, count($this->agent->pickToAsks($this->log)));
+        $this->testable->data['mean_extra_suppliers'] = 20;
+        $this->assertGreaterThan(5, count($this->testable->pickToAsks($this->log)));
+
+        // Make this agent a sourcing agent and ensure it gets data from same tier.
+        $this->testable->data['mean_extra_suppliers'] = 0;
+        $this->testable->data['is_sourcing'] = true;
+        $source = $this->testable->pickToAsks($this->log);
+        $this->assertEquals($this->testable->data['tiers'][0], $source[0]->data['tiers'][0]);
     }
 
     /**
@@ -97,34 +98,67 @@ class AgentTest extends \PHPUnit_Framework_TestCase
     public function testRespondTo()
     {
         // Since we added tiers, we need a tier 2 agent for routing to happen.
-        $tier2Agent = new Agent($this->pathToDatabase, null, array("tier" => 2));
+        $tier2Agent = new Agent($this->pathToDatabase, null, array("tiers" => [2]));
 
+        // We're actually forcing a tier-1 agent to ask a tier-1 agent here.
+        // That's OK, but toAsk will then ask tier 2 as it's not a sourcing agent.
         $toAsk = new Agent($this->pathToDatabase);
-        $toAsk->respondTo($this->agent, $this->log);
+        $toAsk->respondTo($this->testable, $this->log);
         $this->assertGreaterThanOrEqual(1, count($this->log));
 
         // First log item should be our asker and toAsk.
         $first = array_shift($this->log->getLog());
-        $this->assertEquals($first['from'], $this->agent->getID());
+        $this->assertEquals($first['from'], $this->testable->getID());
         $this->assertEquals($first['to'], $toAsk->getID());
 
         // Re-ask with an agent with zero chance of acknowledging.
         $toAsk->data['probability_no_ack'] = 1;
         $newLog = new Log();
-        $toAsk->respondTo($this->agent, $newLog);
+        $toAsk->respondTo($this->testable, $newLog);
         $logItems = $newLog->getLog();
         $this->assertEquals(1, count($logItems));
-        $this->assertArrayNotHasKey('ack', $logItems[0]);
         $this->assertArrayNotHasKey('ack', $logItems[0]);
 
         // Re-ask with an agent with 1 chance of acknowledging (and rerouting).
         $toAsk->data['probability_no_ack'] = 0;
-        $newLog = new Log();
-        $toAsk->respondTo($this->agent, $newLog);
-        $logItems = $newLog->getLog();
-        $this->assertGreaterThan(1, count($logItems));
-        $lastItem = array_pop($logItems);
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
+        // We only have 1 tier-2 agent, so we have to end up there.
+        $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
+        $this->assertArrayHasKey('ack', $lastItem);
         $this->assertArrayHasKey('answer', $lastItem);
+
+        // Set our sole tier2Agent to never answer, and re-run the test.
+        $tier2Agent->data['probability_no_answer'] = 1;
+        $tier2Agent->update();
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
+        // Our last item should no longer have an answer.
+        $this->assertEquals($tier2Agent->getID(), $lastItem['to']);
+        $this->assertArrayHasKey('ack', $lastItem);
+        $this->assertArrayNotHasKey('answer', $lastItem);
+        // Re-set tier2Agent back to always answering.
+        $tier2Agent->data['probability_no_answer'] = 0;
+        $tier2Agent->update();
+
+        // Turn our tier2agent into a vertical agent
+        $tier2Agent->data['tiers'] = [2, 3];
+        $tier2Agent->update();
+        // Now it should always reply to itself.
+        $lastItem = $this->respondToAndGetLogItems($toAsk);
+        $this->assertEquals($lastItem['from'], $lastItem['to']);
+        foreach (array('ack', 'answer') as $time) {
+            $this->assertNotEquals($lastItem['start'], $lastItem[$time], "Time $time was not equal to start");
+        }
+        // Set its internal routing times etc. to zero and re-run.
+        $tier2Agent->data['self_time_ratio'] = 0;
+        $tier2Agent->update();
+        $lastItems = $this->respondToAndGetLogItems($toAsk, null, [1, 2]);
+        // Ack and answer should be the same (zero difference from start).
+        // Routing should be the same, but this is measured as time between
+        // previous item's ack and this item's start.
+        foreach (array('ack', 'answer') as $time) {
+            $this->assertEquals($lastItems[2]['start'], $lastItems[2][$time], "Vertical agent's internal time $time was not equal to start: response took time!");
+            $this->assertEquals($lastItems[1]['ack'], $lastItems[2][$time], "Vertical agent's internal time $time was not equal to previous log item's ack: routing took time!");
+        }
 
         // Re-ask with extra suppliers. Run ten times and average number
         // of suppliers toAsk picks must be greater than 10.
@@ -133,7 +167,7 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $countSuppliers = 0;
         for ($i = 1; $i <= 10; $i++) {
             $newLog = new Log();
-            $toAsk->respondTo($this->agent, $newLog);
+            $toAsk->respondTo($this->testable, $newLog);
             $logItems = $newLog->getLog();
 
             // Count the ones from toAsk to other supplier(s).
@@ -145,5 +179,84 @@ class AgentTest extends \PHPUnit_Framework_TestCase
             }
         }
         $this->assertGreaterThan(10, $countSuppliers);
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::setTierContext().
+     */
+    public function testSetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+
+        $verticalAgent->setTierContext(1);
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $verticalAgent->setTierContext(3);
+        $this->assertEquals(3, $verticalAgent->getTierContext());
+
+        // Set some invalid tiers.
+        foreach (array(5, "not a tier", "", 0) as $invalidTier) {
+            try {
+                $verticalAgent->setTierContext($invalidTier);
+                $this->fail("Could set tier to be invalid '$invalidTier'.");
+            } catch (TierIntegrityException $e) {
+            }
+        }
+    }
+
+    /**
+     * Test: TestRig\Models\Agent::getTierContext().
+     */
+    public function testGetTierContext()
+    {
+        $verticalAgent = new Agent($this->pathToDatabase, null, array("tiers" => [1, 2, 3]));
+        $log = new Log();
+
+        $toAsks = $verticalAgent->pickToAsks($log);
+        $toAsks2 = $toAsks[0]->pickToAsks($log);
+
+        // All the same agent.
+        $this->assertEquals($toAsks[0]->getID(), $verticalAgent->getID());
+        $this->assertEquals($toAsks2[0]->getID(), $verticalAgent->getID());
+
+        // But tier context should change.
+        $this->assertEquals(1, $verticalAgent->getTierContext());
+        $this->assertEquals(2, $toAsks[0]->getTierContext());
+        $this->assertEquals(3, $toAsks2[0]->getTierContext());
+    }
+
+    /**
+     * Private helper function: get last log item.
+     *
+     * Avoids a lot of boilerplate above.
+     *
+     * @param Agent $toAsk
+     *   Agent to call ->respondTo($this->testable, ...) on.
+     * @param Log $log = null
+     *   Log object; creates a new one if not provided.
+     * @param mixed $which = 'last'
+     *   Which items to return; defaults to 'last'. Array of keys returns them.
+     * @return array
+     *   Last log entry via array_pop().
+     */
+    private function respondToAndGetLogItems(Agent $toAsk, Log $log = null, $which = 'last')
+    {
+        if ($log === null) {
+            $log = new Log();
+        }
+
+        $toAsk->respondTo($this->testable, $log);
+        $logItems = $log->getLog();
+
+        // By default, return last item in log.
+        if (!is_array($which)) {
+            return array_pop($logItems);
+        }
+
+        // If an array specified, try to return those items.
+        $toReturn = array();
+        foreach ($which as $key) {
+            $toReturn[$key] = $logItems[$key];
+        }
+        return $toReturn;
     }
 }

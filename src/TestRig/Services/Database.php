@@ -100,15 +100,18 @@ class Database
      *   Path to SQLite database.
      * @param string $table
      *   Table in database.
-     * @param array $filters
+     * @param array $filters = array()
      *   Optional filters (if not set, will return whole table!)
+     * @param string $orderBy = 'id'
+     *   Order by this column.
      * @return array
      *   Array of results in ID order.
      */
-    public static function getRowsWhere($path, $table, $filters = array())
+    public static function getRowsWhere($path, $table, $filters = array(), $orderBy = 'id')
     {
         $conn = self::getConn($path);
         $table = \SQLite3::EscapeString($table);
+        $orderBy = \SQLite3::EscapeString($orderBy);
 
         // Assemble SQL including WHERE columns.
         $sql = "SELECT * FROM $table ";
@@ -122,7 +125,7 @@ class Database
             }
             $sql .= trim($where, ',');
         }
-        $sql .= ' ORDER BY id';
+        $sql .= " ORDER BY $orderBy";
 
         // Prepare statement and bind variables.
         $results = self::returnStatement($conn, $sql, $arguments)->execute();
@@ -162,8 +165,12 @@ class Database
      *   Table name.
      * @param array &$record
      *   Key/value array to write; we insert the ID into this array.
+     * @param bool $hasId = true
+     *   Row has an ID field and therefore the ID should be returned.
+     * @return integer or null
+     *   Integer ID if the row has an ID; otherwise null.
      */
-    public static function writeRecord($path, $table, &$record)
+    public static function writeRecord($path, $table, &$record, $hasId = true)
     {
         $conn = self::getConn($path);
         $table = \SQLite3::EscapeString($table);
@@ -193,6 +200,11 @@ class Database
             $statement->bindValue($bindKey, $bindValue);
         }
         $statement->execute();
+
+        // Should we be expecting an ID from this row?
+        if (!$hasId) {
+            return;
+        }
 
         // Using same connection, inject the autoincrement ID into $record.
         $statement = $conn->prepare("SELECT last_insert_rowid() AS id;");
@@ -279,9 +291,37 @@ class Database
         $conn = self::getConn($path);
         $table = \SQLite3::EscapeString($table);
 
-        $statement = $conn->prepare("DELETE FROM $table WHERE id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
+        self::returnStatement(
+            $conn,
+            "DELETE FROM $table WHERE id = :id",
+            array(":id" => $id)
+        )->execute();
+    }
+
+    /**
+     * Delete rows in a database table matching conditions.
+     *
+     * @param string $path
+     *   Path to SQLite file.
+     * @param string $table
+     *   Table name.
+     * @param array $wheres = array()
+     *   Key/value array of *any* changes to write.
+     */
+    public static function deleteWhere($path, $table, $wheres = array())
+    {
+        $conn = self::getConn($path);
+        $table = \SQLite3::EscapeString($table);
+
+        $sql = "DELETE FROM $table WHERE 1 = 1 ";
+        $arguments = array();
+        foreach ($wheres as $column => $rawValue) {
+            $column = \SQLite3::EscapeString($column);
+            $sql .= " AND $column = :$column ";
+            $arguments[":$column"] = $rawValue;
+        }
+
+        self::returnStatement($conn, $sql, $arguments)->execute();
     }
 
     /**

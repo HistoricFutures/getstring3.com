@@ -1,8 +1,8 @@
 vendor/
 .env
 datasets/
-.vagrant/
 algorithms/
+.vagrant/
 .DS_Store
 algorithm/data
 algorithm/.ipynb_checkpoints
