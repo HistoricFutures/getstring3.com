@@ -4,7 +4,7 @@ import networkx as nx
 import numpy
 from numpy.core.fromnumeric import mean
 
-data_path = 'data/bifurcation/'
+data_path = '../web/datasets/2015-07-28T12:18:53+00:00/'
 
 #
 # Utils
@@ -18,7 +18,16 @@ def median(lst):
 def save_question_graph(Q, n, data_path):
     import matplotlib.pyplot as plt
     plt.title('Question {} initiated by {}'.format(n, Q[n]['initiator']))
-    nx.draw_graphviz(Q[n]['graph'], with_labels=True)
+    G = Q[n]['graph']
+    i = Q[n]['initiator']
+    # nx.draw_graphviz(Q[n]['graph'], with_labels=True)
+    engine = 'twopi'
+    pos = nx.graphviz_layout(G, prog=engine, root=i)
+    nx.draw(G, pos,
+            with_labels=True,
+            alpha=1,
+            node_size=550)
+
     plt.savefig("{path}question-{n}.png".format(path=data_path, n=n))
     plt.clf()
 
@@ -34,6 +43,16 @@ def get_useful_cursor(connection, table):
     columns = [col[0] for col in c.description]
     for raw in c.fetchall():
         yield dict(zip(columns, raw))
+
+
+def load_entities(data_path):
+    conn = sqlite3.connect("{path}dataset.sqlite3".format(path=data_path))
+    table = {}
+    for row in get_useful_cursor(conn, 'entity'):
+        table[row['id']] = row
+
+    conn.close()
+    return table
 
 
 def load_questions(data_path):
