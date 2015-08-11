@@ -4,7 +4,7 @@ import networkx as nx
 import numpy
 from numpy.core.fromnumeric import mean
 
-data_path = '../web/datasets/2015-07-28T12:18:53+00:00/'
+data_path = '../web/datasets/2015-08-11T14:20:25+00:00/'
 
 #
 # Utils
@@ -30,6 +30,18 @@ def save_question_graph(Q, n, data_path):
 
     plt.savefig("{path}question-{n}.png".format(path=data_path, n=n))
     plt.clf()
+
+    #
+    # Cyclical graphs aren't rendered properly
+    #
+    #
+    dot_file = "{path}question-{n}.dot".format(path=data_path, n=n)
+    png_file = "{path}question-{n}-dotfile.png".format(path=data_path, n=n)
+
+    nx.write_dot(G, dot_file)
+
+    from fabric.api import env, run, settings, sudo, hosts, local
+    local("dot -Tpng {} > {}".format(dot_file, png_file))
 
 
 def save_all_questions(Q, data_path):
@@ -64,7 +76,7 @@ def load_questions(data_path):
         question = row['question']
 
         if question not in questions:
-            questions[question] = {'graph': nx.DiGraph(), 'initiators': []}
+            questions[question] = {'graph': nx.DiGraph(), 'initiator': []}
 
         start = row.get('time_start')
         end = row.get('time_ack')
@@ -87,6 +99,11 @@ def load_questions(data_path):
             if g.predecessors(n) == []:
                 questions[q]['initiator'] = n
                 break
+        if questions[q]['initiator'] == []:
+            #
+            # Found a question that starts with a vertical
+            #
+            questions[q]['initiator'] = g.nodes()[0]
 
     return questions
 
@@ -266,7 +283,7 @@ def reduce_history(table):
     return reduced
 
 
-def consolidate_history(questions, network_function, verbose=False):
+def consolidate_history(questions, network_function, verbose=True):
     return reduce_history(build_history_table(Q, network_function, verbose=verbose))
 
 
@@ -288,7 +305,7 @@ def rank(reduced_history_table, pretty=False):
 #
 
 Q = load_questions(data_path)
+save_all_questions(Q, data_path)
+
 network_function = network_responsive_median_over_two
 print rank(consolidate_history(Q, network_function), pretty=True)
-
-save_all_questions(Q, data_path)
