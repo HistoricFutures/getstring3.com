@@ -1,6 +1,7 @@
 vendor/
 .env
 datasets/
+.vagrant/
 algorithms/
 .DS_Store
 algorithm/data
