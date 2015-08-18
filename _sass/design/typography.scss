@@ -108,6 +108,9 @@ abbr[title] {
 	h2 {
 		@include font-size($size-h3);
 	}
+	h3 {
+		@include font-size($size-p);
+	}
 }
 
 /* Additional classes */
@@ -121,13 +124,13 @@ abbr[title] {
 	letter-spacing:normal !important;
 }
 
-//// Article typography 
+//// Article typography
 
 .article {
 	h2 {
 		@include margin-top($a-scale-4);
 		@include margin-bottom($b-scale);
-		
+
 	}
 }
 
@@ -138,4 +141,3 @@ abbr[title] {
   body{
     -webkit-text-size-adjust: none;
   }
-
