@@ -1,0 +1,24 @@
+populations:
+  - tiers: [3]
+    label: "Finished Goods"
+    number: 17
+    mean_ack_time: 10
+    mean_answer_time: 10
+    mean_routing_time: 10
+    mean_extra_suppliers: 1
+  - tiers: [2]
+    label: "Processor"
+    number: 3
+    mean_ack_time: 10
+    mean_answer_time: 10
+    mean_routing_time: 10
+    mean_extra_suppliers: 1
+  - tiers: [1]
+    label: "Primary Producer"
+    number: 20
+    mean_ack_time: 10
+    mean_answer_time: 10
+    mean_routing_time: 10
+    mean_extra_suppliers: 1
+questions: 50
+

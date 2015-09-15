@@ -1,0 +1,31 @@
+populations:
+  - tiers: [1]
+    label: "Lowest tier"
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+  - tiers: [2]
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+  - tiers: [3]
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+  - tiers: [1]
+    label: "Tier 1 Fast"
+    number: 1
+    mean_ack_time: 1
+    mean_answer_time: 1
+    mean_routing_time: 1
+    mean_extra_suppliers: 2
+questions: 50
