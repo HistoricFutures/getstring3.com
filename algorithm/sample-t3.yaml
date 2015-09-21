@@ -1,0 +1,45 @@
+populations:
+  - tiers: [1]
+    label: "T1"
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+    colour: "(255,0,0)"
+  - tiers: [2]
+    label: "T2"
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+    colour: "(0,255,0)"
+  - tiers: [3]
+    label: "T3"
+    number: 10
+    mean_ack_time: 5
+    mean_answer_time: 15
+    mean_routing_time: 20
+    mean_extra_suppliers: 2
+    probability_no_ack: 0.1
+    colour: "(0,0,255)"
+  - tiers: [3]
+    label: "T3 Fast"
+    number: 10
+    mean_ack_time: 1
+    mean_answer_time: 1
+    mean_routing_time: 1
+    mean_extra_suppliers: 2
+    colour: "(255,255,255)"
+  - tiers: [3]
+    label: "T3 Bad"
+    number: 10
+    mean_ack_time: 10
+    mean_answer_time: 30
+    mean_routing_time: 40
+    mean_extra_suppliers: 2
+    colour: "(0,0,0)"
+questions: 250
