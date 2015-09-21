@@ -73,8 +73,8 @@
               <td>{{ entity.mean_routing_time|number_format(2, '.', ',') }}</td>
               <!-- <td>{{ entity.self_time_ratio }}</td> -->
               <td>{{ entity.mean_extra_suppliers + 1 }}</td>
-              <td>{{ entity.probability_no_ack }}</td>
-              <td>{{ entity.probability_no_answer }}</td>
+              <td>{{ entity.probability_no_ack|number_format(2, '.', ',') }}</td>
+              <td>{{ entity.probability_no_answer|number_format(2, '.', ',') }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -89,9 +89,9 @@
                 <td>{{ database.entities.mean_answer_time|number_format(2, '.', ',') }}</td>
                 <td>{{ database.entities.mean_routing_time|number_format(2, '.', ',') }}</td>
                 <!-- <td></td> -->
-                <td>{{ database.entities.mean_extra_suppliers + 1 }}</td>
-                <td>{{ database.entities.probability_no_ack }}</td>
-                <td>{{ database.entities.probability_no_answer }}</td>
+                <td>{{ database.entities.mean_extra_suppliers|number_format(0, '.', ',') + 1 }}</td>
+                <td>{{ database.entities.probability_no_ack|number_format(2, '.', ',') }}</td>
+                <td>{{ database.entities.probability_no_answer|number_format(2, '.', ',') }}</td>
             </tr>
           </tfoot>
         </table>

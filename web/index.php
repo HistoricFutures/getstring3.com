@@ -45,5 +45,6 @@ foreach ($routes as $route) {
     $app->{$route[1]}($route[0], $route[2]);
 }
 
+set_time_limit(2000);
 // Run the Silex app.
 $app->run();
