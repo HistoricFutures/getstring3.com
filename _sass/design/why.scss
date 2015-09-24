@@ -4,7 +4,7 @@
 		background:url(#{$img-path}why-intro.png) center bottom no-repeat;
 		margin-bottom:0;
 		@include padding-bottom($a-scale-3);
-		
+
 	}
 
 	.internal-nav {
@@ -34,15 +34,15 @@
 		color:$grey40;
 		text-align:right;
 		@include padding-top($a-scale--4);
-		
+
 	}
 		&:nth-child(odd){
 			@include box-shadow-standard();
 			border-left:none;
 			border-right:none;
-			
+
 		}
-		
+
 		@include gs-span(l, all);
 		position:relative;
 		clear:left;
@@ -75,8 +75,8 @@
 		.speech-bubble-holder {
 			@include gs-span(l,10,11,(9,11));
 		}
-		
-		
+
+
 	}
 	.risk {
 		background:url(#{$img-path}bars.svg) bottom center no-repeat, url(#{$img-path}report.png) bottom right no-repeat;
@@ -93,30 +93,10 @@
 	.suppliers {
 		background:url(#{$img-path}supplier-graphic.png) right 20% no-repeat;
 		background-size:30% auto;
-		li {
-			list-style:none;
-			@include margin-top($a-scale-3);
-		}
-		ul {
-			padding:0;
-		}
-		
-		h3 {
-			color:$success-color;
-			position:relative;
-			&:before {
-				content: "\f058";
-				display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  @include font-size($b-scale-4);
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  @include left(-1 * $a-scale-4);
-  @include top(-1 * $a-scale);
-  position:absolute;
-			}
-		}
+
+
+
+
 	}
 	/*.answers {
 		h3 {
@@ -129,10 +109,34 @@
 			text-align:center;
 		}
 		.explanation {
-			
+
 		}
 	}*/
 
+}
+
+ul.large-ticks {
+	padding:0;
+	li {
+		list-style:none;
+		@include margin-top($a-scale-3);
+		h3, h2 {
+			color:$success-color;
+			position:relative;
+			&:before {
+				content: "\f058";
+				display: inline-block;
+				font: normal normal normal 14px/1 FontAwesome;
+				@include font-size($b-scale-4);
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				@include left(-1 * $a-scale-4);
+				@include top(-1 * $a-scale);
+				position:absolute;
+			}
+		}
+	}
 }
 
 .speech-bubble {
@@ -177,7 +181,7 @@
   -moz-border-radius-bottomright: 80px 50px;
   border-bottom-right-radius: 80px 50px;
   display: block;
-  
+
 }
 p {
   	margin-bottom:0;
@@ -216,7 +220,7 @@ p {
 		.reason-section-inner {
 			@include padding-top($a-scale-2);
 		}
-		
+
 		.simplicity {
 			.image-holder {
 				@include gs-span(s,1,5);
@@ -257,12 +261,20 @@ p {
 				padding-bottom:80%;
 				margin-bottom:none;
 			}
-			
+
 
 		}
 		.suppliers {
 			background:none;
-			h3 {
+
+
+		}
+
+
+	}
+	ul.large-ticks {
+		li {
+			h3, h2 {
 				@include margin-left($a-scale-2);
 				&:before {
 					content: "\f058";
@@ -277,9 +289,7 @@ p {
 					position:absolute;
 				}
 			}
-			
 		}
-
 
 	}
 }
@@ -290,7 +300,7 @@ p {
 	.why {
 		.reason-section {
 			border-top:$grey10 1px solid;
-			
+
 		}
 		.visibility {
 

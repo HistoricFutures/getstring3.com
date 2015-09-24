@@ -14,7 +14,7 @@ input[type='submit'], [class*=button] a, [class*=button] a:visited, button, [cla
 	@include padding($b-scale);
 	@include box-sizing();
 	@include margin-bottom($margin-p);
-	
+
 	background-color:$link-color;
 	@include linear-gradient();
 	border:1px solid $link-color;
@@ -67,7 +67,7 @@ input[type='submit'].button--large {
 	a, span {
 		background:$grey40;
 		border-color:$grey40;
-		
+
 		&:hover {
 			background:$grey40;
 			border-color:$grey40;
@@ -82,11 +82,11 @@ input[type='submit'].button--large {
 		background-color:$grey10;
 		border-color:$grey10;
 		color:$text-color;
-		
+
 		&:hover {
 			background-color:$grey20;
 			border-color:$grey20;
-			
+
 
 		}
 	}
@@ -136,6 +136,18 @@ input[type='submit'].button--large {
 	color:$error-color;
 }
 
+.super-banner [class*=faux-button] {
+	a, a:visited {
+		color:$grey90;
+		border-color:$grey90;
+		background:transparent;
+		&:hover, &:focus {
+			background:$link-color-hover;
+			color:$off-white;
+		}
+	}
+}
+
 
 /* == Faux links == */
 // Fixed now!
@@ -143,10 +155,10 @@ input[type='submit'].button--large {
 	&, &:hover {
 	    border: none;
 		border-radius: 0px;
-		
+
 	    background: none repeat scroll 0% 0% transparent;
 	    color: $link-color;
-	    
+
 	    text-transform: none;
 	    letter-spacing: 0;
 		padding: 0;
@@ -161,14 +173,14 @@ input[type='submit'].button--large {
 		span {
 			border-bottom: $link-border;
 		}
-		
+
 	}
 	&:hover {
 		color:$link-color-hover;
 		span{
 			border-color:$link-color-hover;
 		}
-		
+
 	}
 }
 
@@ -187,7 +199,4 @@ input[type='submit'].button--large {
 		color:$link-color-hover;
 	}
 }
-	} 
-
-
-
+	}

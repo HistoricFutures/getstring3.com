@@ -37,6 +37,172 @@
 	}
 }
 
+.free-trial.super-banner {
+	@include gs-span(l,all);
+	background:$yellow;
+	color:$grey90;
+	margin-bottom:0;
+	@include box-shadow-standard();
+	border:0;
+	z-index:$middle;
+	position:relative;
+	.text-holder {
+		@include gs-span(l,3,10);
+		text-align:center;
+	}
+	.button-holder {
+		@include gs-span(l,5,8);
+		text-align:center;
+		clear:left;
+	}
+	&.standard-right {
+		@include gs-span(l,6,10);
+		@include gs-pad(l,padin);
+		@include margin-bottom($a-scale-2);
+		clear:none;
+		.text-holder {
+			@include gs-span(l,6,10, (6,10));
+
+		}
+		.button-holder {
+			@include gs-span(l,7,9, (6,10));
+
+
+		}
+	}
+}
+
+.plans {
+	@include gs-span(l,all);
+	clear:left;
+	.plan {
+		width:33.33%;
+		border-left:$grey10;
+		float:left;
+		display:block;
+		@include padding($b-scale);
+		padding-top:20%;
+		@include box-sizing();
+		text-align:center;
+		margin-top:-5px;
+		.questions {
+			color:$blue;
+		}
+		.button a{
+			@extend .no-uppercase;
+		}
+		&.premium {
+			@include box-shadow-standard();
+			background: url(#{$img-path}premium.png) top center no-repeat;
+
+		}
+		&.primary {
+			background: url(#{$img-path}standard.png) top center no-repeat;
+
+		}
+		&.enterprise {
+			background: url(#{$img-path}enterprise.png) top center no-repeat;
+
+		}
+	}
+}
+.free-image {
+	background: url(#{$img-path}free.png) top center no-repeat;
+
+	width:100%;
+	padding-bottom:70%;
+}
+.standard-image {
+	background: url(#{$img-path}standard.png) top center no-repeat;
+
+	width:100%;
+	padding-bottom:70%;
+}
+.premium-image {
+	background: url(#{$img-path}premium.png) top center no-repeat;
+
+	width:100%;
+	padding-bottom:70%;
+}
+.enterprise-image {
+	background: url(#{$img-path}enterprise-contained.png) top center no-repeat;
+
+	width:100%;
+	padding-bottom:70%;
+	@include margin-bottom($a-scale-2);
+}
+
+// Enhance for browsers with SVG
+.svg {
+	.plans .plan {
+		&.premium {
+			@include box-shadow-standard();
+			background: url(#{$img-path}premium.svg) top center no-repeat;
+			background-size: 80% auto;
+		}
+		&.primary {
+			background: url(#{$img-path}standard.svg) top center no-repeat;
+			background-size: 60% auto;
+		}
+		&.enterprise {
+			background: url(#{$img-path}enterprise.svg) top center no-repeat;
+			background-size: 100% auto;
+		}
+	}
+	.free-image {
+		background: url(#{$img-path}free.svg) top center no-repeat;
+		background-size: contain;
+
+	}
+	.standard-image {
+		background: url(#{$img-path}standard.svg) top center no-repeat;
+		background-size: contain;
+
+	}
+	.premium-image {
+		background: url(#{$img-path}premium.svg) top center no-repeat;
+		background-size: contain;
+
+	}
+	.enterprise-image {
+		background: url(#{$img-path}enterprise-contained.svg) top center no-repeat;
+		background-size: contain;
+
+	}
+}
+.back a{
+	border:0;
+}
+.free-plan {
+	@include box-shadow-standard();
+	border-right:0;
+	border-left:0;
+	background:$off-white;
+	@include gs-span(l,all);
+	@include padding($b-scale);
+
+	@include box-sizing();
+	margin-top:-5px;
+	z-index:$middle;
+	position:relative;
+	.title-holder {
+		@include gs-span(l,2,3);
+		@include padding-top($b-scale);
+	}
+	.text-holder {
+		@include gs-span(l,5,11);
+		@include padding-top($b-scale);
+	}
+
+}
+
+.compare {
+	@include gs-span(l,all);
+	@include padding-top($a-scale);
+
+	text-align:center;
+}
+/*
 .pricing-top {
 	@include gs-span(l,3,10);
 	clear:left;
@@ -133,11 +299,11 @@
 			margin:0;
 		}
 	}
-}
+}*/
 .sr-only {
 	display:none;
 }
-
+/*
 .pricing-bottom {
 	@include gs-span(l,1,10);
 	clear:left;
@@ -172,6 +338,20 @@
 		color:$turquoise;
 	}
 
+}*/
+
+@include gs-media(l,min) {
+	.plans .plan {
+		@include padding-bottom($a-scale-5);
+		position:relative;
+		.button {
+			position:absolute;
+			bottom:0;
+			@include left($b-scale);
+			@include right($b-scale);
+		}
+	}
+
 }
 
 @include gs-media(s,max) {
@@ -191,6 +371,51 @@
 		.button-holder {
 			@include gs-span(s,2,4);
 			clear:left;
+		}
+		&.super-banner {
+			@include gs-span(s,all);
+			.text-holder {
+				@include gs-span(s,all);
+			}
+			.button-holder {
+				@include gs-span(s,2,5);
+				clear:left;
+			}
+			&.standard-right {
+				@include gs-span(s,all);
+				clear:left;
+				@include margin-top(-1 * $a-scale-3);
+				.text-holder {
+					@include gs-span(s,all);
+				}
+				.button-holder {
+					@include gs-span(s,2,5);
+					clear:left;
+				}
+			}
+		}
+
+	}
+	.plans {
+		@include gs-span(s,all);
+		.plan {
+			@include gs-span(s,all);
+			clear:left;
+			margin-top:0;
+			padding-top:60%;
+		}
+	}
+	.free-plan {
+		@include gs-span(s,all);
+		.title-holder {
+			@include gs-span(s,all);
+			clear:left;
+			text-align:center;
+		}
+		.text-holder {
+			@include gs-span(s,all);
+			clear:left;
+			text-align:center;
 		}
 	}
 
