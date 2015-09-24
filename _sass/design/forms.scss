@@ -23,7 +23,7 @@ label {
 	color:$grey60;
 }
 
-input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea, input[type='url'] {
+input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea, input[type='url'], input[type='phone'] {
 	font-family:$base-font;
 	@include font-size($size-p);
 	@include padding($b-scale);
