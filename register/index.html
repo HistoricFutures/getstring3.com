@@ -10,32 +10,45 @@ nextLink: "/pricing"
 
 </div>
 <div class="standard">
-<div class="free-trial">
-	<div class="icon-holder">
-		<i class="fa fa-gift"></i>
-	</div>
-	<div class="text-holder">
-		<p class="large">A month’s free trial when you sign up today</p>
-		<p class="small">No payment needed, no obligation to continue</p>
-	</div>
-	
-</div>
-<!-- IMPORTANT: confirm the domain is correct -->
-                        <form method="post" action="https://app.getstring3.com/account/register/">
-                        	<p>You can choose a <a href="/pricing/" title="View our pricing plans">pricing plan</a> at any time during your organisation's free trial</p>
-                            <div>
-                                <label for="id_email">Your email address</label>
-                                <input id="id_email" name="email" type="email" />
-                            </div>
-                            <div>
-                                <label for="id_password">Choose a password</label>
-                                <input id="id_password" name="password" type="password" />
-                                <p class="help">Please choose a password that is at least 8 characters long, contains upper and lower case letters, numbers and optionally other characters.</p>
-                            </div>
-                          <input type="submit" value="Register for String3" />
-                          <p>By registering you are agreeing to our <a href="/terms_and_conditions/" title="Read our Terms and Conditions">terms and conditions</a> and <a href="/privacy/" title="Read our privacy policy">privacy policy</a>.</p>
+	<div class="free-trial">
+		<div class="icon-holder">
+			<i class="fa fa-gift"></i>
+		</div>
+		<div class="text-holder">
+			<p class="large">A month’s free trial when you sign up today</p>
+			<p class="small">No payment needed, no obligation to continue</p>
+		</div>
 
-                        </form>
+	</div>
+
+	<form method="post" action="https://app.getstring3.com/account/register/">
+	  <input type="hidden" name="csrfmiddlewaretoken" value="qGkHkSNBy4Ls7oqvHhoQecikOsvMP2OV">
+		<div class="form-field">
+		    <label class="form-label " for="id_email">
+		        Your email address
+		    </label>
+		    <input id="id_email" name="email" type="text">
+		</div>
+
+		<div class="form-field">
+	    <label class="form-label " for="id_password">
+	        Set a password
+
+	    </label>
+	    <input id="id_password" name="password" type="password">
+	    <p class="help">Passwords must be at least 8 characters long, contain upper and lower case letters, numbers and optionally other characters.</p>
+		</div>
+
+		<div class="form-field">
+	    <label class="form-label " for="id_accept_terms">
+				<input id="id_accept_terms" name="accept_terms" type="checkbox">
+	                I accept the String3 <a id="terms_link" target="_blank" href="/terms/">Terms &amp; Conditions</a> and
+	                <a id="privacy_link" target="_blank" href="/privacy/">
+	                Privacy Policy</a>
+	    </label>
+		</div>
+	  <input type="submit" value="Register">
+	</form>
 </div>
 <div class="small-right">
 	<p>Already registered for String3? <a href="https://app.getstring3.com/account/login/" title="Go to the login page">Log in</a></p>
