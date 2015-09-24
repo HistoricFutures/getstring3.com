@@ -131,6 +131,9 @@
 	padding-bottom:70%;
 	@include margin-bottom($a-scale-2);
 }
+.full .enterprise-image {
+	background: url(#{$img-path}enterprise-contained--large.png) top center no-repeat;
+}
 
 // Enhance for browsers with SVG
 .svg {
@@ -164,7 +167,7 @@
 		background-size: contain;
 
 	}
-	.enterprise-image {
+	.full .enterprise-image, .enterprise-image {
 		background: url(#{$img-path}enterprise-contained.svg) top center no-repeat;
 		background-size: contain;
 
