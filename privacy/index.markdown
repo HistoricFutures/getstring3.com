@@ -17,7 +17,7 @@ This may include:
 
 ## Where your data is stored
 
-We store your data on our secure servers which are provided by Amazon in an EU based data centre. By submitting your personal data, you agree to us storing this data.
+We store your data on our secure servers which are provided by Amazon Web Services, Inc. in an EU based data centre. By submitting your personal data, you agree to us storing this data.
 
 ## Keeping your data secure
 
