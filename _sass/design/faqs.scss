@@ -1,11 +1,12 @@
 .faqs {
-	
+	@include margin-bottom($a-scale-3);
 	@include gs-span(l,all);
 	.question-holder {
 		@include gs-span(l,3,8);
 		clear:left;
 		position:relative;
 		@include margin-bottom($a-scale-2);
+		@include padding-top($a-scale-4);
 		&:before {
 			content:"q.";
 			display:block;
@@ -23,7 +24,7 @@
 	.answer-holder {
 		@include gs-span(l,5,10);
 		clear:left;
-		@include margin-bottom($a-scale-4);
+
 		position:relative;
 		&:before {
 			content:"a.";
@@ -35,7 +36,7 @@
 			color:$grey40;
 			@include font-size($b-scale);
 			font-style:italic;
-			
+
 		}
 	}
 }

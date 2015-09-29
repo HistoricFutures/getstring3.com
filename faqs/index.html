@@ -8,10 +8,18 @@ nextLink: "/why"
 	<h1>{{ page.title }}</h1>
 	<p class="large">We’ve put together a list of answers to some of the questions we’re asked most frequently. If you can’t find the answer you’re looking for, please <a href="/contact">get in touch</a>.</p>
 </div>
+<div class="standard-intro">
+	<ol>
+		{% assign questions = site.faqs | sort: 'order' %}
+		{% for question in questions %}
+		<li><a href="#faq{{ question.order }}" title="Skip to {{ question.title }}">{{ question.title }}</a></li>
+		{% endfor %}
+	</ol>
+</div>
 <div class="faqs">
-{% assign questions = site.faqs | sort: 'order' %}
+
 {% for question in questions %}
-      <div class="question-holder">
+      <div class="question-holder" id="faq{{ question.order }}">
       	<h2>{{ question.title }}</h2>
       </div>
       <div class="answer-holder">
