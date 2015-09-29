@@ -5,9 +5,9 @@ nextText: "Will my data be safe in String3?"
 nextLink: "/security"
 ---
 
-Historic Futures Ltd (We) collect certain information or data about you when you use String3.
+Historic Futures Ltd (we / us) collect certain information or data about you when you use our websites - which can be found at [http://historicfutures.com](http://historicfutures.com) and [https://getstring3.com](http://getstring3.com) (and includes [https://app.getstring3.com](https://app.getstring3.com)).
 
-This includes:
+This may include:
 
 1. values you fill in on forms such as your name, email address and company you work for
 1. details to allow you access to this service which may include a username
@@ -23,9 +23,9 @@ We store your data on our secure servers which are provided by Amazon in an EU b
 
 We take precautions to ensure your data is secure during transmission by using encryption and SSL certificates.
 
-We have procedures and security features in place to keep your data secure once we receive it.
+We operate an ISO27001 certified '[information security management system](/security)' to make sure we look after your data carefully and legally. This includes any trusted third parties we use to deliver the Service, and your permission includes these trusted third parties (all of whom have been risk assessed by us).
 
-We won’t share your information with any other organisations for marketing, market research or commercial purposes, and we don’t pass on your details to other websites.
+We won’t share your information with any other organisations for marketing, market research or commercial purposes, and we don’t pass on your details to other websites, beyond those we need to deliver the service.
 
 Any data you transmit is at your own risk.
 
@@ -39,12 +39,10 @@ You can find out what information we hold about you at any time, and ask us not 
 
 ## Links to other websites
 
-Historic Futures Ltd and the String3 website may contain links to other websites.
+The websites we manage may contain links to other websites and services.
 
-This privacy policy only applies to this website, and doesn’t cover other services we may link to.
+This privacy policy only applies to the websites we manage, and doesn’t cover other services we may link to.
 
 ## Following a link to another website
 
-If you go to another website from this one, read the privacy policy on that website to find out what it does with your information.
-
-We do not pass any of your data to any websites except where we explicitly tell you so. For example we may pass your name and email address to our help desk system which is provided by Zendesk.
+If you follow a link from one of our websites, please read the privacy policy on that destination site to find out what it does with your information.
