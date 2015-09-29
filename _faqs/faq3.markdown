@@ -1,5 +1,5 @@
 ---
-title:  "How can I tell how responsive my supply chain is?"
+title:  "How do you ensure privacy in String3?"
 order: 3
 ---
-Your reports will highlight just how good your supplier is at responding to your question. It will also highlight how good your suppliers suppliers are at responding to your questions. The report will indicate how long it took any supplier to respond and pass the question on.
+We take the security of data very seriously. We operate an information security management system (ISMS) to ensure that we design systems and processes that consistently maintain the confidentiality, integrity and availability of our customers’ data. Our ISMS is certified to the ISO27001:2013 standard and is audited every year.
