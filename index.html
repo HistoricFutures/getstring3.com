@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Welcome
+slug: welcome
 nextText: "Why choose String3?"
 nextLink: "/why"
 ---
@@ -33,14 +34,14 @@ nextLink: "/why"
 	<b class="tri-8"></b>
 	<b class="tri-9"></b>
 	<b class="tri-10"></b>
-	
+
 </div>
 
 <div class="exposition" id="exposition">
-	
+
 		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}
 		{{ exposition | markdownify }}
-	
+
 	<div class="find-out-holder">
 		<p class="large">How does String3 work?</p>
 		<a href="#step1" class="down-arrow">Next section</a>
@@ -64,7 +65,7 @@ nextLink: "/why"
 			{% else %}
 			<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
 			{% endif %}
-			
+
 			{% if page.example3 == example.pagename %}
 			<li class="active"><span>{{ page.example3title }}</span></li>
 			{% else %}
