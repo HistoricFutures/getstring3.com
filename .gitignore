@@ -3,3 +3,4 @@ vendor/
 datasets/
 algorithms/
 .vagrant/
+.log/*.log

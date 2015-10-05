@@ -1,3 +1,0 @@
-[2015-10-05 10:25:48] testrig.INFO: Matched route "GET_". {"route_parameters":{"_controller":"TestRig\\Controllers\\IndexController::get","_route":"GET_"},"request_uri":"http://testrig.local/"} []
-[2015-10-05 10:25:48] testrig.INFO: > GET / [] []
-[2015-10-05 10:25:48] testrig.INFO: < 200 [] []

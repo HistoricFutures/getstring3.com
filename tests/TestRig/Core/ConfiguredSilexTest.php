@@ -17,6 +17,15 @@ use Tests\AbstractTestCase;
 class ConfiguredSilexTest extends AbstractTestCase
 {
     /**
+     * Tear down: clear all record of any configured app.
+     */
+    public function tearDown()
+    {
+        ConfiguredSilex::clearLastApp();
+        parent::tearDown();
+    }
+
+    /**
      * Test: TestRig\Services\ConfiguredSilex::__construct().
      */
     public function testConstruct()
@@ -39,5 +48,16 @@ class ConfiguredSilexTest extends AbstractTestCase
         $app = new ConfiguredSilex(__DIR__ . '/../..');
         $lastApp = ConfiguredSilex::getLastApp();
         $this->assertEquals($app, $lastApp);
+    }
+
+    /**
+     * Test: TestRig\Services\ConfiguredSilex::clearLastApp().
+     */
+    public function testClearLastApp()
+    {
+        $app = new ConfiguredSilex(__DIR__ . '/../..');
+        ConfiguredSilex::clearLastApp();
+        $lastApp = ConfiguredSilex::getLastApp();
+        $this->assertNull($lastApp);
     }
 }

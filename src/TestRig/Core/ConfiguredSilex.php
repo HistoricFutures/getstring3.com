@@ -7,6 +7,7 @@
 
 namespace TestRig\Core;
 
+use Monolog\Logger;
 use Silex\Application;
 
 /**
@@ -60,6 +61,7 @@ class ConfiguredSilex extends Application
         $this->register(new \Silex\Provider\MonologServiceProvider(), [
             'monolog.logfile' => "$rootDir/../log/monolog.log",
             'monolog.name' => 'testrig',
+            'monolog.level' => $this['debug'] ? Logger::DEBUG : Logger::INFO,
         ]);
 
         // Routing.
@@ -93,5 +95,13 @@ class ConfiguredSilex extends Application
     public static function getLastApp()
     {
         return self::$lastApp;
+    }
+
+    /**
+     * Class method to remove all record of recently configured app.
+     */
+    public static function clearLastApp()
+    {
+        self::$lastApp = null;
     }
 }
