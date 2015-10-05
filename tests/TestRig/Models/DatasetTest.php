@@ -40,6 +40,23 @@ class DatasetTest extends AbstractTestCase
     }
 
     /**
+     * Test: TestRig\Models\Dataset::createFromFilename().
+     */
+    public function testCreateFromFilename()
+    {
+        // Create, as above, but with a recipe filename.
+        $recipe = "tests/fixtures/recipe.yaml";
+
+        $datasetDir = $this->testable->createFromFilename($recipe);
+
+        // Assert we've got a manifest.
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/recipe.yaml"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/dataset.sqlite3"));
+        $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/gitstamp.yaml"));
+    }
+
+    /**
      * Test: TestRig\Models\Dataset::read().
      */
     public function testRead()

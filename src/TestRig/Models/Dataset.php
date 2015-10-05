@@ -9,6 +9,7 @@ namespace TestRig\Models;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Parser;
+use TestRig\Exceptions\MissingFileException;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
 
@@ -22,7 +23,12 @@ class Dataset extends AbstractFolderManager
     protected $dirEnvVar = 'DIR_DATASETS';
 
     /**
-     * Create a dataset.
+     * Create a dataset from a HTTP form's UploadedFile.
+     *
+     * @param UploadedFile $file
+     *   File object.
+     * @return string
+     *   Location of directory containing dataset.
      */
     public function create(UploadedFile $file)
     {
@@ -30,6 +36,36 @@ class Dataset extends AbstractFolderManager
 
         // Recipe from the UploadedFile.
         $file->move($this->rootDir . "/$datasetDir", "recipe.yaml");
+        // SQLite database create and generate schema.
+        $databasePath = $this->pathToDatabase($datasetDir);
+        Database::create($databasePath);
+        // Populate database with raw data based on the recipe.
+        $recipeParsed = $this->getAndParseRecipe($datasetDir);
+        (new RawData($databasePath))->populate($recipeParsed['yaml']);
+
+        // Return directory name as a marker.
+        return $datasetDir;
+    }
+
+    /**
+     * Create a dataset from a filename.
+     *
+     * @param string $filename
+     *   Filename, relative to current directory.
+     * @return string
+     *   Location of directory containing dataset.
+     */
+    public function createFromFilename($filename)
+    {
+        $fullPath = getcwd() . "/$filename";
+        if (!file_exists($fullPath)) {
+            throw new MissingFileException($fullPath);
+        }
+
+        $datasetDir = parent::create();
+
+        // Recipe from the filename.
+        copy($fullPath, $this->rootDir . "/$datasetDir/recipe.yaml");
         // SQLite database create and generate schema.
         $databasePath = $this->pathToDatabase($datasetDir);
         Database::create($databasePath);
