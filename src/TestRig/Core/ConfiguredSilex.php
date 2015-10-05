@@ -45,16 +45,22 @@ class ConfiguredSilex extends Application
         $env_debug = getenv('DEBUG');
         $this['debug'] = isset($env_debug) && $env_debug;
 
-        // Twig templating via $this['twig'].
-        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
+        // Service: Twig templating.
+        $this->register(new \Silex\Provider\TwigServiceProvider(), [
             'twig.path' => "$rootDir/views",
-        ));
+        ]);
 
-        // Translator provider: we don't need it, but form rendering does.
+        // Service: translator. We don't need it, but form rendering does.
         $this->register(new \Silex\Provider\TranslationServiceProvider());
 
-        // Form handling.
+        // Service: form handling.
         $this->register(new \Silex\Provider\FormServiceProvider());
+
+        // Service: logging.
+        $this->register(new \Silex\Provider\MonologServiceProvider(), [
+            'monolog.logfile' => "$rootDir/../log/monolog.log",
+            'monolog.name' => 'testrig',
+        ]);
 
         // Routing.
         $routes = array(

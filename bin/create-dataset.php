@@ -29,6 +29,8 @@ if (!isset($argv[1])) {
   exit(1);
 }
 
+$app = new TestRig\Core\ConfiguredSilex($_SERVER['DOCUMENT_ROOT']);
+
 // Attempt to create a dataset from this YAML file.
 try {
     $dataset = new TestRig\Models\Dataset();
