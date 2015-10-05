@@ -18,6 +18,10 @@ use TestRig\Services\Database;
  */
 class RawData
 {
+    // Traits.
+    // Logging.
+    use \TestRig\Traits\LoggingTrait;
+
     // Dataset path provided by constructor.
     private $path = null;
 
@@ -30,6 +34,7 @@ class RawData
     public function __construct($path)
     {
         $this->path = $path;
+        $this->detectLogging();
     }
 
     /**
@@ -111,16 +116,23 @@ class RawData
         }
 
         // Create our entity populations.
+        $this->addDebugIfExists("Creating populations.");
         foreach ($recipe['populations'] as $population) {
             for ($i = 0; $i < $population['number']; $i++) {
                 new Entity($this->path, null, $population);
             }
+            $this->addDebugIfExists("Created population.", $population);
         }
 
         // Create our questions.
+        $this->addDebugIfExists("Creating questions.");
         for ($i = 0; $i < $recipe['questions']; $i++) {
             (new Question($this->path))->generateAsks();
+            if ($i && !($i % 100)) {
+                $this->addDebugIfExists("Created 100 questions.", ['total' => $i]);
+            }
         }
+        $this->addDebugIfExists("Done creating raw data.");
     }
 
     /**
