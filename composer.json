@@ -8,6 +8,8 @@
         "symfony/security-csrf": "^2.7",
         "symfony/translation": "^2.7",
         "phpunit/phpunit": "4.7.*",
+        "psr/log": "~1.0",
+        "monolog/monolog": "~1.6",
         "fzaninotto/faker": "^1.5"
     },
     "require-dev": {
