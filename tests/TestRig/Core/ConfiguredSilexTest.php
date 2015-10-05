@@ -35,8 +35,7 @@ class ConfiguredSilexTest extends AbstractTestCase
         try {
             $app['twig'];
             $this->fail("Twig service did not try to find its views folder.");
-        }
-        catch (\Twig_Error_Loader $e) {
+        } catch (\Twig_Error_Loader $e) {
         }
     }
 
