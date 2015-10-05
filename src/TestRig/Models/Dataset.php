@@ -36,12 +36,8 @@ class Dataset extends AbstractFolderManager
 
         // Recipe from the UploadedFile.
         $file->move($this->rootDir . "/$datasetDir", "recipe.yaml");
-        // SQLite database create and generate schema.
-        $databasePath = $this->pathToDatabase($datasetDir);
-        Database::create($databasePath);
-        // Populate database with raw data based on the recipe.
-        $recipeParsed = $this->getAndParseRecipe($datasetDir);
-        (new RawData($databasePath))->populate($recipeParsed['yaml']);
+        // Now create all other files.
+        $this->createAllOtherFiles($datasetDir);
 
         // Return directory name as a marker.
         return $datasetDir;
@@ -66,15 +62,27 @@ class Dataset extends AbstractFolderManager
 
         // Recipe from the filename.
         copy($fullPath, $this->rootDir . "/$datasetDir/recipe.yaml");
+        // Now create all other files.
+        $this->createAllOtherFiles($datasetDir);
+
+        // Return directory name as a marker.
+        return $datasetDir;
+    }
+
+    /**
+     * Once creation has begun from recipe, create all other files.
+     *
+     * @param string $datasetDir
+     *   Dataset directory containing recipe.
+     */
+    private function createAllOtherFiles($datasetDir)
+    {
         // SQLite database create and generate schema.
         $databasePath = $this->pathToDatabase($datasetDir);
         Database::create($databasePath);
         // Populate database with raw data based on the recipe.
         $recipeParsed = $this->getAndParseRecipe($datasetDir);
         (new RawData($databasePath))->populate($recipeParsed['yaml']);
-
-        // Return directory name as a marker.
-        return $datasetDir;
     }
 
     /**
