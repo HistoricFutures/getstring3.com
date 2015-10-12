@@ -3,6 +3,7 @@ Requirements
 
 * PHP 5.5+
 * php5-sqlite: via PECL, apt-get etc.
+* ansible 1.9.x
 
 Installation
 ============
