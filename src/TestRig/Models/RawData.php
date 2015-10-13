@@ -126,10 +126,12 @@ class RawData
 
         // Create our questions.
         $this->addDebugIfExists("Creating questions.");
-        for ($i = 0; $i < $recipe['questions']; $i++) {
+        for ($i = 1; $i <= $recipe['questions']; $i++) {
             (new Question($this->path))->generateAsks();
-            if ($i && !($i % 100)) {
-                $this->addDebugIfExists("Created 100 questions.", ['total' => $i]);
+            // How often do we log?
+            $logEvery = 50;
+            if ($i && !($i % $logEvery)) {
+                $this->addDebugIfExists("Created $logEvery (more) questions.", ['total' => $i]);
             }
         }
         $this->addDebugIfExists("Done creating raw data.");
