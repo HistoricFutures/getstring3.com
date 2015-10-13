@@ -46,7 +46,6 @@ class DatasetTest extends AbstractTestCase
     {
         // Create, as above, but with a recipe filename.
         $recipe = "tests/fixtures/recipe.yaml";
-
         $datasetDir = $this->testable->createFromFilename($recipe);
 
         // Assert we've got a manifest.
@@ -54,6 +53,10 @@ class DatasetTest extends AbstractTestCase
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/recipe.yaml"));
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/dataset.sqlite3"));
         $this->assertTrue(file_exists(self::$containingDir . "/$datasetDir/gitstamp.yaml"));
+
+        // Also test create with absolute path.
+        $pathPrefix = realpath(__DIR__ . "/../../..");
+        $datasetDir = $this->testable->createFromFilename("$pathPrefix/$recipe");
     }
 
     /**

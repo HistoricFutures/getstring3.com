@@ -53,7 +53,7 @@ class Dataset extends AbstractFolderManager
      */
     public function createFromFilename($filename)
     {
-        $fullPath = getcwd() . "/$filename";
+        $fullPath = realpath($filename);
         if (!file_exists($fullPath)) {
             throw new MissingFileException($fullPath);
         }
