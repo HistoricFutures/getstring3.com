@@ -22,7 +22,8 @@ CREATE TABLE entity (
 
   -- Probabilities for agent control flow.
   probability_no_ack REAL,
-  probability_no_answer REAL
+  probability_no_answer REAL,
+  probability_pick_from_pool REAL
 );
 CREATE TABLE entity_tier (
   entity INTEGER NOT NULL,

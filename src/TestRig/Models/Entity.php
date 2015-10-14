@@ -43,6 +43,7 @@ class Entity extends AbstractDBObject
 
         'probability_no_ack' => 0,
         'probability_no_answer' => 0,
+        'probability_pick_from_pool' => 0,
     );
 
     /**
@@ -122,6 +123,7 @@ class Entity extends AbstractDBObject
             // Probabilities: 0, 1 or randomized.
             case 'probability_no_ack':
             case 'probability_no_answer':
+            case 'probability_pick_from_pool':
                 switch ($argumentData * 1) {
                 case 0:
                 case 1:
