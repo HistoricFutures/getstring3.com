@@ -151,10 +151,11 @@ table.big-summary {
 table.agenda {
 	.time {
 		width:25%;
+		@include padding-left($a-scale);
 	}
 	.event {
 		width:75%;
-		@include padding($b-scale);
+		@include padding-right($a-scale);
 		@include padding-top($a-scale);
 	}
 }
