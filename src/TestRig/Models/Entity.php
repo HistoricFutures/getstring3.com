@@ -17,13 +17,16 @@ use TestRig\Services\Maths;
  */
 class Entity extends AbstractDBObject
 {
+    // Supplier pool.
+    protected $pool = [];
+
     // Database table we save to.
     protected $table = "entity";
     // Default arguments.
     private $defaultArguments = array(
         // Try to match order in schema.sql here, but we need tier first so
         // case 'label': works below.
-        'tiers' => array(1),
+        'tiers' => [1],
         'label' => '<DEFAULT>',
         'is_sourcing' => false,
 
@@ -32,7 +35,11 @@ class Entity extends AbstractDBObject
         'mean_routing_time' => 5,
         'self_time_ratio' => 1,
 
+        // How many suppliers, on average, will an ask branch to?
         'mean_extra_suppliers' => 0,
+        // How many suppliers does the entity have in its preferred pool?
+        'mean_supplier_pool_size' => 0,
+        'supplier_pool' => [],
 
         'probability_no_ack' => 0,
         'probability_no_answer' => 0,
@@ -99,6 +106,7 @@ class Entity extends AbstractDBObject
                 break;
 
             // Positive integers: randomized.
+            case 'supplier_pool':
             case 'mean_extra_suppliers':
                 // Cut-off at four times the mean i.e. 1-9 suppliers (0-8 extra) peaks at 1 + (9-1)/4 = 3.
                 $this->data[$argumentName] = Generate::getNumber($argumentData, $argumentData * 4);
@@ -225,5 +233,35 @@ class Entity extends AbstractDBObject
         ) as $row) {
             $this->data['tiers'][] = $row['tier'];
         }
+    }
+
+    /**
+     * Generate supplier pool based on pool size.
+     */
+    public function generateSupplierPool()
+    {
+        // Make SQL call to get up to N suppliers.
+        $conn = Database::getConn($path);
+        $results = Database::returnStatement(
+            $conn,
+            'SELECT id FROM entity WHERE id != :myid LIMIT :pool'
+            [':myid' => $this->id, ':pool' => $this->data['supplier_pool']
+        )->execute();
+
+        // Store IDs in the supplier pool.
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+            $this->data['supplier_pool'][] = $row['id'];
+        }
+
+        // Now save the object so it persists.
+        $this->save();
+    }
+
+    /**
+     * Get supplier pool, assuming already generated.
+     */
+    public function getSupplierPool()
+    {
+        return $this->data['supplier_pool'];
     }
 }

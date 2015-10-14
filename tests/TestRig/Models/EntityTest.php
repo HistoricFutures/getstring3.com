@@ -118,4 +118,36 @@ class EntityTest extends AbstractTestCase
         $this->testable->data['id'] = 5;
         $this->assertNotEquals($id, $this->testable->data['id']);
     }
+
+    /**
+     * Test: \TestRig\Models\Entity::generateSupplierPool().
+     */
+    public function testGenerateSupplierPool()
+    {
+        // Create a new entity.
+        $this->testable->create(['supplier_pool' => 1]);
+
+        // Generate its supplier pool.
+        $this->testable->generateSupplierPool();
+
+        // It must have entity ID=1 in its pool.
+        $pool = $this->testable->getSupplierPool();
+        $this->assertEquals([1], $pool);
+
+        // Re-read data and check it persists.
+        $this->testable->read(1);
+        $pool = $this->testable->getSupplierPool();
+        $this->assertEquals([], $pool);
+        $this->testable->read(2);
+        $pool = $this->testable->getSupplierPool();
+        $this->assertEquals([1], $pool);
+    }
+
+    /**
+     * Test: \TestRig\Models\Entity::getSupplierPool().
+     */
+    public function testGetSupplierPool()
+    {
+        $this->assertEquals([], $this->testable->getSupplierPool);
+    }
 }
