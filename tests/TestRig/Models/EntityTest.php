@@ -124,10 +124,10 @@ class EntityTest extends AbstractTestCase
      */
     public function testGenerateSupplierPool()
     {
-        // Create a new entity.
-        $this->testable->create(['supplier_pool' => 1]);
-
-        // Generate its supplier pool.
+        // Create a new entity with pool size forced to 1.
+        $this->testable->create();
+        $this->testable->data['mean_supplier_pool_size'] = 1;
+        // And generate its supplier pool along the way.
         $this->testable->generateSupplierPool();
 
         // It must have entity ID=1 in its pool.
@@ -141,6 +141,16 @@ class EntityTest extends AbstractTestCase
         $this->testable->read(2);
         $pool = $this->testable->getSupplierPool();
         $this->assertEquals([1], $pool);
+
+        // Force a bigger pool size than our number of entities.
+        $this->testable->create();
+        $this->testable->create();
+        $this->testable->read(2);
+        $this->testable->data['mean_supplier_pool_size'] = 10;
+        // And re-generate.
+        $this->testable->generateSupplierPool();
+        // Should still only have 3 in the pool i.e. no repeats.
+        $this->assertEquals(3, count($this->testable->getSupplierPool()));
     }
 
     /**
@@ -148,6 +158,6 @@ class EntityTest extends AbstractTestCase
      */
     public function testGetSupplierPool()
     {
-        $this->assertEquals([], $this->testable->getSupplierPool);
+        $this->assertEquals([], $this->testable->getSupplierPool());
     }
 }

@@ -336,7 +336,7 @@ class Database
      * @return \SQLite3Stmt
      *   Prepared statement, ready for execution.
      */
-    private static function returnStatement($conn, $sql, $arguments = array())
+    public static function returnStatement($conn, $sql, $arguments = array())
     {
         $statement = $conn->prepare($sql);
         // Bind all values.

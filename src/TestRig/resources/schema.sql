@@ -17,6 +17,8 @@ CREATE TABLE entity (
 
   -- Bifurcating questions with extra suppliers.
   mean_extra_suppliers INTEGER,
+  -- Pool of preferred suppliers, generated later.
+  mean_supplier_pool_size INTEGER,
 
   -- Probabilities for agent control flow.
   probability_no_ack REAL,
@@ -27,6 +29,13 @@ CREATE TABLE entity_tier (
   tier INTEGER NOT NULL,
 
   FOREIGN KEY(entity) REFERENCES entity(id)
+);
+CREATE TABLE entity_supplier_pool (
+  entity INTEGER NOT NULL,
+  supplier INTEGER NOT NULL,
+
+  FOREIGN KEY(entity) REFERENCES entity(id),
+  FOREIGN KEY(supplier) REFERENCES entity(id)
 );
 -- An "empty" question table makes our id-based ORM work more easily.
 CREATE TABLE question (

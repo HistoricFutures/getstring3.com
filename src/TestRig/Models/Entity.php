@@ -82,8 +82,10 @@ class Entity extends AbstractDBObject
 
             // Tier: verbatim number.
             // Self-time ratio multiplier: verbatim number.
+            // Supplier pool: verbatim array.
             case 'tiers':
             case 'self_time_ratio':
+            case 'supplier_pool':
                 $this->data[$argumentName] = $argumentData;
                 break;
 
@@ -106,7 +108,12 @@ class Entity extends AbstractDBObject
                 break;
 
             // Positive integers: randomized.
-            case 'supplier_pool':
+            // Pool size can be zero.
+            case 'mean_supplier_pool_size':
+                if ($argumentData === 0) {
+                    $this->data[$argumentName] = 0;
+                    break;
+                }
             case 'mean_extra_suppliers':
                 // Cut-off at four times the mean i.e. 1-9 suppliers (0-8 extra) peaks at 1 + (9-1)/4 = 3.
                 $this->data[$argumentName] = Generate::getNumber($argumentData, $argumentData * 4);
@@ -128,13 +135,13 @@ class Entity extends AbstractDBObject
         }
 
         // Ensure data is simple key/value list of scalars.
-        $tiers = $this->temporarilyHideTiers();
+        $toHide = $this->temporarilyHideData();
 
         // Call parent method to create this record in the DB.
         parent::create();
 
         // Save non-scalars.
-        $this->insertTiers($tiers);
+        $this->insertNormalizedData($toHide);
     }
 
     /**
@@ -149,7 +156,7 @@ class Entity extends AbstractDBObject
     {
         parent::read($id);
         if ($this->getID()) {
-            $this->retrieveTiers();
+            $this->retrieveNormalizedData();
         }
     }
 
@@ -161,13 +168,13 @@ class Entity extends AbstractDBObject
     public function update()
     {
         // Ensure data is simple key/value list of scalars.
-        $tiers = $this->temporarilyHideTiers();
+        $toHide = $this->temporarilyHideData();
 
         // Call parent method to update this record in the DB.
         parent::update();
 
         // Save non-scalars.
-        $this->insertTiers($tiers);
+        $this->insertNormalizedData($toHide);
     }
     /**
      * Overrides ::delete().
@@ -177,54 +184,65 @@ class Entity extends AbstractDBObject
     public function delete()
     {
         // Save zero tiers: removes existing ones.
-        $this->insertTiers(array());
+        $this->insertNormalizedData(['tiers' => [], 'supplier_pool' => []]);
 
         // Call parent method to update this record in the DB.
         parent::delete();
     }
 
     /**
-     * Private function to consistently, temporarily hide tiers from ORM.
+     * Private function to consistently, temporarily hide non-scalars from ORM.
      *
      * @return array
      *   Array of tier numbers e.g. [1, 2, 3].
      */
-    private function temporarilyHideTiers()
+    private function temporarilyHideData()
     {
-        $tiers = $this->data['tiers'];
+        $toHide = [
+            'tiers' => $this->data['tiers'],
+            'supplier_pool' => $this->data['supplier_pool'],
+        ];
         unset($this->data['tiers']);
-        return $tiers;
+        unset($this->data['supplier_pool']);
+        return $toHide;
     }
 
     /**
      * Private function to update tiers in separate table.
      *
-     * @param array $tiers
-     *   Array of tier numbers e.g. [1, 2, 3].
+     * @param array $data
+     *   Array of e.g. ['tier' => [1, 2, 3], 'supplier_pool' => [5]].
      */
-    private function insertTiers($tiers)
+    private function insertNormalizedData($data)
     {
         // A "record template", for both bulk deletion and insertion.
-        $record = array('entity' => $this->getID());
+        $record = ['entity' => $this->getID()];
         // Clear out table of rows pertaining to this.
         Database::deleteWhere($this->path, 'entity_tier', $record);
+        Database::deleteWhere($this->path, 'entity_supplier_pool', $record);
 
-        foreach ($tiers as $tierId) {
+        // Save tiers.
+        foreach ($data['tiers'] as $tierId) {
             $record['tier'] = $tierId;
             Database::writeRecord($this->path, 'entity_tier', $record, false);
         }
+        // Save supplier pool.
+        unset($record['tier']);
+        foreach ($data['supplier_pool'] as $supplierId) {
+            $record['supplier'] = $supplierId;
+            Database::writeRecord($this->path, 'entity_supplier_pool', $record, false);
+        }
 
-        // Ensure tiers are stored on entity.
-        $this->data['tiers'] = $tiers;
+        // Ensure data is restored on entity.
+        $this->data = array_merge($this->data, $data);
     }
 
     /**
-     * Private function to retrieve tiers into $this->data.
+     * Private function to retrieve normalized data into $this->data.
      */
-    private function retrieveTiers()
+    private function retrieveNormalizedData()
     {
-        $this->data['tiers'] = array();
-
+        $this->data['tiers'] = [];
         foreach (Database::getRowsWhere(
             $this->path,
             'entity_tier',
@@ -232,6 +250,16 @@ class Entity extends AbstractDBObject
             'tier'
         ) as $row) {
             $this->data['tiers'][] = $row['tier'];
+        }
+
+        $this->data['supplier_pool'] = [];
+        foreach (Database::getRowsWhere(
+            $this->path,
+            'entity_supplier_pool',
+            array("entity" => $this->getID()),
+            'supplier'
+        ) as $row) {
+            $this->data['supplier_pool'][] = $row['supplier'];
         }
     }
 
@@ -241,20 +269,21 @@ class Entity extends AbstractDBObject
     public function generateSupplierPool()
     {
         // Make SQL call to get up to N suppliers.
-        $conn = Database::getConn($path);
+        $conn = Database::getConn($this->path);
         $results = Database::returnStatement(
             $conn,
-            'SELECT id FROM entity WHERE id != :myid LIMIT :pool'
-            [':myid' => $this->id, ':pool' => $this->data['supplier_pool']
+            'SELECT id FROM entity WHERE id != :myid ORDER BY RANDOM() LIMIT :pool',
+            [':myid' => $this->getID(), ':pool' => $this->data['mean_supplier_pool_size']]
         )->execute();
 
         // Store IDs in the supplier pool.
+        $this->data['supplier_pool'] = [];
         while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
             $this->data['supplier_pool'][] = $row['id'];
         }
 
-        // Now save the object so it persists.
-        $this->save();
+        // Now save the object so its pool persists.
+        $this->update();
     }
 
     /**
