@@ -8,6 +8,13 @@ Notes: Basic form styles (no classes)
 form {
 	text-align:left;
 	clear:left;
+	li {
+		list-style:none;
+	}
+	ul {
+		padding-left:0;
+		@include padding-top($b-scale);
+	}
 }
 
 .form-field {

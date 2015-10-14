@@ -52,6 +52,11 @@ height: 0;
 	clear:left;
 }
 
+.standard-wide {
+	@include gs-span(l,3,10);
+	clear:left;
+}
+
 .standard-intro, .standard-holder {
 	@include gs-span(l,3,8);
 	clear:left;
@@ -64,6 +69,11 @@ height: 0;
 
 .small-left {
 	@include gs-span(l,3,5);
+	clear:left;
+}
+
+.mid-left {
+	@include gs-span(l,3,7);
 	clear:left;
 }
 
@@ -95,7 +105,7 @@ height: 0;
 		@include gs-span(s,all);
 		clear:left;
 	}
-	.standard, .standard-full, .standard-intro, .standard-holder, .small-left, .standard-right, .small-right, .full-right {
+	.standard, .standard-full, .standard-wide, .standard-intro, .standard-holder, .small-left, .standard-right, .small-right, .full-right, .mid-left {
 		@include gs-span(s,all);
 		@include gs-pad(s, padinfull);
 		clear:left;

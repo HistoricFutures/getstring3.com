@@ -26,7 +26,7 @@ tbody tr {
 	}
 
 
-	
+
 }
 
 tbody th {
@@ -62,7 +62,7 @@ table.big-summary {
 	tbody tr {
 		background-color:$background-color;
 		border-bottom:none;
-		
+
 	}
 	td {
 			@include font-size($b-scale-5);
@@ -82,43 +82,43 @@ table.big-summary {
 @media only screen and (max-width:950px) {
 	table.big-summary {
 		td {
-			@include font-size($a-scale-4); 
+			@include font-size($a-scale-4);
 		}
 	}
 }
 
 @include gs-media(s,max) {
 	table.big-summary {
-		table, thead, tbody, th, td, tr { 
-		display: block; 
+		table, thead, tbody, th, td, tr {
+		display: block;
 		}
-		thead tr { 
+		thead tr {
 			position: absolute;
 			top: -9999px;
 			left: -9999px;
 
 		}
-		td { 
+		td {
 		/* Behave  like a "row" */
-		
+
 		 border-bottom:$grey5 1px solid;
 		position: relative;
-		padding-left: 60%; 
+		padding-left: 60%;
 		@include font-size($a-scale-3);
 		&:last-child {
 			border-bottom:none;
 		}
 	}
-	
-	td:before { 
+
+	td:before {
 		/* Now like a table header */
 		position: absolute;
 		/* Top/left values mimic padding */
 		@include top($default-padding);
 		left:0;
-		width: 55%; 
-		padding-right: 10px; 
-		
+		width: 55%;
+		padding-right: 10px;
+
 		@include font-size($size-small);
 		color:$grey80;
 		font-style: italic;
@@ -132,7 +132,7 @@ table.big-summary {
 	td:nth-of-type(3):before { content: "Total supply chain responses"; }
 	td:nth-of-type(4):before { content: "Total supply chain organisations asked"; }
 	td:nth-of-type(5):before { content: "Overall response rate"; }
-	
+
 
 	}
 	#responder-summary {
@@ -141,8 +141,20 @@ table.big-summary {
 	td:nth-of-type(3):before { content: "Average response time"; }
 	td:nth-of-type(4):before { content: "Total suppliers asked"; }
 	td:nth-of-type(5):before { content: "Total customers connected to"; }
-	
+
 
 	}
 }
 
+/// Table for agenda
+
+table.agenda {
+	.time {
+		width:25%;
+	}
+	.event {
+		width:75%;
+		@include padding($b-scale);
+		@include padding-top($a-scale);
+	}
+}
