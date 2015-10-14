@@ -52,6 +52,37 @@ class Agent extends Entity
     }
 
     /**
+     * Pick a random agent that's also a valid to-ask: class method.
+     *
+     * @param string $path
+     *   Path to SQLite file.
+     * @param integer $tier
+     *   Tier to pick from.
+     * @param array $pool = [].
+     *   Pool to pick from first, then try rest of population.
+     * @return Agent
+     */
+    public static function pickRandomButValid($path, $tier, $pool = [])
+    {
+        // Simple tier requirement to start off.
+        $where = "tier = $tier";
+
+        // If we've got a pool of IDs, try to pick from them first.
+        if ($pool) {
+            var_dump($pool);
+            $wherePool = implode(',', $pool);
+            $agent = Agent::pickRandom($path, "$where AND id IN ($wherePool)");
+            var_dump($agent);
+            if ($agent) {
+                return $agent;
+            }
+        }
+
+        // If nothing suitable in the pool, just pick based on other criteria.
+        return Agent::pickRandom($path, $where);
+    }
+
+    /**
      * Pick valid agents to ask the question, including potentially many suppliers.
      *
      * Questions can be commenced by calling this directly on an agent.
@@ -67,9 +98,7 @@ class Agent extends Entity
         // Try to get one to-ask; if we can't even get one, return empty array.
         // Sourcing agents get to-asks from the same tier as them.
         $toAskTier = $this->getTierContext() + ($this->data['is_sourcing'] ? 0 : 1);
-        $toAsks = array(
-            Agent::pickRandom($this->path, "tier = $toAskTier")
-        );
+        $toAsks = [Agent::pickRandomButValid($this->path, $toAskTier, $this->data['supplier_pool'])];
         if (!$toAsks[0]) {
             return array();
         }
@@ -82,7 +111,7 @@ class Agent extends Entity
                 $this->data['mean_extra_suppliers'] * 4
             );
             for ($i = 1; $i <= $numSuppliers; $i++) {
-                $toAsks[] = Agent::pickRandom($this->path, "tier = $toAskTier");
+                $toAsks[] = Agent::pickRandomButValid($this->path, $toAskTier, $this->data['supplier_pool']);
             }
         }
 

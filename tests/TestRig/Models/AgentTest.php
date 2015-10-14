@@ -57,6 +57,28 @@ class AgentTest extends AbstractTestCase
     }
 
     /**
+     * Test: TestRig\Models\Agent::pickRandomButValid().
+     */
+    public function testPickRandomButValid()
+    {
+        // Pick an agent at random ten times and store their IDs.
+        for ($i = 0; $i <= 10; $i++) {
+            $randomAgent = Agent::pickRandomButValid($this->pathToDatabase, 1);
+            $ids[$randomAgent->getID()] = true;
+        }
+        // Assert we've got more than one agent at random, not always the same.
+        $this->assertGreaterThan(1, count($ids));
+
+        // Add an entity to tier 2 and show we can then pick it.
+        $this->assertNull(Agent::pickRandomButValid($this->pathToDatabase, 2));
+        $agent = new Agent($this->pathToDatabase, null, ['tiers' => [2]]);
+        $this->assertEquals(
+            $agent->getID(),
+            Agent::pickRandomButValid($this->pathToDatabase, 2)->getID()
+        );
+    }
+
+    /**
      * Test: TestRig\Models\Agent::pickToAsk().
      */
     public function testPickToAsk()
@@ -90,6 +112,21 @@ class AgentTest extends AbstractTestCase
         $this->testable->data['is_sourcing'] = true;
         $source = $this->testable->pickToAsks($this->log);
         $this->assertEquals($this->testable->data['tiers'][0], $source[0]->data['tiers'][0]);
+
+        // Give this agent a pool.
+        $this->testable->data['is_sourcing'] = false;
+        $this->testable->data['mean_supplier_pool_size'] = 1;
+        $this->testable->data['probability_pick_from_pool'] = 1;
+        $this->testable->generateSupplierPool();
+        // Ensure it always picks from its pool, if it can.
+        $pool = $this->testable->getSupplierPool();
+        $toAsks = $this->testable->pickToAsks($this->log);
+        $this->assertEquals($pool[0], $toAsks[0]->getID());
+        // Make it never pick from its pool.
+        $this->testable->data['probability_pick_from_pool'] = 0;
+        $pool = $this->testable->getSupplierPool();
+        $toAsks = $this->testable->pickToAsks($this->log);
+        $this->assertNotEquals($pool[0], $toAsks[0]->getID());
     }
 
     /**
