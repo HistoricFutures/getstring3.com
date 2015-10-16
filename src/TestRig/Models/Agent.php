@@ -69,7 +69,6 @@ class Agent extends Entity
 
         // If we've got a pool of IDs, try to pick from them first.
         if ($pool) {
-            var_dump($pool);
             $wherePool = implode(',', $pool);
             $agent = Agent::pickRandom($path, "$where AND id IN ($wherePool)");
             var_dump($agent);

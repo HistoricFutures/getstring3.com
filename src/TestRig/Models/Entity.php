@@ -267,16 +267,26 @@ class Entity extends AbstractDBObject
 
     /**
      * Generate supplier pool based on pool size.
+     *
+     * Supplier pool is selected by random from all other entities, up to a
+     * maximum of the pool size (so it can be smaller). The pool is also
+     * filtered by tier: all suppliers must be in this entity's lowest tier
+     * plus one (see relevant Bitbucket tickets.)
      */
     public function generateSupplierPool()
     {
-        // Make SQL call to get up to N suppliers.
+        // Make SQL call to get up to N suppliers in the tier one above this
+        // entity's lowestmost tier.
         $conn = Database::getConn($this->path);
-        $results = Database::returnStatement(
-            $conn,
-            'SELECT id FROM entity WHERE id != :myid ORDER BY RANDOM() LIMIT :pool',
-            [':myid' => $this->getID(), ':pool' => $this->data['mean_supplier_pool_size']]
-        )->execute();
+        $sql = 'SELECT id FROM entity e INNER JOIN entity_tier et ON e.id = et.entity '
+            . ' WHERE e.id != :myid AND et.tier = :tier '
+            . ' ORDER BY RANDOM() LIMIT :pool';
+        $sqlArgs = [
+            ':myid' => $this->getID(),
+            ':pool' => $this->data['mean_supplier_pool_size'],
+            ':tier' => min($this->data['tiers']) + 1,
+        ];
+        $results = Database::returnStatement($conn, $sql, $sqlArgs)->execute();
 
         // Store IDs in the supplier pool.
         $this->data['supplier_pool'] = [];
