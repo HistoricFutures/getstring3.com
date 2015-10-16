@@ -305,4 +305,23 @@ class Entity extends AbstractDBObject
     {
         return $this->data['supplier_pool'];
     }
+
+    /**
+     * Push a new entity ID into the pool.
+     *
+     * @param integer $id
+     *   Entity ID to add to the pool.
+     */
+    public function pushIntoPool($id)
+    {
+        // Handle at object layer first, with no DB persistence.
+        $this->data['supplier_pool'][] = $id;
+        $oldID = array_shift($this->data['supplier_pool']);
+
+        // Handle our persistence with raw SQL, to speed up bulk insertion.
+        $record = ['entity' => $this->getID(), 'supplier' => $oldID];
+        Database::deleteWhere($this->path, 'entity_supplier_pool', $record);
+        $record['supplier'] = $id;
+        Database::writeRecord($this->path, 'entity_supplier_pool', $record, false);
+    }
 }

@@ -163,4 +163,24 @@ class EntityTest extends AbstractTestCase
     {
         $this->assertEquals([], $this->testable->getSupplierPool());
     }
+
+    /**
+     * Test: \TestRig\Models\Entity::pushIntoPool().
+     */
+    public function testPushIntoPool()
+    {
+        // Create entities with ID=2 and 3, and add 2 to testable's pool.
+        new $this->testableClass($this->pathToDatabase, null, ['tiers' => [2]]);
+        new $this->testableClass($this->pathToDatabase, null, ['tiers' => [2]]);
+        $this->testable->data['supplier_pool'][] = 2;
+        $this->testable->update();
+
+        // Check we can push a new ID into pool, and old is shifted out.
+        $this->testable->pushIntoPool(3);
+        $this->assertEquals([3], $this->testable->getSupplierPool());
+        // Check persistence by clearing out model layer and reloading.
+        $this->testable->read(2);
+        $this->testable->read(1);
+        $this->assertEquals([3], $this->testable->getSupplierPool());
+    }
 }

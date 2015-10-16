@@ -135,6 +135,10 @@ class AgentTest extends AbstractTestCase
         for ($i = 0; $i < 5; $i++) {
             $toAsks = $this->testable->pickToAsks($this->log);
             $nonPoolResults[$toAsks[0]->getID()] = true;
+            // Picking from outside the pool should add the new supplier to
+            // the pool each time.
+            $changedPool = $this->testable->getSupplierPool();
+            $this->assertEquals($toAsks[0]->getID(), $changedPool[0]);
         }
         // Ignore the in-pool supplier and check we've still got results.
         unset($nonPoolResults[$pool[0]]);

@@ -134,6 +134,18 @@ class Agent extends Entity
             $toAsk->setTierContext($toAskTier);
         }
 
+        // If any of our to-asks aren't in the supplier pool, push them
+        // into the pool in order, displacing existing suppliers.
+        if ($this->getSupplierPool()) {
+            $toAskIDs = array_map(function (Agent $a) { return $a->getID(); }, $toAsks);
+            foreach ($toAskIDs as $toAskID) {
+                // Pool will change, so keep comparing with it afresh.
+                if (!in_array($toAskID, $this->getSupplierPool())) {
+                    $this->pushIntoPool($toAskID);
+                }
+            }
+        }
+
         return $toAsks;
     }
 
