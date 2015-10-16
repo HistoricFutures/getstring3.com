@@ -6,6 +6,8 @@ populations:
     mean_answer_time: 15
     mean_routing_time: 20
     mean_extra_suppliers: 2
+    mean_supplier_pool_size: 5
+    probability_pick_from_pool: 0.8
   - tiers: [2]
     number: 9
     mean_ack_time: 7

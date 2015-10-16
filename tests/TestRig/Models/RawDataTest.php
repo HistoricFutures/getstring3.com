@@ -9,6 +9,7 @@ namespace Tests\Models;
 
 use TestRig\Exceptions\DatasetIntegrityException;
 use TestRig\Models\Dataset;
+use TestRig\Models\Entity;
 use TestRig\Models\RawData;
 use TestRig\Services\Database;
 use Tests\AbstractTestCase;
@@ -35,6 +36,7 @@ class RawDataTest extends AbstractTestCase
         $summary = $this->testable->getSummary();
         $this->assertArrayHasKey('entities', $summary);
         $this->assertArrayHasKey('populations', $summary);
+        $this->assertArrayHasKey('pools', $summary);
         foreach (array('count', 'mean_ack_time', 'mean_answer_time', 'mean_routing_time', 'probability_no_ack', 'mean_extra_suppliers') as $key) {
             $this->assertArrayHasKey($key, $summary['entities']);
         }
@@ -86,8 +88,8 @@ class RawDataTest extends AbstractTestCase
         // Set up a good recipe and wrap the database in RawData.
         $recipe = array(
             'populations' => array(
-                array('tier' => 1, 'number' => $numTier1),
-                array('tier' => 2, 'number' => $numTier2),
+                array('tiers' => [1], 'number' => $numTier1, 'mean_supplier_pool_size' => 5),
+                array('tiers' => [2], 'number' => $numTier2),
             ),
             'questions' => $numQuestions,
         );
@@ -116,6 +118,11 @@ class RawDataTest extends AbstractTestCase
             $this->assertArrayHasKey($key, $entities[1]);
             $this->assertNotNull($entities[1][$key]);
         }
+
+        // Check entity with ID=1 is in tier 1 and has a pool.
+        $entityOne = new Entity($this->pathToDatabase, 1);
+        $this->assertGreaterThan(0, $entityOne->data['mean_supplier_pool_size']);
+        $this->assertGreaterThan(0, count($entityOne->getSupplierPool()));
 
         // Check question IDs saved.
         $conn = Database::getConn($this->pathToDatabase);

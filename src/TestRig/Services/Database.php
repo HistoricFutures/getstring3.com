@@ -101,7 +101,10 @@ class Database
      * @param string $table
      *   Table in database.
      * @param array $filters = array()
-     *   Optional filters (if not set, will return whole table!)
+     *   Optional filters (if not set, will return whole table!) These can
+     *   be in the format: [COLUMN => ARGUMENT, ...] or alternatively in
+     *   the format: [ANY_KEY => ['column' => COLUMN, 'operator' =>
+     *      OPERATOR, 'argument => ARGUMENT, ...] to permit non-equality.
      * @param string $orderBy = 'id'
      *   Order by this column.
      * @return array
@@ -119,8 +122,17 @@ class Database
         if ($filters) {
             $where = ' WHERE ';
             foreach ($filters as $column => $argument) {
+                $operator = '=';
+                // Support both key = value, and key operator value, filters.
+                if (is_array($argument)) {
+                    $operator = $argument['operator'];
+                    $column = $argument['column'];
+                    $argument = $argument['argument'];
+                }
+
                 $column = \SQLite3::EscapeString($column);
-                $where .=  "$column = :$column,";
+                $operator = \SQLite3::EscapeString($operator);
+                $where .=  "$column $operator :$column,";
                 $arguments[":$column"] = $argument;
             }
             $sql .= trim($where, ',');

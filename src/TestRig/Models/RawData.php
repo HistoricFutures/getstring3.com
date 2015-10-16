@@ -50,6 +50,9 @@ class RawData
         // Population summary properties (unique population labels).
         $populationCount = Database::getTableAggregate($this->path, 'entity', 'count', 'DISTINCT population');
 
+        // Pool summary properties (entities with supplier pools).
+        $poolCount = Database::getTableAggregate($this->path, 'entity_supplier_pool', 'count', 'DISTINCT entity');
+
         // Question/ask summary properties.
         $questionsCount = Database::getTableCount($this->path, 'question');
         $asksCount = Database::getTableCount($this->path, 'ask');
@@ -67,6 +70,9 @@ class RawData
             ),
             'populations' => array(
                 'count' => $populationCount,
+            ),
+            'pools' => array(
+                'count' => $poolCount,
             ),
             'questions' => array(
                 'count' => $questionsCount,
@@ -115,6 +121,15 @@ class RawData
             for ($i = 0; $i < $population['number']; $i++) {
                 new Entity($this->path, null, $population);
             }
+        }
+
+        // Create our entity supplier pools for entities that need them.
+        foreach (Database::getRowsWhere(
+            $this->path,
+            'entity',
+            ['id' => ['column' => 'mean_supplier_pool_size', 'operator' => '>', 'argument' => '0']]
+        ) as $needsPool) {
+            (new Entity($this->path, $needsPool['id']))->generateSupplierPool();
         }
 
         // Create our questions.
