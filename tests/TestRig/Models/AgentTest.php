@@ -118,6 +118,10 @@ class AgentTest extends AbstractTestCase
         $this->testable->data['mean_supplier_pool_size'] = 1;
         $this->testable->data['probability_pick_from_pool'] = 1;
         $this->testable->generateSupplierPool();
+        // Add several tier=2 agents that won't be in this pool.
+        for ($i = 0; $i < 5; $i++) {
+            new Agent($this->pathToDatabase, null, array("tiers" => [2]));
+        }
         // Ensure it always picks from its pool, if it can.
         $pool = $this->testable->getSupplierPool();
         $toAsks = $this->testable->pickToAsks($this->log);
@@ -125,8 +129,19 @@ class AgentTest extends AbstractTestCase
         // Make it never pick from its pool.
         $this->testable->data['probability_pick_from_pool'] = 0;
         $pool = $this->testable->getSupplierPool();
-        $toAsks = $this->testable->pickToAsks($this->log);
-        $this->assertNotEquals($pool[0], $toAsks[0]->getID());
+        // It still might pick the same supplier by coincidence, so try picking
+        // several times and confirm that there's at least one non-pool result.
+        $nonPoolResults = [];
+        for ($i = 0; $i < 5; $i++) {
+            $toAsks = $this->testable->pickToAsks($this->log);
+            $nonPoolResults[$toAsks[0]->getID()] = true;
+        }
+        // Ignore the in-pool supplier and check we've still got results.
+        unset($nonPoolResults[$pool[0]]);
+        $this->assertGreaterThan(
+            0, count($nonPoolResults),
+            'Agent that never picks from its pool has only ever picked a pool supplier: not fatal, but suspicious!'
+        );
     }
 
     /**
