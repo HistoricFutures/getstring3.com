@@ -10,6 +10,28 @@
   border-bottom:1px solid $grey10;
 }
 
+.img-link {
+  border-bottom:none;
+}
+
+.envelope-1 {
+  display:block;
+  transition:all 1s ease;
+  &:hover {
+    transform:rotate(-5deg);
+    transition:all 1s ease;
+  }
+}
+
+.envelope-2 {
+  display:block;
+  transition:all 1s ease;
+  &:hover {
+    transform:rotate(5deg);
+    transition:all 1s ease;
+  }
+}
+
 .invitation {
   @include gs-span(l,3,10);
   clear:left;
@@ -80,6 +102,10 @@
 .invite-section-5, .invite-section-6, .invite-section-7 {
   @include padding-top($a-scale-4);
   @include padding-bottom($a-scale-4);
+}
+
+.invite-section-7 {
+  @include padding-bottom($a-scale-2);
 }
 
 ///// Medium screens
