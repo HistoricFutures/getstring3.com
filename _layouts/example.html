@@ -27,14 +27,14 @@ layout: default
 	<b class="tri-8"></b>
 	<b class="tri-9"></b>
 	<b class="tri-10"></b>
-	
+
 </div>
 
 <div class="exposition" id="exposition">
-	
+
 		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}
 		{{ exposition | markdownify }}
-	
+
 	<div class="find-out-holder">
 		<p class="large">How does String3 work?</p>
 		<a href="#step1" class="down-arrow">Next section</a>
@@ -58,7 +58,7 @@ layout: default
 		{% else %}
 		<li><a href="/examples/{{ page.example2 | downcase }}.html#step1">{{ page.example2title }}</a></li>
 		{% endif %}
-		
+
 		{% if page.example3 == page.pagename %}
 		<li class="active"><span>{{ page.example3title }}</span></li>
 		{% else %}
@@ -364,14 +364,8 @@ layout: default
 			<p class="large">Next time you need to send a question, String3 stores all the information you need to make it simpler, and over time you start to build up the big picture of your supply chain.</p>
 		</div>
 		<div class="register-holder">
-			{% capture regexample %}{% include content/signup-ctas/example.markdown %}{% endcapture %}
+			{% capture regexample %}{% include content/register-ctas/example.markdown %}{% endcapture %}
 			{{ regexample | markdownify }}
 		</div>
 	</li>
 </ol>
-
-
-
-
-
-

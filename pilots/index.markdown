@@ -17,8 +17,8 @@ String3 has now been launched! Your customers may start sending you new question
 <h3>Sign up for the live String3 service</h3>
 <p>Are you a brand, retailer, or supplier and want to find out where the products you sell come from? Why don’t you register for String3 and start a 30 day free trial today.</p>
 <p class="button register-button">
-		<a href="/signup">
-			Sign up for our mailing list
+		<a href="/register">
+			Register for String3
 		</a>
 	</p>
   </div>
