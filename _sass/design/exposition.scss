@@ -7,7 +7,7 @@
 	@include padding-top($a-scale-4);
 	background:url(#{$img-path}exposition.png) center 40% no-repeat;
 	background-size:100% auto;
-	
+
 	.text-holder-a {
 		@include gs-span(l,2,6);
 	}
@@ -18,14 +18,20 @@
 	.text-holder-c {
 		@include gs-span(l,6,11);
 		clear:both;
-		padding-top:30%;
+		padding-top:10%;
 	}
 }
 
 ////// SVG ////////
 .svg .exposition {
-	background:url(#{$img-path}exposition.svg) center 40% no-repeat;
-	background-size:100% auto;
+	background:url(#{$img-path}exposition.svg) center 30% no-repeat;
+	background-size:60% auto;
+}
+///// Media queries /////
+@media only screen and (max-width:1200px) {
+	.svg .exposition {
+		background-position:center 45%;
+	}
 }
 
 @include gs-media(s,max) {
