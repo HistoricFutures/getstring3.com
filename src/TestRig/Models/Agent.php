@@ -30,11 +30,14 @@ class Agent extends Entity
      *
      * @param string $path
      *   Path to SQLite file.
-     * @param string $filters
+     * @param string $filters = null
      *   WHERE fragment to go after "WHERE ... AND "
-     * @return Agent
+     * @param int $limit = 1
+     *   SQL LIMIT clause for optionally picking more than one.
+     * @return array
+     *   Array of Agent objects.
      */
-    public static function pickRandom($path, $filters = null)
+    public static function pickRandoms($path, $filters = null, $limit = 1)
     {
         $conn = Database::getConn($path);
         if ($filters === null) {
@@ -42,13 +45,15 @@ class Agent extends Entity
         }
 
         // Getting a random row from a SQLite table is a hack!
-        $randomID = $conn->querySingle("SELECT e.id FROM entity e INNER JOIN entity_tier et ON et.entity = e.id WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT 1;");
+        $agents = [];
+        $results = $conn->query("SELECT e.id AS id FROM entity e INNER JOIN entity_tier et ON et.entity = e.id WHERE 1 = 1 AND $filters ORDER BY RANDOM() LIMIT $limit;");
 
-        // Now we're putting filters in, we could end up with no suitable candidate.
-        if (!$randomID) {
-            return null;
+        // TODO: is this still slow? Do we need a bulk fetcher for agent data?
+        while ($row = $results->fetchArray()) {
+            $agents[] = new Agent($path, $row['id']);
         }
-        return new Agent($path, $randomID);
+
+        return $agents;
     }
 
     /**
@@ -67,10 +72,9 @@ class Agent extends Entity
         // Try to get one to-ask; if we can't even get one, return empty array.
         // Sourcing agents get to-asks from the same tier as them.
         $toAskTier = $this->getTierContext() + ($this->data['is_sourcing'] ? 0 : 1);
-        $toAsks = array(
-            Agent::pickRandom($this->path, "tier = $toAskTier")
-        );
-        if (!$toAsks[0]) {
+        $toAsks = Agent::pickRandoms($this->path, "tier = $toAskTier");
+
+        if (!$toAsks) {
             return array();
         }
 
@@ -81,9 +85,9 @@ class Agent extends Entity
                 $this->data['mean_extra_suppliers'],
                 $this->data['mean_extra_suppliers'] * 4
             );
-            for ($i = 1; $i <= $numSuppliers; $i++) {
-                $toAsks[] = Agent::pickRandom($this->path, "tier = $toAskTier");
-            }
+
+            $otherSuppliers = Agent::pickRandoms($this->path, "tier = $toAskTier", $numSuppliers - 1);
+            $toAsks = array_merge($toAsks, $otherSuppliers);
         }
 
         // Set tier context on all of our to-asks.

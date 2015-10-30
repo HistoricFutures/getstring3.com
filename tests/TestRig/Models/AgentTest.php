@@ -43,14 +43,14 @@ class AgentTest extends AbstractTestCase
     }
 
     /**
-     * Test: TestRig\Models\Agent::pickRandom().
+     * Test: TestRig\Models\Agent::pickRandoms().
      */
-    public function testPickRandom()
+    public function testPickRandoms()
     {
         // Pick an agent at random ten times and store their IDs.
         for ($i = 0; $i <= 10; $i++) {
-            $randomAgent = Agent::pickRandom($this->pathToDatabase);
-            $ids[$randomAgent->getID()] = true;
+            $randomAgent = Agent::pickRandoms($this->pathToDatabase);
+            $ids[$randomAgent[0]->getID()] = true;
         }
         // Assert we've got more than one agent at random, not always the same.
         $this->assertGreaterThan(1, count($ids));
@@ -80,10 +80,14 @@ class AgentTest extends AbstractTestCase
             $this->assertNotEmpty($logSoFar);
         }
 
-        // Increase our number of suppliers and expect
-        // more agents to come out of pickToAsk() (even if repeat for now.)
+        // Add some more tier=2 agents, so we can retrieve more suppliers.
+        new Agent($this->pathToDatabase, null, array("tiers" => [2]));
+        new Agent($this->pathToDatabase, null, array("tiers" => [2]));
+
+        // Increase our number of desired suppliers and expect
+        // more agents to come out of pickToAsk().
         $this->testable->data['mean_extra_suppliers'] = 20;
-        $this->assertGreaterThan(5, count($this->testable->pickToAsks($this->log)));
+        $this->assertGreaterThan(2, count($this->testable->pickToAsks($this->log)));
 
         // Make this agent a sourcing agent and ensure it gets data from same tier.
         $this->testable->data['mean_extra_suppliers'] = 0;
