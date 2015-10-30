@@ -46,7 +46,19 @@
         <h2>All entities</h2>
         <table>
           <thead>
-            <tr><th>ID</th><th>Name</th><th>Population</th><th>Tier</th><th>Sourcing?</th><th>Mean ack time</th><th>Mean answer time</th><th>Mean routing time</th><th>Self-time ratio</th><th>Mean suppliers</th><th>Probability of not acknowledging</th><th>Probability of not answering</th></tr>
+            <tr>
+              <th class="col-vthin">ID</th>
+              <th>Name</th>
+              <th>Population</th>
+              <th class="col-thin">Tier</th>
+              <th class="col-thin">Sourcing?</th>
+              <th class="col-thin">ACK</th>
+              <th class="col-thin">ANSWER</th>
+              <th class="col-thin">ROUTING</th>
+              <!-- <th>Self-time ratio</th> -->
+              <th class="col-thin"># suppliers</th>
+              <th class="col-thin">p(not acknowledging)</th>
+              <th class="col-thin">p(not answering)</th></tr>
           </thead>
           <tbody>
             {% for entity in more_info.entity %}
@@ -56,13 +68,13 @@
               <td>{{ entity.population }}</td>
               <td>{{ entity.tier }}</td>
               <td>{{ entity.is_sourcing ? 'sourcing' : 'normal' }}</td>
-              <td>{{ entity.mean_ack_time }}</td>
-              <td>{{ entity.mean_answer_time }}</td>
-              <td>{{ entity.mean_routing_time }}</td>
-              <td>{{ entity.self_time_ratio }}</td>
+              <td>{{ entity.mean_ack_time|number_format(2, '.', ',') }}</td>
+              <td>{{ entity.mean_answer_time|number_format(2, '.', ',') }}</td>
+              <td>{{ entity.mean_routing_time|number_format(2, '.', ',') }}</td>
+              <!-- <td>{{ entity.self_time_ratio }}</td> -->
               <td>{{ entity.mean_extra_suppliers + 1 }}</td>
-              <td>{{ entity.probability_no_ack }}</td>
-              <td>{{ entity.probability_no_answer }}</td>
+              <td>{{ entity.probability_no_ack|number_format(2, '.', ',') }}</td>
+              <td>{{ entity.probability_no_answer|number_format(2, '.', ',') }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -73,13 +85,13 @@
                 <td>{{ database.populations.count }}</td>
                 <td></td>
                 <td></td>
-                <td>{{ database.entities.mean_ack_time }}</td>
-                <td>{{ database.entities.mean_answer_time }}</td>
-                <td>{{ database.entities.mean_routing_time }}</td>
-                <td></td>
-                <td>{{ database.entities.mean_extra_suppliers + 1 }}</td>
-                <td>{{ database.entities.probability_no_ack }}</td>
-                <td>{{ database.entities.probability_no_answer }}</td>
+                <td>{{ database.entities.mean_ack_time|number_format(2, '.', ',') }}</td>
+                <td>{{ database.entities.mean_answer_time|number_format(2, '.', ',') }}</td>
+                <td>{{ database.entities.mean_routing_time|number_format(2, '.', ',') }}</td>
+                <!-- <td></td> -->
+                <td>{{ database.entities.mean_extra_suppliers|number_format(0, '.', ',') + 1 }}</td>
+                <td>{{ database.entities.probability_no_ack|number_format(2, '.', ',') }}</td>
+                <td>{{ database.entities.probability_no_answer|number_format(2, '.', ',') }}</td>
             </tr>
           </tfoot>
         </table>
