@@ -96,10 +96,12 @@ class Question extends AbstractDBObject
      */
     public function generateAsks()
     {
+        print "Ask\n";
         // Generate a log from the agent(s).
         $log = new Log();
         // Always start at tier=1.
-        $initiator = Agent::pickRandom($this->path, "tier = 1");
+        $initiator = Agent::pickRandoms($this->path, "tier = 1");
+        $initiator = $initiator[0];
         // Get valid to-asks, keep asking each one, and rewind time as
         // per in Agent::respondTo().
         $tZero = $log->timePasses();
@@ -121,6 +123,7 @@ class Question extends AbstractDBObject
             if (isset($logItem['answer'])) {
                 $ask['time_answer'] = $logItem['answer'];
             }
+            // This could be done in bulk?
             $this->addAsk($ask);
         }
     }
