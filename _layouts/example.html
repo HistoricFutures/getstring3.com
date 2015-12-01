@@ -30,6 +30,8 @@ layout: default
 
 </div>
 
+<{% capture playback %}{% include content/playback-banner.html %}{% endcapture %}
+{{ playback | markdownify }}
 <div class="exposition" id="exposition">
 
 		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}

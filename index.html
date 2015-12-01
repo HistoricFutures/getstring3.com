@@ -36,7 +36,8 @@ nextLink: "/why"
 	<b class="tri-10"></b>
 
 </div>
-
+<{% capture playback %}{% include content/playback-banner.html %}{% endcapture %}
+{{ playback | markdownify }}
 <div class="exposition" id="exposition">
 
 		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}
