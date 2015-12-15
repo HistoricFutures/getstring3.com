@@ -37,6 +37,9 @@ nextLink: "/why"
 
 </div>
 
+{% capture ftb %}{% include content/free-trial-banner.html %}{% endcapture %}
+{{ ftb | markdownify }}
+
 <div class="exposition" id="exposition">
 
 		{% capture exposition %}{% include content/exposition.html %}{% endcapture %}
@@ -47,6 +50,7 @@ nextLink: "/why"
 		<a href="#step1" class="down-arrow">Next section</a>
 	</div>
 </div>
+
 
 
 <div class="example-selector">
