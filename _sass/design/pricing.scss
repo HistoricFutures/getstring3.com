@@ -72,6 +72,13 @@
 	}
 }
 
+.standout {
+	background:$yellow;
+	color:$grey90;
+	@include box-shadow-standard();
+	@include padding-top($a-scale);
+}
+
 .plans {
 	@include gs-span(l,all);
 	clear:left;

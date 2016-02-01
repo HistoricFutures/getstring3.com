@@ -6,13 +6,11 @@ img, object {
 	width:100%;
 }
 
-.clearfix:before, .clearfix:after {
-content: " ";
-display: table;
-height: 0;
-    clear: both;
-    visibility: hidden;
+img.round {
+	border-radius: 50%;
 }
+
+
 
 .wrapper {
 	@include gs-span(l, all);
@@ -71,6 +69,10 @@ height: 0;
 	@include gs-span(l,3,5);
 	clear:left;
 }
+.v-small-left {
+	@include gs-span(l,3,4);
+	clear:left;
+}
 
 .mid-left {
 	@include gs-span(l,3,7);
@@ -84,6 +86,9 @@ height: 0;
 
 .small-right {
 	@include gs-span(l,10,11);
+}
+.v-small-right {
+	@include gs-span(l,9,10);
 }
 
 .full-right {
@@ -101,6 +106,35 @@ height: 0;
 	@include margin-bottom($b-scale-2);
 }
 
+.more-margin-bottom {
+	@include margin-bottom($a-scale-4);
+}
+
+.mo-margin-bottom {
+	margin-bottom:0;
+}
+
+// Helpers
+.clearfix:before, .clearfix:after {
+content: " ";
+display: table;
+height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clear-left {
+	clear:left;
+}
+
+.clear-right {
+	clear:right;
+}
+
+.clear-none {
+	clear:none;
+}
+
 
 //////// SMALL SCREENS /////////
 
@@ -116,6 +150,11 @@ height: 0;
 		.register-button {
 			@include gs-span(s,all);
 		}
+	}
+	.v-small-left, .v-small-right {
+		@include gs-span(s,3,4);
+
+		clear:left;
 	}
 	.padded {
 		@include gs-pad(s,padin);
