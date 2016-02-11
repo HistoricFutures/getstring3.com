@@ -122,6 +122,7 @@ input[type='submit'].button--large {
 	@include transition(all 1s ease);
 	&:hover {
 		background:$grey10;
+		color:$link-color-hover;
 		@include transition(all 1s ease);
 	}
 	&:active {
@@ -134,6 +135,24 @@ input[type='submit'].button--large {
 .faux-button--error a {
 	border-color:$error-color;
 	color:$error-color;
+}
+
+.faux-button--small {
+	a {
+		text-transform: none;
+		letter-spacing: normal;
+		@include padding($b-scale);
+		@include font-size($b-scale);
+	}
+
+}
+.header .exposed .faux-button--small a {
+	@include padding($b-scale);
+	line-height:1;
+	border-bottom: 2px solid $link-color;
+	&:hover {
+		border-color:$link-color-hover;
+	}
 }
 
 .super-banner [class*=faux-button] {

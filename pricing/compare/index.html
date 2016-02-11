@@ -28,8 +28,8 @@ strategyConsulting: "In-depth interpretation of your results for the development
 	<div class="free-trial super-banner">
 
 		<div class="text-holder">
-			<p class="large">A month’s free trial of paid membership when you sign up today</p>
-			<p class="small">No payment needed, no obligation to continue</p>
+			<p class="large">Use String3 for free</p>
+			<p class="small">Simply register to get started</p>
 		</div>
 		<div class="button-holder">
 			<p class="faux-button">
@@ -73,11 +73,11 @@ strategyConsulting: "In-depth interpretation of your results for the development
           </td>
           <td class="primary">
             <span class="large">£720</span><span class="small"> per year (excl. VAT)</span>
-            <span class="small block margin-top">(this equates to £60 per question)</span>
+
           </td>
           <td class="premium">
             <span class="large">£5400</span><span class="small"> per year (excl. VAT)</span>
-            <span class="small block margin-top">(this equates to £45 per question)</span>
+
           </td>
           <td class="enterprise">
             <span class="large">POA</span>
@@ -88,13 +88,13 @@ strategyConsulting: "In-depth interpretation of your results for the development
             <span class="toggle"><i class="fa fa-caret-right"></i> Questions</span>
           </th>
           <td class="free">
-            <span class="small">Respond to customers' enquiries only</span>
-          </td>
-          <td class="primary">
             12 per year
           </td>
+          <td class="primary">
+            36 per year
+          </td>
           <td class="premium">
-            120 per year
+            360 per year
           </td>
           <td class="enterprise">
             Unlimited
@@ -102,7 +102,7 @@ strategyConsulting: "In-depth interpretation of your results for the development
         </tr>
         <tr class="show-hide">
           <td colspan="4" class="more-info">
-            On all plans other than Free, this is the ability to ask your suppliers questions about your products.
+            Send your suppliers questions about your products to be propagated through your supply network. Each quesion asks one of your immediate suppliers about one particular material contained within one specific instance of supply.
           </td>
         </tr>
         <tr class="expanded">
@@ -366,7 +366,7 @@ strategyConsulting: "In-depth interpretation of your results for the development
             <span class="toggle"><i class="fa fa-caret-right"></i> Standard question reports</span>
           </th>
           <td>
-            <i class="fa fa-times"></i><span class="sr-only">Not included</span>
+            <i class="fa fa-check"></i><span class="sr-only">Included</span>
           </td>
           <td>
             <i class="fa fa-check"></i><span class="sr-only">Included</span>
@@ -467,7 +467,7 @@ strategyConsulting: "In-depth interpretation of your results for the development
             <span class="toggle"><i class="fa fa-caret-right"></i> Standard question templates</span>
           </th>
           <td>
-            <i class="fa fa-times"></i><span class="sr-only">Not included</span>
+            <i class="fa fa-check"></i><span class="sr-only">Included</span>
           </td>
           <td>
             <i class="fa fa-check"></i><span class="sr-only">Included</span>
@@ -612,13 +612,9 @@ strategyConsulting: "In-depth interpretation of your results for the development
         <tr class="no-border">
           <th scope="row" class="sr-only">
             Choose a plan
-          </th><td class="free link center">
-						<a href="https://app.getstring3.com/account/register/" title="Register for String3">
-		          Register for free
-		        </a>
-          </td><td class="super link center" colspan="2">
-            <a href="https://app.getstring3.com/account/register/" title="Sign up for your free trial">
-              Sign up for a month's free trial for your organisation
+          </th><td class="super link center" colspan="3">
+            <a href="https://app.getstring3.com/account/register/" title="Register for free">
+              Register for free
             </a>
           </td><td class="enterprise link center">
             <a href="/pricing/enterprise/enquire">
@@ -647,7 +643,7 @@ strategyConsulting: "In-depth interpretation of your results for the development
           <p class="large">£0</p>
         </div>
         <div class="section">
-          <div class="expanded expandable-single-item"><p class="toggle">Respond to customers' enquiries only</p><div class="show-hide more-info"><p>With the free plan, it will always be free to respond to your customers' enquiries, however you won't be able to send questions of your own.</p></div></div>
+          <div class="expanded expandable-single-item"><p class="toggle">Ask 12 questions per year</p><div class="show-hide more-info"><p>Send your suppliers 12 questions about your products per year, to be propagated through your supply network. Each quesion asks one of your immediate suppliers about one particular material contained within one specific instance of supply.</p></div></div>
         </div>
       </div>
       <div class="middle-block">
@@ -656,6 +652,8 @@ strategyConsulting: "In-depth interpretation of your results for the development
           <li class="expanded"><p class="toggle">Unlimited users</p><div class="show-hide more-info"><p>{{ page.unlimitedUsers }}</p></div></li>
           <li class="expanded"><p class="toggle">Nudge stuck questions</p><div class="show-hide more-info"><p>{{ page.nudge }}</p></div></li>
           <li class="expanded"><p class="toggle">Email support</p><div class="show-hide more-info"><p>{{ page.emailSupport }}</p></div></li>
+          <li class="expanded"><p class="toggle">Standard question reports</p><div class="show-hide more-info"><p>{{ page.standardQuestionReports }}</p></div></li>
+          <li class="expanded"><p class="toggle">Standard question templates</p><div class="show-hide more-info"><p>{{ page.standardQuestionTemplates }}</p></div></li>
           <!--<li class="expanded"><p class="toggle">Self-service training</p><div class="show-hide more-info"><p>{{ page.selfServiceTraining }}</p></div></li>-->
         </ul>
       </div>
@@ -673,25 +671,20 @@ strategyConsulting: "In-depth interpretation of your results for the development
         </a>
         <div class="section">
           <p><span class="large">£720</span><span class="small"> per year (excl. VAT)</span>
-          <span class="block small margin-top">(this equates to £60 a question)</span></p>
+          </p>
         </div>
         <div class="section">
-          <div class="expanded expandable-single-item"><p class="toggle">Ask 12 questions per year</p><div class="show-hide more-info"><p>Send your suppliers 12 questions about your products per year, to be propagated through your supply network.</p></div></div>
+          <div class="expanded expandable-single-item"><p class="toggle">Ask 36 questions per year</p><div class="show-hide more-info"><p>Send your suppliers 36 questions about your products per year, to be propagated through your supply network. Each quesion asks one of your immediate suppliers about one particular material contained within one specific instance of supply.</p></div></div>
         </div>
       </div>
       <div class="middle-block">
         <h3>Included in Standard:</h3>
-        <p class="small">With a Standard plan you get everything included in <a href="#free" title="Link to free plan">Free</a> plus:</p>
-        <ul class="expandable-list">
-          <li class="expanded"><p class="toggle">Standard question reports</p><div class="show-hide more-info"><p>{{ page.standardQuestionReports }}</p></div></li>
-          <li class="expanded"><p class="toggle">Standard question templates</p><div class="show-hide more-info"><p>{{ page.standardQuestionTemplates }}</p></div></li>
-
-        </ul>
+        <p class="small">With a Standard plan you get everything included in <a href="#free" title="Link to free plan">Free</a> in addition to 24 more questions per year.</p>
       </div>
       <div class="bottom-block center">
-				<a href="https://app.getstring3.com/account/register/" title="Sign up for your free trial">
-					Sign up for a month's free trial for your organisation
-				</a>
+        <a href="https://app.getstring3.com/account/register/" title="Register for String3">
+          Register for free
+        </a>
       </div>
     </div><!--/standard-->
 
@@ -701,11 +694,10 @@ strategyConsulting: "In-depth interpretation of your results for the development
           <h2>Premium</h2>
         </a>
         <div class="section">
-          <p><span class="large">£5400</span><span class="small"> per year (excl. VAT)</span>
-          <span class="block small margin-top">(this equates to £45 a question)</span></p>
+          <p><span class="large">£5400</span><span class="small"> per year (excl. VAT)</span></p>
         </div>
         <div class="section">
-          <div class="expanded expandable-single-item"><p class="toggle">Ask 120 questions per year</p><div class="show-hide more-info"><p>Send your suppliers 120 questions about your products per year, to be propagated through your supply network.</p></div></div>
+          <div class="expanded expandable-single-item"><p class="toggle">Ask 360 questions per year</p><div class="show-hide more-info"><p>Send your suppliers 360 questions about your products per year, to be propagated through your supply network. Each quesion asks one of your immediate suppliers about one particular material contained within one specific instance of supply.</p></div></div>
         </div>
       </div>
       <div class="middle-block">
@@ -718,9 +710,9 @@ strategyConsulting: "In-depth interpretation of your results for the development
         </ul>
       </div>
       <div class="bottom-block center">
-				<a href="https://app.getstring3.com/account/register/" title="Sign up for your free trial">
-					Sign up for a month's free trial for your organisation
-				</a>
+        <a href="https://app.getstring3.com/account/register/" title="Register for String3">
+          Register for free
+        </a>
       </div>
     </div><!--/premium-->
 
