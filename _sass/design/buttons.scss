@@ -107,7 +107,7 @@ input[type='submit'].button--large {
 
 /* == Faux buttons == */
 
-[class*=faux-button] a {
+[class*=faux-button] a, [class*=faux-button] a:visited {
 	@include box-sizing();
 	@include padding($a-scale);
 	@include font-size($size-p);
