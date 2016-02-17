@@ -70,6 +70,19 @@
 
 		}
 	}
+	&.dark {
+		background:$grey90;
+		color:$off-white;
+		[class*=faux-button] {
+			a, a:visited {
+				color:$yellow;
+				border-color:$yellow;
+				&:hover {
+					background-color:$turquoise;
+				}
+			}
+		}
+	}
 }
 
 .standout {
