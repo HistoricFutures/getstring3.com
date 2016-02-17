@@ -82,6 +82,10 @@
 .plans {
 	@include gs-span(l,all);
 	clear:left;
+	@include box-shadow-standard();
+	overflow:hidden;
+	border-left:0;
+	border-right:0;
 	.plan {
 		width:33.33%;
 		border-left:$grey10;

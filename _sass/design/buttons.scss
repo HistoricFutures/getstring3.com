@@ -132,6 +132,8 @@ input[type='submit'].button--large {
 }
 
 
+
+
 .faux-button--error a {
 	border-color:$error-color;
 	color:$error-color;
@@ -153,6 +155,19 @@ input[type='submit'].button--large {
 	&:hover {
 		border-color:$link-color-hover;
 	}
+}
+[class*=faux-button].commit {
+	a, a:visited {
+		background: $yellow;
+		border-color:$grey90;
+		color:$grey90;
+		&:hover {
+			background:$link-color;
+			color:$off-white;
+			border-color:$grey90;
+		}
+	}
+
 }
 
 .super-banner [class*=faux-button] {
