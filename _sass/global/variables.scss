@@ -118,14 +118,14 @@ $small-line-height:1.2;
 $heading-line-height: 1.1;
 
 /* == Typogarphy margins - == */
-$margin-p: $a-scale;
+$margin-p: $b-scale-2;
 $margin-h1: $b-scale-3;
 $margin-h2: $b-scale-2;
 $margin-h3: $a-scale;
 $margin-h4: $b-scale;
 $margin-li: $b-scale;
-$margin-ul: $a-scale;
-$padding-ul: $a-scale-2;
+$margin-ul: $a-scale-2;
+$padding-ul: $a-scale-4;
 
 /* == Standard letter spacing == */
 $letter-spacing: 0.15em;
@@ -136,7 +136,7 @@ Links
 ==================================================== */
 $link-color:$turquoise;
 $link-color-hover:$pink;
-$link-transition:color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+$link-transition:all 0.5s ease;
 $link-border:1px dotted $link-color;
 
 /* ====================================================
