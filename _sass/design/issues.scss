@@ -43,6 +43,7 @@ a.arrows-down, a:visited.arrows-down {
   color:$off-white;
   @include gs-span(l,all);
   .inner {
+    background:$grey90;
     background: rgba($grey90, .8);
     border:1px solid $grey90;
     @include box-shadow(0px 0px 5px 0px rgba(0,0,0,0.4));
@@ -80,6 +81,14 @@ a.arrows-down, a:visited.arrows-down {
   &.deforestation {
     background: url(#{$img-path}deforestation-back.jpg) center center no-repeat;
     background-size:cover;
+  }
+  &.msa {
+    background: url(#{$img-path}msa-back.jpg) center center no-repeat;
+    background-size:cover;
+    .inner:after {
+      background:url(#{$img-path}msa-glass.png) center top no-repeat;
+      background-size:contain;
+    }
   }
 }
 
@@ -134,7 +143,7 @@ a.arrows-down, a:visited.arrows-down {
   position:relative;
 
 
-  &:before, &:after { // decorative logo
+  &:before, &:after { // decorative logos
     content:"";
     display:block;
     background:url(#{$img-path}s3-decorative.png) center top no-repeat;
@@ -190,6 +199,18 @@ a.arrows-down, a:visited.arrows-down {
       bottom:-100px;
     }
   }
+  .solution {
+    &:before, &:after {
+      width:200px;
+    }
+    &:before {
+      left:-100px;
+    }
+    &:after {
+      right:-100px;
+    }
+  }
+
 }
 
 
@@ -202,17 +223,28 @@ a.arrows-down, a:visited.arrows-down {
     @include gs-pad(s,padinfull);
     .inner {
       @include gs-span(s,all);
+      .register-button {
+        @include gs-span(s,all);
+      }
+      .register-text {
+        @include gs-span(s,all);
+
+      }
     }
   }
   .issue-top-section .inner {
-    @include padding-left($a-scale-2);
-    @include padding-right($a-scale-2);
+    padding-left: 10%;
+    padding-right:10%;
+    .strap {
+      padding-left:0;
+      padding-right: 0;
+    }
     &:after {
       width:200px;
       padding-bottom:250px;
-      right:-70px;
+      right:-90px;
       top:auto;
-      bottom:-100px;
+      bottom:-130px;
     }
   }
   .solution {
