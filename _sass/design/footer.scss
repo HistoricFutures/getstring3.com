@@ -1,7 +1,9 @@
 //footer-layout
 .footer {
 	@include padding-top($a-scale-4);
-
+	@include box-shadow-standard();
+	border-left:0;
+	border-right:0;
 
 	.primary {
 		@include gs-span(l,3,5);
@@ -47,7 +49,7 @@
 	clear:both;
 	text-align:right;
 	position:relative;
-	z-index:$middle;
+	z-index:$top;
 	@include padding-top($a-scale-3);
 	@include padding-bottom($a-scale-3);
 	@include font-size($b-scale-2);
@@ -55,6 +57,7 @@
 	border-left:none;
 	border-right:none;
 	background:$off-white;
+	@include margin-bottom($a-scale-2);
 	.next-page--holder__inner {
 		@include gs-span(l,2,11);
 		a {
@@ -200,4 +203,41 @@
 	}
 
 
+}
+
+// hf info layout
+
+.hf-info {
+	@include gs-span(l,all);
+	@include padding-bottom($a-scale);
+	position:relative;
+	z-index:$bottom;
+	.inner {
+		@include gs-span(l,3,10);
+		.hf-text{
+			@include gs-span(l,3,7,(3,10));
+			@include padding-top($b-scale);
+		}
+		.hf-image {
+			@include gs-span(l,8,10,(3,10));
+		}
+	}
+}
+
+@include gs-media(s,max) {
+	.hf-info {
+		@include gs-span(s,all);
+		@include gs-pad(s,padinfull);
+		.inner {
+			@include gs-span(s,all);
+			.hf-text {
+				@include gs-span(s,2,5);
+			}
+			.hf-image {
+				@include gs-span(s,2,5);
+				text-align:center;
+				clear:left;
+			}
+		}
+	}
 }
