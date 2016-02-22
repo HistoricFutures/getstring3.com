@@ -70,6 +70,19 @@
 
 		}
 	}
+	&.dark {
+		background:$grey90;
+		color:$off-white;
+		[class*=faux-button] {
+			a, a:visited {
+				color:$yellow;
+				border-color:$yellow;
+				&:hover {
+					background-color:$turquoise;
+				}
+			}
+		}
+	}
 }
 
 .standout {
@@ -82,6 +95,10 @@
 .plans {
 	@include gs-span(l,all);
 	clear:left;
+	@include box-shadow-standard();
+	overflow:hidden;
+	border-left:0;
+	border-right:0;
 	.plan {
 		width:33.33%;
 		border-left:$grey10;
@@ -187,14 +204,22 @@
 	@include box-shadow-standard();
 	border-right:0;
 	border-left:0;
-	background:$off-white;
+	background:$yellow;
+	color:$grey90;
 	@include gs-span(l,all);
 	@include padding($b-scale);
 
 	@include box-sizing();
-	margin-top:-5px;
-	z-index:$middle;
 	position:relative;
+	z-index: $middle;
+	a, a:visited {
+		color:$grey90;
+		border-color:$grey90;
+		&:hover {
+			color:$link-color-hover;
+			border-color:$link-color-hover;
+		}
+	}
 	.title-holder {
 		@include gs-span(l,2,3);
 		@include padding-top($b-scale);
@@ -203,14 +228,24 @@
 		@include gs-span(l,5,11);
 		@include padding-top($b-scale);
 	}
+	.questions {
+		color:$grey80;
+	}
 
 }
 
 .compare {
 	@include gs-span(l,all);
 	@include padding-top($a-scale);
-
+	@include box-shadow-standard();
+	background:$off-white;
 	text-align:center;
+	margin-top:-5px;
+	margin-bottom:-5px;
+	position:relative;
+	z-index: $middle;
+	border-right:0;
+	border-left:0;
 }
 /*
 .pricing-top {

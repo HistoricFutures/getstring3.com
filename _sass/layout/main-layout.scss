@@ -14,11 +14,13 @@ img.round {
 
 .wrapper {
 	@include gs-span(l, all);
+	  overflow-x: hidden;
 }
 
 .main {
 	@include gs-span(l,all);
 	@include padding-top($a-scale-5);
+	overflow-x: hidden;
 }
 
 .footer {
@@ -103,7 +105,7 @@ img.round {
 }
 
 .extra-margin-bottom {
-	@include margin-bottom($b-scale-2);
+	@include margin-bottom($a-scale-3);
 }
 
 .more-margin-bottom {

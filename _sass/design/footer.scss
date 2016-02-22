@@ -1,8 +1,10 @@
 //footer-layout
 .footer {
 	@include padding-top($a-scale-4);
-	
-	
+	@include box-shadow-standard();
+	border-left:0;
+	border-right:0;
+
 	.primary {
 		@include gs-span(l,3,5);
 		.logo-holder {
@@ -47,7 +49,7 @@
 	clear:both;
 	text-align:right;
 	position:relative;
-	z-index:$middle;
+	z-index:$top;
 	@include padding-top($a-scale-3);
 	@include padding-bottom($a-scale-3);
 	@include font-size($b-scale-2);
@@ -55,6 +57,7 @@
 	border-left:none;
 	border-right:none;
 	background:$off-white;
+	@include margin-bottom($a-scale-2);
 	.next-page--holder__inner {
 		@include gs-span(l,2,11);
 		a {
@@ -86,7 +89,7 @@
 				top:2px;
 				opacity:0;
 				@include transition(opacity 0.5s ease);
-				
+
 			}
 		&:hover, &:focus {
 			color:$link-color-hover;
@@ -102,7 +105,7 @@
 			color:$active-color;
 			position:relative;
 			&:before {
-				
+
 				opacity:1;
 
 			}
@@ -116,21 +119,24 @@
 		li {
 			@include font-size($b-scale);
 		}
-		
+
 	}
 	.get-started {
 		text-align:center;
 		a, a:visited {
-			background:$link-color;
+			background:$yellow;
 			display:block;
 			@include padding($b-scale);
 			@include box-shadow-standard();
 			@extend .uppercase;
-			color:$off-white;
+			color:$grey90;
 			@include font-size($b-scale);
 			@include margin-top($a-scale-2);
+			@include border-radius(6px);
+			border:2px solid $grey90;
 			&:hover, &:focus {
-				background-color:$link-color-hover;
+				background-color:$link-color;
+				color:$off-white;
 			}
 			&:before {
 				display:none;
@@ -167,7 +173,7 @@
 	.footer {
 		.primary {
 			@include gs-span(s,2,5);
-			
+
 			clear:left;
 			.logo-holder {
 				@include gs-span(s,1,2);
@@ -181,7 +187,7 @@
 		.hf {
 			@include gs-span(s,2,5);
 			clear:left;
-			
+
 		}
 		.email {
 			@include gs-span(s,all);
@@ -197,4 +203,41 @@
 	}
 
 
+}
+
+// hf info layout
+
+.hf-info {
+	@include gs-span(l,all);
+	@include padding-bottom($a-scale);
+	position:relative;
+	z-index:$bottom;
+	.inner {
+		@include gs-span(l,3,10);
+		.hf-text{
+			@include gs-span(l,3,7,(3,10));
+			@include padding-top($b-scale);
+		}
+		.hf-image {
+			@include gs-span(l,8,10,(3,10));
+		}
+	}
+}
+
+@include gs-media(s,max) {
+	.hf-info {
+		@include gs-span(s,all);
+		@include gs-pad(s,padinfull);
+		.inner {
+			@include gs-span(s,all);
+			.hf-text {
+				@include gs-span(s,2,5);
+			}
+			.hf-image {
+				@include gs-span(s,2,5);
+				text-align:center;
+				clear:left;
+			}
+		}
+	}
 }

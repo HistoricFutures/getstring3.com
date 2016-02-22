@@ -117,6 +117,7 @@
 
 ul.large-ticks {
 	padding:0;
+	@include margin-bottom($a-scale-4);
 	li {
 		list-style:none;
 		@include margin-top($a-scale-3);

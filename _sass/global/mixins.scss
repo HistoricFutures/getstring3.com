@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Useful mixins 
+   Useful mixins
    ========================================================================== */
 
 
@@ -148,7 +148,7 @@
   @mixin box-sizing() {
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* Opera/IE 8+ */  
+    box-sizing: border-box;         /* Opera/IE 8+ */
   }
 
 
@@ -250,4 +250,30 @@
         }
     }
 
+/// ANIMATION
 
+// Fade in definitions
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+@mixin fadein($duration) {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:$duration;
+  -moz-animation-duration:$duration;
+  animation-duration:$duration;
+}
+
+@mixin fadeindelay($delay) {
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+  animation-delay: $delay;
+}
