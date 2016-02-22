@@ -49,7 +49,7 @@
 	clear:both;
 	text-align:right;
 	position:relative;
-	z-index:$top;
+	z-index:$middle;
 	@include padding-top($a-scale-3);
 	@include padding-bottom($a-scale-3);
 	@include font-size($b-scale-2);
