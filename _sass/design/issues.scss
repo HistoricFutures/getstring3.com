@@ -37,6 +37,39 @@ a.arrows-down, a:visited.arrows-down {
   }
 
 }
+
+/// magnifying glass
+
+.glass { // magnifying glass
+  background:url(#{$img-path}deforestation-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.msa {
+  background:url(#{$img-path}msa-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.conflict-minerals {
+  background:url(#{$img-path}conflict-minerals-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.large {
+  display:block;
+  width:319px;
+  padding-bottom:400px;
+  position:absolute;
+  right:2%;
+  @include top($b-scale-6);
+  z-index:10000 !important;
+}
+
+.glass.small {
+  position:relative;
+}
+
+
 .issue-top-section {
   background: $grey40;
   @include margin-top(-1 * $a-scale-5);
@@ -66,18 +99,7 @@ a.arrows-down, a:visited.arrows-down {
       @include padding-left($a-scale-4);
       @include padding-right($a-scale-4);
     }
-    &:after { // magnifying glass
-      content:"";
-      display:block;
-      background:url(#{$img-path}deforestation-glass.png) center top no-repeat;
-      width:319px;
-      padding-bottom:400px;
-      position:absolute;
-      right:-150px;
-      top:5%;
-      background-size:contain;
-      z-index:$middle;
-    }
+
 
   }
   &.deforestation {
@@ -87,7 +109,7 @@ a.arrows-down, a:visited.arrows-down {
   &.msa {
     background: url(#{$img-path}msa-back.jpg) center center no-repeat;
     background-size:cover;
-    .inner:after {
+    .glass {
       background:url(#{$img-path}msa-glass.png) center top no-repeat;
       background-size:contain;
     }
@@ -95,7 +117,7 @@ a.arrows-down, a:visited.arrows-down {
   &.conflict-minerals {
     background: url(#{$img-path}conflict-minerals-back.jpg) center center no-repeat;
     background-size:cover;
-    .inner:after {
+    .glass {
       background:url(#{$img-path}conflict-minerals-glass.png) center top no-repeat;
       background-size:contain;
     }
@@ -183,6 +205,8 @@ a.arrows-down, a:visited.arrows-down {
   }
 }
 
+
+
 /// larger screens
 @media only screen and (min-width: 1399px) {
   .issue-top-section, .issue, .solution {
@@ -195,6 +219,9 @@ a.arrows-down, a:visited.arrows-down {
   }
   .issue {
     padding-top:0;
+  }
+  .glass.large {
+    right:20%;
   }
 }
 
@@ -219,6 +246,9 @@ a.arrows-down, a:visited.arrows-down {
     &:after {
       right:-100px;
     }
+  }
+  .glass.large {
+    right:-3%;
   }
 
 }
@@ -249,18 +279,24 @@ a.arrows-down, a:visited.arrows-down {
       padding-left:0;
       padding-right: 0;
     }
-    &:after {
-      width:200px;
-      padding-bottom:250px;
-      right:-90px;
-      top:auto;
-      bottom:-130px;
+    h1 {
+      //@include margin-bottom($b-scale);
     }
+
   }
   .solution {
     &:before, &:after {
       display:none;
     }
+  }
+  .glass.large {
+    display:none;
+  }
+  .glass.small {
+    display:block;
+    width:40%;
+    padding-bottom:40%;
+    margin-left:30%;
   }
 }
 
@@ -268,6 +304,10 @@ a.arrows-down, a:visited.arrows-down {
 //// Animations
 
 .cssanimations {
+  .glass {
+    @include fadein(1s);
+    @include fadeindelay(2s);
+  }
   .issue-top-section .inner {
     @include fadein(1s);
     @include fadeindelay(1s);
@@ -276,10 +316,7 @@ a.arrows-down, a:visited.arrows-down {
       @include fadein(1s);
       @include fadeindelay(1.5s);
     }
-    &:after {
-      @include fadein(1s);
-      @include fadeindelay(2s);
-    }
+
     .strap {
       @include fadein(1s);
       @include fadeindelay(2.5s);
