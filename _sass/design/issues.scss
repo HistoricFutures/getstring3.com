@@ -1,3 +1,5 @@
+
+
 // design for individual issue landing pages
 a.arrows-down--with-text--on-dark, a:visited.arrows-down--with-text--on-dark {
   background:url(#{$img-path}arrows-down--white.png) center bottom no-repeat;
@@ -87,6 +89,14 @@ a.arrows-down, a:visited.arrows-down {
     background-size:cover;
     .inner:after {
       background:url(#{$img-path}msa-glass.png) center top no-repeat;
+      background-size:contain;
+    }
+  }
+  &.conflict-minerals {
+    background: url(#{$img-path}conflict-minerals-back.jpg) center center no-repeat;
+    background-size:cover;
+    .inner:after {
+      background:url(#{$img-path}conflict-minerals-glass.png) center top no-repeat;
       background-size:contain;
     }
   }
@@ -250,6 +260,33 @@ a.arrows-down, a:visited.arrows-down {
   .solution {
     &:before, &:after {
       display:none;
+    }
+  }
+}
+
+
+//// Animations
+
+.cssanimations {
+  .issue-top-section .inner {
+    @include fadein(1s);
+    @include fadeindelay(1s);
+
+    h1 {
+      @include fadein(1s);
+      @include fadeindelay(1.5s);
+    }
+    &:after {
+      @include fadein(1s);
+      @include fadeindelay(2s);
+    }
+    .strap {
+      @include fadein(1s);
+      @include fadeindelay(2.5s);
+    }
+    .arrows-down--with-text--on-dark {
+      @include fadein(1s);
+      @include fadeindelay(3s);
     }
   }
 }
