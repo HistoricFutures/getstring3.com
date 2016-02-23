@@ -2,7 +2,7 @@
 layout: issue
 title:  Worried about conflict minerals in your supply chains?
 strap: Use String3 to zoom in on the products that place your brand at the most risk. It's free.
-issueIntro: Human rights abuses, child labour and environmental catastrophes can be linked to many of the products and product components that brands and retailers sell. Jewellery, building materials, our smartphones, tablets and laptops often contain mined metals, gemstones and other minerals. Demand for such consumables has increased globally and many of the natural resources needed for their production are found in areas where conflict and corruption are widespread.
+issueIntro: Human rights abuses, child labour and environmental catastrophes can be linked to many of the products and components that brands and retailers sell. Jewellery, building materials, smartphones, tablets and laptops often contain mined metals, gemstones and other minerals. Demand for such consumables has increased globally and many of the natural resources needed for their production are found in areas where conflict and corruption are widespread.
 issueBody: |
   * Environmental degradation, child labour, modern slavery and health and safety issues for workers are commonplace within many of the places where mining and processing occurs. These are affecting an estimated 100 million people and their families worldwide.
   * In response, guidelines and laws seeking to identify risks and criminalise certain activities within precious metal supply chains have been developed.
