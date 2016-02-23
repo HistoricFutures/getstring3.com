@@ -1,10 +1,10 @@
 ---
 layout: issue
 title:  Worried about modern day slavery in your supply chains?
-strap: Use String3 to zoom in on the products that place your brand at the most risk
+strap: Use String3 to zoom in on the products that place your brand at the most risk. It's free.
 issueIntro: According to the Global Slavery Index, an estimated 30 million people in the world today live in some form of modern slavery. The increasingly complex nature of global supply chains means that most brands and retailers are exposed to modern slavery risks as a result of the products they sell.
 issueBody: |
-  * Reputational and regulatory risk is extremely high. As a brand or retailer, not knowing whether you are affected by modern slavery is no longer acceptable.
+  * Reputational risk is extremely high. As a brand or retailer, not knowing whether you are affected by modern slavery is no longer acceptable.
   * The Modern Slavery Act, enacted in March 2015, places a regulatory requirement on UK businesses to prepare a statement “…setting out the steps the organisation has taken during the financial year to ensure that slavery and human trafficking was not taking place in its business or supply chains…”.
   * Supply chain mapping is one recommended action step. However, this can be a huge challenge for many brands who have limited knowledge of, let alone access to the suppliers operating deep within their supply chains.
 
