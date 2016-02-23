@@ -1,7 +1,7 @@
 ---
 layout: issue
 title:  Worried about deforestation in your supply chains?
-strap: Use String3 to zoom in on the products that place your brand at the most risk
+strap: Use String3 to zoom in on the products that place your brand at the most risk. It's free.
 issueIntro: Deforestation and illegal logging can be linked to many of the products brands and retailers sell. Paper, furniture, latex, cellophane and clothing are all products that might contain tree fibres. Agricultural industries who clear forests for the production of soy, palm oil and other commodities we consume are also putting forests under strain.
 issueBody: |
   Environmental degradation, illegal logging, destruction of endangered forests and deforestation are all on the rise.
