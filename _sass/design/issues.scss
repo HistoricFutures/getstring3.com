@@ -200,7 +200,7 @@ a.arrows-down, a:visited.arrows-down {
     }
     .register-text {
       @include gs-span(l,6,10,(3,10));
-      @include font-size($b-scale);
+      @include font-size($b-scale-2);
     }
   }
 }
