@@ -62,7 +62,7 @@ a.arrows-down, a:visited.arrows-down {
   position:absolute;
   right:2%;
   @include top($b-scale-6);
-  z-index:10000 !important;
+  z-index:$middle;
 }
 
 .glass.small {
