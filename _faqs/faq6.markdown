@@ -1,9 +1,0 @@
----
-title:  "What questions can I ask using String3?"
-order: 6
----
-String3 is designed to allow you to collect reliable information, directly from the most relevant organisations in your supply network. It is specifically designed to allow you to ask questions about materials and processes that your supplier obtains from their suppliers, or even further ‘upstream’ in the supply network. The String3 team is responsible for the design of the questions, including specifying the range of acceptable answers. This is important as it ensures the unique reporting features of String3 operate consistently. Initially, most String3 questions are focused on topics and issues we know to be important to our customers. For example; Country of Origin and species of timber - to support compliance with the due diligence requirements of the [EU Timber Regulations](http://ec.europa.eu/environment/forests/timber_regulation.htm "More information about EU Timber Regulations - external link"), or Country of Origin of tin, tantalum, tungsten and gold (sometimes called ‘3TG’) to support compliance with the US ‘[Dodd-Frank Act](http://www.gpo.gov/fdsys/pkg/PLAW-111publ203/html/PLAW-111publ203.htm "More information about the Dodd-Frank Act - external link")’. Other customers are focused on collecting information to support their corporate commitments to minimising the environmental and social impact of their operations.
-
-[A full list of materials currently supported by String3 can be found here](/materials/ "Which materials does String3 support?"). This is regularly updated as more materials and questions become available.   
-
-We are currently exploring questions about certification status, worker welfare and chemical usage at given production stages. [We’d love to hear from you](/contact/ "Get in touch") if there are any specific questions you would like to see supported.
