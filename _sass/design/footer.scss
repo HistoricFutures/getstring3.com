@@ -4,7 +4,7 @@
 	@include box-shadow-standard();
 	border-left:0;
 	border-right:0;
-
+	background:$off-white;
 	.primary {
 		@include gs-span(l,3,5);
 		.logo-holder {
@@ -57,7 +57,7 @@
 	border-left:none;
 	border-right:none;
 	background:$off-white;
-	@include margin-bottom($a-scale-2);
+
 	.next-page--holder__inner {
 		@include gs-span(l,2,11);
 		a {
@@ -212,6 +212,8 @@
 	@include padding-bottom($a-scale);
 	position:relative;
 	z-index:$bottom;
+	background:$off-white;
+	@include padding-top($a-scale-2);
 	.inner {
 		@include gs-span(l,3,10);
 		.hf-text{

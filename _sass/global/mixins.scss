@@ -151,7 +151,7 @@
     box-sizing: border-box;         /* Opera/IE 8+ */
   }
 
-
+/* transform */
   @mixin transform($args...) {
     -webkit-transform: $args;
     -moz-transform:    $args;
@@ -159,6 +159,15 @@
     -o-transform:      $args;
     transform:         $args;
   }
+
+  /* transform-origin */
+    @mixin transform-origin($args...) {
+      -webkit-transform-origin: $args;
+      -moz-transform-origin:    $args;
+      -ms-transform-origin:     $args;
+      -o-transform-origin:      $args;
+      transform-origin:         $args;
+    }
 
 /* ==========================================================================
     Gradients
@@ -252,6 +261,7 @@
 
 /// ANIMATION
 
+///// FADEIN
 // Fade in definitions
 @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -276,4 +286,83 @@
   -webkit-animation-delay: $delay;
   -moz-animation-delay: $delay;
   animation-delay: $delay;
+}
+
+///// DELAY
+
+@mixin animationdelay($delay) {
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+  animation-delay: $delay;
+}
+
+///// KNOCKBACK
+
+// Knockback definitions
+@-webkit-keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+@-moz-keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+@keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+
+@mixin knockback($duration) {
+
+  -webkit-animation:knockback ease-in 1;
+  -moz-animation:knockback ease-in 1;
+  animation:knockback ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0.5)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:$duration;
+  -moz-animation-duration:$duration;
+  animation-duration:$duration;
+}
+
+/// SEE introduction.scss for lineanimation
+
+
+// Slideup
+
+@mixin slideup($duration) {
+  animation-name: slideup;
+	animation-duration: $duration;
+	animation-timing-function: ease-in;
+  opacity:0;
+  animation-fill-mode:forwards;
+}
+
+@keyframes slideup {
+  from {
+    transform:translateY(100%);
+    opacity:0;
+  }
+  to {
+    transform:translateY(0%);
+    opacity:1;
+  }
+}
+
+// Slidedown
+
+@mixin slidedown($duration) {
+  animation-name: slidedown;
+	animation-duration: $duration;
+	animation-timing-function: ease-out;
+  opacity:0;
+  animation-fill-mode:forwards;
+}
+
+@keyframes slidedown {
+  0% {
+    transform:translateY(-300%);
+    opacity:0;
+  }
+  75% {
+
+    opacity:0.5;
+  }
+  100% {
+    transform:translateY(0%);
+    opacity:1;
+  }
 }

@@ -1,6 +1,6 @@
 name: String3
-markdown: kramdown
-highlighter: rouge
+markdown: redcarpet
+highlighter: pygments
 defaults:
   -
     scope:
@@ -24,3 +24,5 @@ collections:
     output: false
 sass:
     sass_dir: _sass
+gems:
+- jekyll-compass

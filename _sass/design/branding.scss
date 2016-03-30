@@ -8,7 +8,7 @@
 	overflow:hidden;
 }
 
-.introduction {
+.introduction-old {
 	.s3-logo-mark {
 		background:url(#{$img-path}S3-logo-mark--large.png) center center no-repeat;
 	}
@@ -18,7 +18,7 @@ a.s3-logo-mark, a:visited.s3-logo-mark {
 	@include transition(none);
 	&:hover, &:focus {
 		background:url(#{$img-path}S3-logo-mark--hover.png) center center no-repeat;
-		
+
 		@include transition(none);
 	}
 }
@@ -63,7 +63,7 @@ a.s3-logo, a:visited.s3-logo {
 }
 
 .svg {
-	.s3-logo-mark, .introduction .s3-logo-mark {
+	.s3-logo-mark, .introduction-old .s3-logo-mark {
 		background:url(#{$img-path}S3-logo-mark.svg) center center no-repeat;
 		background-size:contain;
 	}

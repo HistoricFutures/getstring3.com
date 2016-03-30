@@ -1,485 +1,859 @@
-// basic layout
+// NEW MAP INTRODUCTION
+
+.introduction { // basic styling
+  @include margin-top(-1 * $a-scale-5);
+  @include gs-span(l,all);
+  background:$grey90 ;
+
+  color:$off-white;
+  overflow:visible;
+  position:relative;
+  padding-bottom:60%;
+  padding-top:0;
+  .logo-holder {
+    @include gs-span(l,6,7);
+    position:absolute;
+    top:23%;
+    h1 {
+      text-indent:-9999em;
+      overflow:hidden;
+
+      background:url(#{$img-path}s3-logo-for-home.png) center center no-repeat;
+      background-size:contain;
+      width:100%;
+      height:0;
+      padding-bottom:100%;
+    }
+  }
+  .map-points:before { // map on here so it can be transitioned in
+    position:absolute;
+    content:"";
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:url(#{$img-path}map.png) center 20% no-repeat;
+    background-size:100% auto;
+  }
+  .floating-risks:before { // overlay comes here for z-index purposes
+    position:absolute;
+    content:"";
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    //background:url(#{$img-path}overlay-for-map.png) center center no-repeat;
+    background:radial-gradient(rgba($grey90,0.9),rgba($grey90,0));
+    background-size:contain;
+  }
+  .banner {
+    @include bottom($a-scale-5);
+    @include gs-span(l,all);
+    position:absolute;
+  }
+  .strap-holder {
+    @include gs-span(l,3,10);
+    @include font-size($a-scale-2);
+    clear:left;
+    text-align:center;
+    position:relative;
+
+  }
+  .button-holder {
+    @include gs-span(l,5,8);
+    clear:left;
+    position:relative;
+
+  }
+  .next-arrow {
+    @include gs-span(l,5,8);
+    clear:left;
+    text-align:center;
+
+    position:absolute;
+    @include bottom(-1 * $a-scale-3);
+  }
+}
+
+// map positioning
+
+//MATHS - to allow calculation of angles -- from http://thesassway.com/advanced/inverse-trigonometric-functions-with-sass
+
+$default-threshold: pi()/180/20;
+
+@function convert-angle($value, $unit-name) {
+  $factors: (
+    rad: 1rad,
+    deg: 180deg/pi(),
+    grad: 200grad/pi(),
+    turn: .5turn/pi()
+  );
+
+  @if not unitless($value) {
+    @warn '`#{$value}` should be unitless';
+    @return false;
+  }
+
+  @if not map-has-key($factors, $unit-name) {
+    @warn 'unit `#{$unit-name}` is not a valid unit - please make sure it is either `deg`, `rad`, `grad` or `turn`';
+    @return false;
+  }
+
+  @return $value*map-get($factors, $unit-name);
+}
+
+@function asin($z, $unit-name: deg, $threshold: $default-threshold) {
+  $sum: 0;
+  $complement: false;
+  $sign: if($z != 0, $z/abs($z), 1);
+  $z: abs($z);
+
+  @if $z > 1 {
+    @warn 'illegal `#{$z}` value for function';
+    @return false;
+  }
+
+  @if $z > sin(pi()/4) {
+    $complement: true;
+    $z: sqrt(1 - pow($z, 2));
+  }
+
+  $term: $z;
+  $i: 0;
+  $k: 1;
+
+  @while $term > $threshold {
+    $sum: $sum + $term;
+
+    $i: $i + 1;
+    $k: $k*(2*$i - 1)/(2*$i);
+    $j: 2*$i + 1;
+
+    $term: $k*pow($z, $j)/$j;
+  }
+
+  @return convert-angle($sign*(if($complement, pi()/2 - $sum, $sum)), $unit-name);
+}
+
+@function acos($z, $unit-name: deg, $threshold: $default-threshold) {
+  @return convert-angle(pi()/2, $unit-name) - asin($z, $unit-name, $threshold);
+}
+
+@function atan($z, $unit-name: deg, $threshold: $default-threshold) {
+  @return asin($z/sqrt(1 + pow($z, 2)), $unit-name, $threshold);
+}
+
+//// setting up mixins for calculations
+@mixin point-position($sketchX,$sketchY) {
+  left:($sketchX / 1894) * 100%;
+  top:($sketchY / 1137) * 100%;
+}
+
+////location of centre of s3 logo:
+$s3X: 947;
+$s3Y: 367;
+
+/// mixins for lines
+@mixin line($AsketchX,$AsketchY,$BsketchX,$BsketchY) {
+  // adjust start / end to be central to the icon if not to the s3 icon
+  @if $AsketchX == $s3X {
+  } @else {
+    $AsketchX: $AsketchX + (21/2);
+  }
+  @if $AsketchY == $s3Y {
+  } @else {
+    $AsketchY: $AsketchY + (21/2);
+  }
+  @if $BsketchX == $s3X {
+  } @else {
+    $BsketchX: $BsketchX + (21/2);
+  }
+  @if $BsketchY == $s3Y {
+  } @else {
+    $BsketchY: $BsketchY + (21/2);
+  }
+  // check which direction we're going in
+  @if $BsketchX > $AsketchX {
+    $adj:$BsketchX - $AsketchX;
+    $opp:$AsketchY - $BsketchY;
+    left:($AsketchX / 1894) * 100%;
+    top:($AsketchY / 1137) * 100%;
+    width:(sqrt(pow($adj,2) + pow($opp,2)))/1894 * 100%;
+    @include transform(rotate(-1 * atan($opp / $adj)));
+    @include transform-origin(left bottom);
+  } @else {
+    $adj:$AsketchX - $BsketchX;
+    $opp:$BsketchY - $AsketchY;
+    $hyp:sqrt(pow($adj,2) + pow($opp,2));
+    right:((1894 - $AsketchX) / 1894) * 100%;
+    top:($AsketchY / 1137) * 100%;
+    width:$hyp/1894 * 100%;
+    @include transform(rotate(-1 * atan($opp / $adj)));
+    @include transform-origin(100% 0);
+  }
+
+
+}
+
+/// rotate calc
+
+@function linerotation($AsketchX,$AsketchY,$BsketchX,$BsketchY) {
+  // adjust start / end to be central to the icon if not to the s3 icon
+  @if $AsketchX == $s3X {
+  } @else {
+    $AsketchX: $AsketchX + (21/2);
+  }
+  @if $AsketchY == $s3Y {
+  } @else {
+    $AsketchY: $AsketchY + (21/2);
+  }
+  @if $BsketchX == $s3X {
+  } @else {
+    $BsketchX: $BsketchX + (21/2);
+  }
+  @if $BsketchY == $s3Y {
+  } @else {
+    $BsketchY: $BsketchY + (21/2);
+  }
+  // check which direction we're going in
+  @if $BsketchX > $AsketchX {
+    $adj:$BsketchX - $AsketchX;
+    $opp:$AsketchY - $BsketchY;
+    @return -1 * atan($opp / $adj);
+  } @else {
+    $adj:$AsketchX - $BsketchX;
+    $opp:$BsketchY - $AsketchY;
+    @return -1 * atan($opp / $adj);
+  }
+
+
+}
+
+
+//// LINEANIMATION
+
+@mixin lineanimation($duration,$rotate,$animationName) {
+
+  // lineanimation definitions
+  @-webkit-keyframes #{$animationName} { from { -webkit-transform:scale(0) rotate($rotate); opacity:0; } to { -webkit-transform:scale(1) rotate($rotate); opacity:0.3; } }
+  @-moz-keyframes #{$animationName} { from { -moz-transform:scale(0) rotate($rotate); opacity:0; } to { -moz-transform:scale(1) rotate($rotate); opacity:0.3; } }
+  @keyframes #{$animationName} { from { transform:scale(0) rotate($rotate); opacity:0; } to { transform:scale(1) rotate($rotate); opacity:0.3; } }
+
+  @include transform(scale(0) rotate($rotate));
+  opacity:0;
+  -webkit-animation:$animationName ease-in 1;
+  -moz-animation:$animationName ease-in 1;
+  animation:$animationName ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0.5)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:$duration;
+  -moz-animation-duration:$duration;
+  animation-duration:$duration;
+
+}
+
+/// Set up chain points in variables (for reuse in lines)
+
+// Specific issues
+
+$modern-slavery-X: 1471; // Indonesia
+$modern-slavery-Y: 648;
+
+$deforestation-X: 577; // Bolivia
+$deforestation-Y: 697;
+
+$conflict-minerals-X: 1042; // DRC
+$conflict-minerals-Y: 638;
+
+$animal-welfare-X: 1471; // China
+$animal-welfare-Y: 447;
+
+$environmental-degradation-X: 473; // Nicaragua
+$environmental-degradation-Y: 543;
+
+$child-labour-X: 1217; // Uzbekistan
+$child-labour-Y: 384;
+
+$chemical-usage-X: 1306; // India
+$chemical-usage-Y: 515;
+
+
+// CHAIN 1
+
+$chain1-point1-X:1093;
+$chain1-point1-Y:402;
+
+$chain1-point2-X:1398;
+$chain1-point2-Y:457;
+
+$chain1-point3-X:1644;
+$chain1-point3-Y:751;
+
+$chain1-point4-X:$modern-slavery-X;
+$chain1-point4-Y:$modern-slavery-Y;
+
+// CHAIN 2
+
+$chain2-point1-X:566;
+$chain2-point1-Y:569;
+
+$chain2-point2-X:401;
+$chain2-point2-Y:520;
+
+$chain2-point3-X:$deforestation-X;
+$chain2-point3-Y:$deforestation-Y;
+
+// CHAIN 3
+
+$chain3-point1-X:401;
+$chain3-point1-Y:437;
+
+$chain3-point2-X:1031;
+$chain3-point2-Y:722;
+
+$chain3-point3-X:$conflict-minerals-X;
+$chain3-point3-Y:$conflict-minerals-Y;
+
 
 
 .introduction {
-	@include gs-span(l, all);
-	position:relative;
-	overflow:hidden;
-	@include margin-top(-1 * $a-scale-5);
-	@include padding-top($a-scale-5);
-	.logo-holder {
-		@include gs-span(l,3,5);
-	}
-	.intro-holder {
-		@include gs-span(l,7,10);
-		@include padding-top($a-scale-3);
-	}
-	@media only screen and (max-width:900px){
-		.intro-holder {
-			@include gs-span(l,7,11);
-		}
-	}
+
+  .map-points{
+    ul {
+      margin:0;
+      padding:0;
+    }
+    li {
+      list-style:none;
+      margin:0;
+      padding:0;
+      i {@include font-size($b-scale-2);
+      line-height:1;}
+    }
+    li > ul > li {position:absolute;}
+    [class*=risk], [class*=risk] a, [class*=warning] {
+      color:$warning-color;
+      border:0;
+      @include transition($link-transition);
+    }
+    [class*=risk] a:hover, [class*=risk] a:focus{
+      color:$off-white;
+
+      i {
+        color:$off-white;
+        @include transition($link-transition);
+      }
+    }
+    .floating-risks li{
+      opacity:0.5;
+    }
+    li[class*=point]{
+      background:url(#{$img-path}point.svg) center center no-repeat;
+      background-size:contain;
+      @include width($b-scale-2);
+      @include height($b-scale-2);
+    }
+
+      li[class*=line] {
+        content:"";
+        display:block;
+        height:0px;
+        border-top:1px dashed $off-white;
+        position:absolute;
+        opacity:0.3;
+      }
+
+    .floating-risks {
 
 
-	.tri-1 {
-		background: url(#{$img-path}triangle-1.png) no-repeat left top;
-		background-size: contain;
-		width:10%;
-		height:0;
-		padding-bottom:20%;
-		display:block;
-		position:absolute;
-		top:0;
-		left:0;
-		
-		
-	}
-	.tri-2 {
-		background: url(#{$img-path}triangle-2.png) no-repeat left top;
-		background-size: contain;
-		width:10%;
-		height:0;
-		padding-bottom:12%;
-		display:block;
-		position:absolute;
-		top:-10px;
-		left:0;
-		
-		
-	}
-	.tri-3 {
-		background: url(#{$img-path}triangle-3.png) no-repeat left top;
-		background-size: contain;
-		width:13%;
-		height:0;
-		padding-bottom:15%;
-		display:block;
-		position:absolute;
-		top:-1%;
-		left:3%;
-		
-		
-	}
-	.tri-4 {
-		background: url(#{$img-path}triangle-4.png) no-repeat left top;
-		background-size: contain;
-		width:6%;
-		height:0;
-		padding-bottom:7%;
-		display:block;
-		position:absolute;
-		top:15%;
-		left:0;
-		
-		
-	}
-	.tri-5 {
-		background: url(#{$img-path}triangle-5.png) no-repeat left top;
-		background-size: contain;
-		width:15%;
-		height:0;
-		padding-bottom:26%;
-		display:block;
-		position:absolute;
-		top:25%;
-		left:0%;
-		
-		
-	}
-	.tri-6 {
-		background: url(#{$img-path}triangle-6.png) no-repeat right bottom;
-		background-size: contain;
-		width:6%;
-		height:0;
-		padding-bottom:7%;
-		display:block;
-		position:absolute;
-		bottom:50%;
-		right:0;
-		
-		
-	}
-	.tri-7 {
-		background: url(#{$img-path}triangle-7.png) no-repeat right bottom;
-		background-size: contain;
-		width:15%;
-		height:0;
-		padding-bottom:26%;
-		display:block;
-		position:absolute;
-		bottom:30%;
-		right:0;
-		
-		
-	}
-	.tri-8 {
-		background: url(#{$img-path}triangle-8.png) no-repeat right bottom;
-		background-size: contain;
-		width:11%;
-		height:0;
-		padding-bottom:19%;
-		display:block;
-		position:absolute;
-		bottom:7%;
-		right:0;
-		
-		
-	}
-	.tri-9 {
-		background: url(#{$img-path}triangle-9.png) no-repeat right bottom;
-		background-size: contain;
-		width:15%;
-		height:0;
-		padding-bottom:18%;
-		display:block;
-		position:absolute;
-		bottom:-3%;
-		right:-5%;
-		
-		
-	}
-	.tri-10 {
-		background: url(#{$img-path}triangle-10.png) no-repeat right bottom;
-		background-size: contain;
-		width:14%;
-		height:0;
-		padding-bottom:8%;
-		display:block;
-		position:absolute;
-		bottom:0;
-		right:0;
-		
-		
-	}
 
-	
-	
+      .risk-1 { // Animal welfare
+        @include point-position($animal-welfare-X,$animal-welfare-Y);
+      }
+      .risk-2 { // Environmental degradation
+        @include point-position($environmental-degradation-X,$environmental-degradation-Y);
+      }
+      .risk-3 { // Child labour
+        @include point-position($child-labour-X,$child-labour-Y);
+      }
+      .risk-4 { // Chemical usage
+        @include point-position($chemical-usage-X,$chemical-usage-Y);
+      }
+    }
 
+    .chain-1 {
+      .line-1 {
+        @include line($s3X,$s3Y,$chain1-point1-X,$chain1-point1-Y);
+      }
+      .point-1 {
+        @include point-position($chain1-point1-X,$chain1-point1-Y);
+      }
+      .line-2 {
+        @include line($chain1-point1-X,$chain1-point1-Y,$chain1-point2-X,$chain1-point2-Y);
+      }
+      .point-2 {
+        @include point-position($chain1-point2-X,$chain1-point2-Y);
+      }
+      .line-3 {
+        @include line($chain1-point2-X,$chain1-point2-Y,$chain1-point3-X,$chain1-point3-Y);
+      }
+
+      .point-3 {
+        @include point-position($chain1-point3-X,$chain1-point3-Y);
+      }
+      .line-4 {
+        @include line($chain1-point3-X,$chain1-point3-Y,$chain1-point4-X,$chain1-point4-Y);
+      }
+
+      .risk-1 { // Modern Slavery
+        @include point-position($chain1-point4-X,$chain1-point4-Y);
+      }
+
+    }
+    .chain-2 {
+      .line-1 {
+        @include line($s3X,$s3Y,$chain2-point1-X,$chain2-point1-Y);
+      }
+      .point-1 {
+        @include point-position($chain2-point1-X,$chain2-point1-Y);
+      }
+      .line-2 {
+        @include line($chain2-point1-X,$chain2-point1-Y,$chain2-point2-X,$chain2-point2-Y);
+      }
+      .point-2 {
+        @include point-position($chain2-point2-X,$chain2-point2-Y);
+      }
+      .line-3 {
+        @include line($chain2-point2-X,$chain2-point2-Y,$chain2-point3-X,$chain2-point3-Y);
+      }
+      .risk-1 { // Deforestation
+        @include point-position($chain2-point3-X,$chain2-point3-Y);
+      }
+    }
+    .chain-3 {
+      .line-1 {
+        @include line($s3X,$s3Y,$chain3-point1-X,$chain3-point1-Y);
+      }
+      .point-1 {
+        @include point-position($chain3-point1-X,$chain3-point1-Y);
+      }
+      .line-2 {
+        @include line($chain3-point1-X,$chain3-point1-Y,$chain3-point2-X,$chain3-point2-Y);
+      }
+      .point-2 { // Conflict minerals
+        @include point-position($chain3-point2-X,$chain3-point2-Y);
+      }
+      .line-3 {
+        @include line($chain3-point2-X,$chain3-point2-Y,$chain3-point3-X,$chain3-point3-Y);
+      }
+      .risk-1 { // Conflict minerals
+        @include point-position($chain3-point3-X,$chain3-point3-Y);
+      }
+    }
+
+  }
 }
 
-////// with SVG ////////
-.svg {
-	.introduction {
-		.tri-1 {
-			background: url(#{$img-path}triangle-1.svg) no-repeat left top;
-			background-size: contain;
-			
-		}
-		.tri-2 {
-			background: url(#{$img-path}triangle-2.svg) no-repeat left top;
-			background-size: contain;
-			
-			
-		}
-		.tri-3 {
-			background: url(#{$img-path}triangle-3.svg) no-repeat left top;
-			background-size: contain;
-			
-		}
-		.tri-4 {
-			background: url(#{$img-path}triangle-4.svg) no-repeat left top;
-			background-size: contain;
-			
-			
-		}
-		.tri-5 {
-			background: url(#{$img-path}triangle-5.svg) no-repeat left top;
-			background-size: contain;
-			
-			
-			
-		}
-		.tri-6 {
-			background: url(#{$img-path}triangle-6.svg) no-repeat right bottom;
-			background-size: contain;
-			
-			
-		}
-		.tri-7 {
-			background: url(#{$img-path}triangle-7.svg) no-repeat right bottom;
-			background-size: contain;
-			
-			
-		}
-		.tri-8 {
-			background: url(#{$img-path}triangle-8.svg) no-repeat right bottom;
-			background-size: contain;
-			
-			
-		}
-		.tri-9 {
-			background: url(#{$img-path}triangle-9.svg) no-repeat right bottom;
-			background-size: contain;
-			
-		}
-		.tri-10 {
-			background: url(#{$img-path}triangle-10.svg) no-repeat right bottom;
-			background-size: contain;
-			
-			
-		}
-	}
+/// MEDIUM SCREENS INTRODUCTION
+@media only screen and (max-width:1400px) {
+  .introduction {
+    border-bottom:100px solid $grey90; // don't add extra padding because it messes up the positioning
+    .banner, .next-arrow {
+      @include transform(translateY(100px));
+    }
+  }
 }
 
-/// IE8 ////
-
-.oldie {
-	.introduction {
-		.tri-1 {
-			width:154px;
-			height:268px;
-		}
-		.tri-2 {
-			width:154px;
-			height:139px;
-		}
-		.tri-3 {
-			width:184px;
-			height:111px;
-		}
-		.tri-4 {
-			width:79px;
-			height:93px;
-		}
-		.tri-5 {
-			width:66px;
-			height:290px;
-		}
-		.tri-6 {
-			width:83px;
-			height:96px;
-		}
-		.tri-7 {
-			width:205px;
-			height:357px;
-		}
-		.tri-8 {
-			width:102px;
-			height:237px;
-		}
-		.tri-9 {
-			width:150px;
-			height:174px;
-		}
-		.tri-10 {
-			width:196px;
-			height:177px;
-		}
-	}
+//// MEDIUM SMALLER SCREENS
+@media only screen and (max-width:950px){
+  .introduction {
+    border-bottom:200px solid $grey90; // don't add extra padding because it messes up the positioning
+    border-top:100px solid $grey90;
+    .banner {
+      @include transform(translateY(250px));
+      .strap-holder p {
+        @include font-size($size-h3);
+      }
+    }
+    .next-arrow {
+      @include transform(translateY(200px));
+    }
+    .map-points {
+      li {
+        @include font-size($size-small);
+      }
+    }
+  }
 }
 
-//// STANDALONE ///
+/// MOBILE
 
-.find-out-holder {
-		@include gs-span(l,4,9);
-		text-align:center;
-		clear:both;
-		@include margin-top($a-scale-2);
-		@include padding-top($a-scale);
-		@include padding-bottom($a-scale-2);
-		position:relative;
-		z-index:$low;
-			&:after {
-			content:"";
-			position:absolute;
-			height:50px;
-			left:50%;
-			width:1px;
-			bottom:0px;
-			border-left:1px dashed $lightturquoise;
-			border-left:1px dashed rgba($turquoise,0.5);
-			display:block;
-			z-index:$bottom;
-		}
-	}
+@include gs-media(s,max){
+  .introduction {
+    border-bottom:0;
+    padding-bottom:0;
+    background:$grey90 url(#{$img-path}introduction--small-bg.png) center 200px no-repeat;
+    background-size:100% auto;
+    .map-points {
+      li > ul > li {
+        position:relative;
+        top:auto !important;
+        left:auto !important;
+        bottom:auto !important;
+        right:auto !important;
+        width:100%;
+        text-align:center;
+        @include margin-bottom($a-scale--2);
+      }
+      li[class*=line], li[class*=point] {
+        display:none;
+      }
+      .floating-risks li {
+        opacity:1;
+      }
 
-.example-selector {
-		position:relative;
-		z-index:$secondlow;
-		@include gs-span(l,all);
-		clear:both;
-		background:$turquoise;
-		color:$off-white;
-		text-align:center;
-		@include padding-top($a-scale);
-		@include padding-bottom($a-scale);
-		.title-segment {
-			@include gs-span(l,1,2);
-			text-align:right;
-		}
-		.link-segment {
-			@include gs-span(l,3,11);
-			text-align:left;
-			clear:left;
-			@include padding-top($b-scale);
-			p { 
-				margin-bottom:0;
-				line-height:$small-line-height;
-				@include font-size($size-small);
-			}
-			a, a:visited {
-				color:$off-white;
-				border-color:$off-white;
-				
-				&:hover, &:focus {
-					color:$text-color;
-					border-color:$text-color;
-				}
-			}
-		}
-		
-		h2 {
-			@include font-size($size-p);
-			display:inline-block;
-			margin:0;
-			@include padding-top($a-scale);
-			line-height:$base-line-height;
-		}
-		@media only screen and (max-width:788px) {
-			h2, .link-segment {
-				padding-top:0;
-			}
-		}
-		ul {
-			padding-left:0;
-			display:inline-block;
-			@include gs-span(l,3,11);
-			margin-bottom:0;
-		}
-		li {
-			list-style:none;
-			text-align:center;
-			display:inline-block;
-			margin-bottom:0;
-			@include gs-span(l,3,5,(3,11));
-			line-height: $heading-line-height;
-			&:first-child {
-				margin-left:0;
-			}
+    }
+    .logo-holder {
+      position:relative;
+      @include gs-span(s,3,4);
+      @include margin-top($a-scale-2);
 
-			a {
-				display:block;
-				
-				@include border-radius(5px);
-				@include padding($a-scale);
-				color:$off-white;
-				@include min-width($a-scale-5);
-				@include box-shadow-standard();
-				border:1px solid $grey70;
-				@include box-sizing();
-				&:hover {
-					background:$active-color;
-					border-color:$active-color;
-					color:$off-white;
-				}
-			}
-			&.active span {
-				display:block;
-				@include border-radius(5px);
-				@include padding($a-scale);
-				color:$off-white;
-				background:$active-color;
-				@include min-width($a-scale-5);
-				@include box-shadow-standard();
-				border:1px solid $active-color;
-				@include box-sizing();
-			}
-		}
-		li+li {
-			@include gs-span(l,6,8,(3,11));
-		}
-		li+li+li {
-			@include gs-span(l,9,11,(3,11));
-		}
-	}
-
-.down-arrow, .down-arrow:visited {
-	background: url(#{$img-path}down-arrow.png) center center no-repeat;
-	background-size:contain;
-	@include width($a-scale-5);
-	text-indent:-9999em;
-	overflow:hidden;
-	display:block;
-	@include height($a-scale-2);
-	margin-left:auto;
-	margin-right:auto;
-	border-bottom:0;
-	&:hover {
-		background: url(#{$img-path}down-arrow--hover.png) center center no-repeat;
-		background-size:contain; 
-	}
+    }
+    .map-points:before { // no map
+      display:none;
+    }
+    .banner {
+      position:relative;
+      clear:left;
+      @include transform(none);
+      @include gs-span(s,all);
+      @include gs-pad(s,padinfull);
+      bottom:auto;
+      .strap-holder {
+        @include gs-span(s,all);
+      }
+      .button-holder {
+        @include gs-span(s,2,5);
+      }
+    }
+    .next-arrow {
+      position:relative;
+      @include transform(none);
+      @include gs-span(s,all);
+    }
+  }
 }
 
-.svg .down-arrow, .svg .down-arrow:visited {
-	background: url(#{$img-path}down-arrow.svg) center center no-repeat;
-	background-size:contain;
-	&:hover {
-		background: url(#{$img-path}down-arrow--hover.svg) center center no-repeat;
-		background-size:contain; 
-	}
+/// same layout as mobile for IE8
+
+.oldie{
+  .introduction {
+    border-bottom:0;
+    padding-bottom:0;
+    background:$grey90 url(#{$img-path}introduction--small-bg.png) center 200px no-repeat;
+    padding-top:100px;
+    .map-points {
+      li > ul > li {
+        position:relative;
+        top:auto !important;
+        left:auto !important;
+        bottom:auto !important;
+        right:auto !important;
+        width:100%;
+        text-align:center;
+        @include margin-bottom($a-scale--2);
+      }
+      li[class*=line], li[class*=point] {
+        display:none;
+      }
+      .floating-risks li {
+        opacity:1;
+      }
+
+    }
+    .logo-holder {
+      position:relative;
+      @include gs-span(s,3,4);
+      @include margin-top($a-scale-2);
+      h1 {
+        background-image: url(#{$img-path}s3-logo-for-home--oldie.png)
+      }
+
+    }
+    .map-points:before { // no map
+      display:none;
+    }
+    .banner {
+      position:relative;
+      clear:left;
+      @include transform(none);
+      @include gs-span(s,all);
+      @include gs-pad(s,padinfull);
+      bottom:auto;
+      .strap-holder {
+        @include gs-span(s,all);
+      }
+      .button-holder {
+        @include gs-span(l,4,9);
+      }
+    }
+    .next-arrow {
+      position:relative;
+      @include transform(none);
+      @include gs-span(s,all);
+    }
+  }
 }
 
-@include gs-media(s,max) {
-	.introduction {
-		@include gs-span(s,all);
-		text-align:center;
-		.logo-holder {
-			@include gs-span(s,3,4);
-		}
-		.intro-holder {
-			@include gs-span(s,2,5);
-			clear:left;
-		}
-		
-		
-	}
-	.find-out-holder {
-			@include gs-span(s,2,5);
-			clear:left;
-		}
-	.example-selector {
-			@include gs-span(s,all);
-			clear:left;
-			.title-segment {
-				@include gs-span(s,all);
-				@include gs-pad(s, padinfull);
-				text-align:left;
-				@include margin-bottom($a-scale--2);
+/// don't display lines if no support for transforms
 
-			}
-			h2 {
-				padding-top:0;
-			}
-			.link-segment {
-				@include gs-span(s,all);
-				@include gs-pad(s, padinfull);
-				clear:left;
-				@include padding-top($b-scale);
-			}
-			ul {
-				@include gs-span(s,all);
-				@include gs-pad(s, padinfull);
-				clear:left;
-				
-				li {
-					@include gs-span(s,1,2);
-					
-					@include box-sizing();
-					a, &.active span {
-						width:100%;
-						@include box-sizing();
-						@include padding($b-scale);
-						
-						min-width:0;
-					}
-				}
-				li+li {
-					@include gs-span(s,3,4);
-				}
-				li+li+li {
-					@include gs-span(s,5,6);
-				}
+.no-csstransforms {
+  .introduction {
+    .map-points {
+      [class*=line]{
+        display:none;
+      }
+    }
+  }
+}
 
-			}
-		}
+
+//// NOW FOR SOME ANIMATION
+
+// Set up timings
+
+$increment: 1s;
+$duration: 0.75s;
+$long-duration: 1.5s;
+$extra-long-duration: 3s;
+$speed-up: 0.8; // gradually reduce increments
+
+$order1: 0.5s;
+$order2: $order1 + $increment;
+$order3: ($order2 + $increment) * $speed-up;
+$order4: ($order3 + $increment) * $speed-up;
+$order5: ($order4 + $increment) * $speed-up;
+$order6: ($order5 + $increment) * $speed-up;
+$order7: ($order6 + $increment) * $speed-up;
+$order8: ($order7 + $increment) * $speed-up;
+$order9: ($order8 + $increment) * $speed-up;
+$order10: ($order9 + $increment) * $speed-up;
+$order11: ($order10 + $increment) * $speed-up;
+$order12: ($order11 + $increment) * $speed-up;
+$order13: ($order12 + $increment) * $speed-up;
+
+// round B
+$Border1: $order13 + $extra-long-duration;
+$Border2: $Border1 + $duration;
+$Border3: $Border2 + $duration;
+$Border4: $Border3 + $duration;
+
+// round C
+$Corder1: $Border4 + 0.5s;
+$Corder2: $Corder1 + $duration;
+$Corder3: $Corder2 + $duration;
+$Corder4: $Corder3 + $duration;
+
+// round D
+$Dorder1: $Corder2 + 0.5s;
+$Dorder2: $Dorder1 + $duration;
+$Dorder3: $Dorder2 + $duration;
+$Dorder4: $Dorder3 + $duration;
+
+// round E
+$Eorder1: $Dorder4 + 0.5s;
+$Eorder2: $Eorder1 + $duration;
+$Eorder3: $Eorder2 + $duration;
+$Eorder4: $Eorder3 + $duration;
+
+@include gs-media(l,min){
+
+.cssanimations {
+  .introduction {
+    .map-points {
+      .floating-risks {
+        @include knockback($extra-long-duration);
+        @include animationdelay($order13);
+        .risk-1 {
+          @include fadein($duration);
+          @include animationdelay($order4);
+        }
+        .risk-2 {
+          @include fadein($duration);
+          @include animationdelay($order5);
+        }
+        .risk-3 {
+          @include fadein($duration);
+          @include animationdelay($order6);
+        }
+        .risk-4 {
+          @include fadein($duration);
+          @include animationdelay($order7);
+        }
+        .risk-5 {
+          @include fadein($duration);
+          @include animationdelay($order7);
+        }
+      }
+      .floating-warnings li {
+        opacity:0;
+        &.warning-1 {
+          @include fadein($duration);
+          @include animationdelay($order8);
+        }
+        &.warning-2 {
+          @include fadein($duration);
+          @include animationdelay($order9);
+        }
+        &.warning-3 {
+          @include fadein($duration);
+          @include animationdelay($order10);
+        }
+        &.warning-4 {
+          @include fadein($duration);
+          @include animationdelay($order11);
+        }
+        &.warning-5 {
+          @include fadein($duration);
+          @include animationdelay($order12);
+        }
+      }
+      .chain-1 li {
+        opacity:0;
+        &.risk-1 {
+          @include fadein($duration);
+          @include animationdelay($order1);
+        }
+        &.line-1 {
+          $rotate1: linerotation($s3X,$s3Y,$chain1-point1-X,$chain1-point1-Y);
+          @include lineanimation($duration,$rotate1,chain1line1);
+          @include animationdelay($Border1);
+        }
+        &.line-2 {
+          $rotate2: linerotation($chain1-point1-X,$chain1-point1-Y,$chain1-point2-X,$chain1-point2-Y);
+          @include lineanimation($duration,$rotate2,chain1line2);
+          @include animationdelay($Border2);
+        }
+        &.line-3 {
+          $rotate3: linerotation($chain1-point2-X,$chain1-point2-Y,$chain1-point3-X,$chain1-point3-Y);
+          @include lineanimation($duration,$rotate3,chain1line3);
+          @include animationdelay($Border3);
+        }
+        &.line-4 {
+          $rotate4: linerotation($chain1-point3-X,$chain1-point3-Y,$chain1-point4-X,$chain1-point4-Y);
+          @include lineanimation($duration,$rotate4,chain1line4);
+          @include animationdelay($Border4);
+        }
+        &.point-1 {
+          @include fadein($duration);
+          @include animationdelay($Border2);
+        }
+        &.point-2 {
+          @include fadein($duration);
+          @include animationdelay($Border3);
+        }
+        &.point-3 {
+          @include fadein($duration);
+          @include animationdelay($Border4);
+        }
+
+      }
+      .chain-2 li {
+        opacity:0;
+        &.risk-1 {
+          @include fadein($duration);
+          @include animationdelay($order2);
+        }
+        &.line-1 {
+          $rotate1: linerotation($s3X,$s3Y,$chain2-point1-X,$chain2-point1-Y);
+          @include lineanimation($duration,$rotate1,chain2line1);
+          @include animationdelay($Corder1);
+        }
+        &.line-2 {
+          $rotate2: linerotation($chain2-point1-X,$chain2-point1-Y,$chain2-point2-X,$chain2-point2-Y);
+          @include lineanimation($duration,$rotate2,chain2line2);
+          @include animationdelay($Corder2);
+        }
+        &.line-3 {
+          $rotate3: linerotation($chain2-point2-X,$chain2-point2-Y,$chain2-point3-X,$chain2-point3-Y);
+          @include lineanimation($duration,$rotate3,chain2line3);
+          @include animationdelay($Corder3);
+        }
+        &.point-1 {
+          @include fadein($duration);
+          @include animationdelay($Corder1);
+        }
+        &.point-2 {
+          @include fadein($duration);
+          @include animationdelay($Corder3);
+        }
+      }
+      .chain-3 li {
+        opacity:0;
+        &.risk-1 {
+          @include fadein($duration);
+          @include animationdelay($order3);
+        }
+        &.line-1 {
+          $rotate1: linerotation($s3X,$s3Y,$chain3-point1-X,$chain3-point1-Y);
+          @include lineanimation($duration,$rotate1,chain3line1);
+          @include animationdelay($Dorder1);
+        }
+        &.line-2 {
+          $rotate2: linerotation($chain3-point1-X,$chain3-point1-Y,$chain3-point2-X,$chain3-point2-Y);
+          @include lineanimation($duration,$rotate2,chain3line2);
+          @include animationdelay($Dorder2);
+        }
+        &.line-3 {
+          $rotate3: linerotation($chain3-point2-X,$chain3-point2-Y,$chain3-point3-X,$chain3-point3-Y);
+          @include lineanimation($duration,$rotate3,chain3line3);
+          @include animationdelay($Dorder3);
+        }
+        &.point-1 {
+          @include fadein($duration);
+          @include animationdelay($Dorder1);
+        }
+        &.point-2 {
+          @include fadein($duration);
+          @include animationdelay($Dorder3);
+        }
+      }
+
+
+    }
+    .map-points:before { // map
+      opacity:0;
+      @include fadein($long-duration);
+      @include animationdelay($order11);
+    }
+    .logo-holder {
+      opacity:0;
+      @include fadein($extra-long-duration);
+      @include animationdelay($order13);
+    }
+    .floating-risks:before { // overlay
+      opacity:0;
+      @include fadein($extra-long-duration);
+      @include animationdelay($order13);
+    }
+    .banner {
+      .strap-holder {
+        @include slidedown($long-duration);
+        @include animationdelay($Eorder1);
+      }
+      .button-holder {
+        @include slidedown($long-duration);
+        @include animationdelay($Eorder2);
+      }
+    }
+    .next-arrow a {
+      @include slidedown($long-duration);
+      @include animationdelay($Eorder3);
+    }
+  }
+}
+
 }

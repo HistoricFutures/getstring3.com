@@ -169,6 +169,33 @@ input[type='submit'].button--large {
 	}
 
 }
+[class*=faux-button].ondark {
+	a, a:visited {
+		background: none;
+		border-color:$off-white;
+		color:$off-white;
+		&:hover {
+			background:$link-color-hover;
+			color:$off-white;
+			border-color:$off-white;
+		}
+	}
+
+}
+
+[class*=faux-button].ondark.commit {
+	a, a:visited {
+		background: none;
+		border-color:$yellow;
+		color:$yellow;
+		&:hover {
+			background:$link-color-hover;
+			color:$off-white;
+			border-color:$off-white;
+		}
+	}
+
+}
 
 .super-banner [class*=faux-button] {
 	a, a:visited {

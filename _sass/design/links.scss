@@ -92,3 +92,14 @@ a, a:visited {
 		}
 	}
 }
+
+.subtle-links {
+	a, a:visited {
+		color:$grey90;
+		border-bottom:1px dotted $grey40;
+		&:hover, &:focus {
+			color:$link-color-hover;
+			border-color:$link-color-hover;
+		}
+	}
+}

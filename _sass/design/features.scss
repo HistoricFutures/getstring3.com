@@ -1,0 +1,419 @@
+// design for features padding-left
+.features-intro {
+  text-align:center;
+  @include gs-span(l,all);
+  padding-bottom:5%;
+  @include margin-bottom(-1 * $b-scale-5);
+  h1 {
+    vertical-align:middle;
+    z-index:-1000;
+    position:relative;
+
+    &:before {
+      background: url(#{$img-path}S3-logo-mark--medium.png) top left no-repeat;
+      background-size:contain;
+      content:"";
+      @include width($a-scale-6);
+      @include height($a-scale-6);
+      @include margin-right($a-scale-2);
+      display:inline-block;
+      vertical-align:middle;
+    }
+  }
+}
+
+.svg {
+  .features-intro h1:before {
+    background: url(#{$img-path}S3-logo-mark.svg) top left no-repeat;
+    background-size:contain;
+  }
+}
+
+.oldie {
+  .features-intro h1 {
+    text-align:left;
+  }
+}
+
+@include gs-media(s,max){
+  .features-intro {
+    padding-bottom:0;
+    margin-bottom:0;
+    h1 {
+      position:relative;
+      margin-bottom:5%;
+    }
+    h1:before {
+      @include width($a-scale-5);
+      @include height($a-scale-5);
+    }
+  }
+
+}
+
+
+.feature-section__inner {
+  @include gs-span(l,3,10);
+  clear:left;
+  text-align:center;
+  @include padding-top($a-scale-4);
+  @include padding-bottom($a-scale-4);
+}
+
+@include gs-media(s,max){
+  .feature-section__inner{
+    @include gs-span(s,all);
+    @include gs-pad(s,padinfull);
+  }
+}
+
+.feature-section--button-holder {
+  @include gs-span(l,5,8,(3,10));
+  clear:left;
+  @extend .clearfix;
+}
+
+@include gs-media(s,max){
+  .feature-section--button-holder {
+    @include gs-span(s,2,5);
+  }
+}
+
+.feature-section--1 {
+  @include gs-span(l,all);
+  clear:left;
+  background:$turquoise;
+  color:$off-white;
+  position:relative;
+  margin-bottom:5%;
+  &:before { // diagonal top http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+    -webkit-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    -webkit-transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    top: 0;
+    left: -25%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+  }
+  &:after { // diagonal bottom http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+    transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    bottom: 0;
+    left: -13%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+
+  }
+}
+
+.feature-section--2, .feature-section--4 {
+  background:$off-white;
+  @include gs-span(l,all);
+  position:relative;
+  z-index:-10;
+  @include padding-top($a-scale-4);
+  @include margin-top(-1 * $a-scale-4);
+  @include padding-bottom($a-scale-4);
+  @include margin-bottom(-1 * $a-scale-4);
+}
+
+.feature-section--3 {
+  @include gs-span(l,all);
+  clear:left;
+  background:$grey90;
+  color:$off-white;
+  position:relative;
+  margin-bottom:5%;
+  margin-top:5%;
+  &:before { // diagonal top http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+    -webkit-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    -webkit-transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    top: 0;
+    left: -25%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+  }
+  &:after { // diagonal bottom http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+    transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    bottom: 0;
+    left: -25%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+
+  }
+}
+
+.feature-section--5 {
+  @include gs-span(l,all);
+  clear:left;
+  background:$yellow;
+  color:$grey90;
+  position:relative;
+  margin-top:5%;
+  &:before { // diagonal top http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+    -webkit-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    -webkit-transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    top: 0;
+    left: -25%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+  }
+
+}
+
+.icon-block-list {
+  margin:0;
+  padding:0;
+  @include padding-top($a-scale-2);
+}
+[class*=icon-block-list-item] {
+  list-style:none;
+  float:left;
+  i {
+    @include font-size($b-scale-4);
+    @include margin-bottom($a-scale-2);
+  }
+  p {
+    line-height:$small-line-height;
+  }
+}
+
+.icon-block-list-item--1 {
+  @include gs-span(l,1,4);
+}
+
+.icon-block-list-item--2 {
+  @include gs-span(l,5,8);
+}
+
+.icon-block-list-item--3 {
+  @include gs-span(l,9,12);
+}
+
+@include gs-media(s,max){
+  [class*=icon-block-list-item]{
+    @include gs-span(s,all);
+  }
+}
+
+.screencast-container {
+  background:url(#{$img-path}screencast-container.png) top center no-repeat;
+  background-size:100% auto;
+  padding-left:15/930 * 100%;
+  padding-right:15/930 * 100%;
+  padding-top:87/930 * 100%;
+  padding-bottom:0;
+  @include margin-bottom($a-scale-2);
+  @include margin-top($a-scale-3);
+  img {
+    display:table;
+  }
+}
+
+.oldie {
+  .screencast-container {
+    background:url(#{$img-path}screencast-container--small.png) top center no-repeat;
+    img {
+      display:block;
+    }
+  }
+}
+
+.explained-screenshot {
+  @include gs-span(l,all);
+  @include gs-pad(l,padinfull);
+  clear:left;
+  position:relative;
+  ul {
+    padding-left:0;
+  }
+}
+
+.screenshot-holder {
+  @include gs-span(l,4,9);
+  clear:left;
+  padding-bottom: 20%;
+}
+
+@media only screen and (min-width:1100px){
+  .explained-screenshot + .feature-section__inner{
+    margin-top:-7%;
+  }
+}
+
+[class*=screenshot-explanations--item] {
+  position:absolute;
+  list-style:none;
+  width:20%;
+  text-align:center;
+  p {
+    @include font-size($size-small);
+    line-height:$small-line-height;
+  }
+}
+
+.screenshot-explanations--item-1 {
+  top:0;
+  left:3%;
+
+}
+.screenshot-explanations--item-2 {
+  top:50%;
+  left:15%;
+
+}
+.screenshot-explanations--item-3 {
+  top:0;
+  right:3%;
+}
+.screenshot-explanations--item-4 {
+  top:50%;
+  right:15%;
+}
+
+@include gs-media(s,max){
+  .explained-screenshot {
+    @include gs-span(s,all);
+    @include gs-pad(s,padinfull);
+    padding-bottom:0;
+  }
+  .screenshot-holder {
+    @include gs-span(s,all);
+    @include padding-bottom($a-scale);
+  }
+  [class*=screenshot-explanations--item] {
+    position:relative;
+    width:100%;
+    top:auto;
+    left:auto;
+    right:auto;
+    text-align:center;
+    img {
+      max-width:300px;
+    }
+  }
+  .screenshot-explanations--item-1, .screenshot-explanations--item-3 {
+    @include gs-span(s,1,3);
+    clear:left;
+  }
+  .screenshot-explanations--item-2, .screenshot-explanations--item-4 {
+    @include gs-span(s,4,6);
+  }
+}
+
+@media only screen and (max-width:550px) {
+  [class*=screenshot-explanations--item] {
+    @include gs-span(s,all);
+    clear:left;
+  }
+}
+
+/// triangles only on larger screens
+
+@include gs-media(l,min){
+  [class*=screenshot-explanations--item] {
+    img {
+      position:relative;
+      z-index:2;
+    }
+    &:before {
+      content:"";
+
+
+      position:absolute;
+
+      z-index:1;
+    }
+  }
+  .screenshot-explanations--item-1 {
+    &:before {
+      background:url(#{$img-path}screenshot-triangle-1.svg) top left no-repeat;
+      background-size:contain;
+      width:175%;
+      height:100%;
+      left:50%;
+      top:1%;
+    }
+  }
+  .screenshot-explanations--item-2 {
+    &:before {
+      background:url(#{$img-path}screenshot-triangle-2.svg) top left no-repeat;
+      background-size:contain;
+      width:80%;
+      height:100%;
+      right:5%;
+      top:-27%
+    }
+  }
+  .screenshot-explanations--item-3 {
+    &:before {
+      background:url(#{$img-path}screenshot-triangle-3.svg) top left no-repeat;
+      background-size:contain;
+      width:190%;
+      height:100%;
+      left:-120%;
+      top:7%;
+    }
+  }
+  .screenshot-explanations--item-4 {
+    &:before {
+      background:url(#{$img-path}screenshot-triangle-4.svg) top left no-repeat;
+      background-size:contain;
+      width:40%;
+      height:100%;
+      left:-10%;
+      top:7%;
+    }
+  }
+  .cssanimations {
+    .screenshot-explanations--item-1 {
+      @include fadein(0.5s);
+      @include animationdelay(0.5s);
+    }
+    .screenshot-explanations--item-3 {
+      @include fadein(0.5s);
+      @include animationdelay(1s);
+    }
+    .screenshot-explanations--item-2 {
+      @include fadein(0.5s);
+      @include animationdelay(1.5s);
+    }
+    .screenshot-explanations--item-4 {
+      @include fadein(0.5s);
+      @include animationdelay(2s);
+    }
+  }
+
+}

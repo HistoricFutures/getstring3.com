@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="406px" height="255px" viewBox="0 0 406 255" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
+    <title>Triangle 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="106.885694%" y1="100.013554%" x2="2.16436436%" y2="100.013554%" id="linearGradient-1">
+            <stop stop-color="#CCC9C4" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#FCFAF2" stop-opacity="0.5" offset="46.6846588%"></stop>
+            <stop stop-color="#CCC9C4" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Triangle-1" fill="url(#linearGradient-1)" transform="translate(182.866214, 170.681044) scale(-1, 1) rotate(-246.000000) translate(-182.866214, -170.681044) " points="185.463897 -29.842115 280.421215 371.204203 85.311214 371.204203 "></polygon>
+    </g>
+</svg>

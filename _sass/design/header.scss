@@ -25,11 +25,15 @@
 		}
 	}
 	.exposed {
-		
-		@extend .uppercase;
+
+
 		position:absolute;
 		right:110px;
 		top:1px;
+		.login {
+			@extend .uppercase;
+		}
+
 		li {
 			@include font-size($size-small);
 			display:inline-block;
@@ -37,6 +41,8 @@
 				@include padding($a-scale);
 				display:block;
 				line-height:($base-line-height*$size-p) / $size-small;
+				@include padding-left($a-scale-2);
+				@include padding-right($a-scale-2);
 			}
 		}
 	}
@@ -55,6 +61,7 @@
 		a {
 			color:$text-color;
 			@include padding($a-scale);
+
 			display:block;
 		}
 	}
@@ -71,15 +78,15 @@
 }
  .side-nav {
 
-		
+
 		position:fixed;
 		height:100%;
-		
+
 		background:rgba($off-white,0.9);
 		@include box-shadow-standard();
 		z-index:$top;
 		@include padding-top($a-scale-2);
-		
+
 		ul {
 			@include gs-span(l,9,11,(8,12));
 			clear:left;
@@ -103,12 +110,16 @@
 
 	.side-nav.open {
 		overflow-y:auto;
-		
+
 		right:0;
 		@include transition(right 1s ease);
 	}
 
-
+@media only screen and (max-width:750px) {
+	.header .exposed .secondary {
+		display:none;
+	}
+}
 
 
 @media only screen and (max-width:550px) {
@@ -146,7 +157,7 @@
 	}
 	.header.open {
 		width:100%;
-		
+
 	}
 	.header {
 		z-index:$top;
@@ -154,7 +165,7 @@
 		#scroll-area {
   position: fixed;
   top: 0px;
-  
+
   width: 100%;
   height: 100%;
   overflow-y: auto;
