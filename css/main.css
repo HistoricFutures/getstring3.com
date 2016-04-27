@@ -9944,12 +9944,12 @@ a.arrows-down, a:visited.arrows-down {
     /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0.5)*/
     -moz-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
-    -webkit-animation-duration: 3s;
-    -moz-animation-duration: 3s;
-    animation-duration: 3s;
-    -webkit-animation-delay: 3.78525s;
-    -moz-animation-delay: 3.78525s;
-    animation-delay: 3.78525s; }
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-delay: 1.85546s;
+    -moz-animation-delay: 1.85546s;
+    animation-delay: 1.85546s; }
     .cssanimations .introduction .map-points .floating-risks .risk-1 {
       opacity: 0;
       /* make things invisible upon start */
@@ -9964,9 +9964,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 2.4s;
-      -moz-animation-delay: 2.4s;
-      animation-delay: 2.4s; }
+      -webkit-animation-delay: 1.589s;
+      -moz-animation-delay: 1.589s;
+      animation-delay: 1.589s; }
     .cssanimations .introduction .map-points .floating-risks .risk-2 {
       opacity: 0;
       /* make things invisible upon start */
@@ -9981,9 +9981,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 2.72s;
-      -moz-animation-delay: 2.72s;
-      animation-delay: 2.72s; }
+      -webkit-animation-delay: 1.6723s;
+      -moz-animation-delay: 1.6723s;
+      animation-delay: 1.6723s; }
     .cssanimations .introduction .map-points .floating-risks .risk-3 {
       opacity: 0;
       /* make things invisible upon start */
@@ -9998,9 +9998,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 2.976s;
-      -moz-animation-delay: 2.976s;
-      animation-delay: 2.976s; }
+      -webkit-animation-delay: 1.73061s;
+      -moz-animation-delay: 1.73061s;
+      animation-delay: 1.73061s; }
     .cssanimations .introduction .map-points .floating-risks .risk-4 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10015,9 +10015,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.1808s;
-      -moz-animation-delay: 3.1808s;
-      animation-delay: 3.1808s; }
+      -webkit-animation-delay: 1.77143s;
+      -moz-animation-delay: 1.77143s;
+      animation-delay: 1.77143s; }
     .cssanimations .introduction .map-points .floating-risks .risk-5 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10032,9 +10032,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.1808s;
-      -moz-animation-delay: 3.1808s;
-      animation-delay: 3.1808s; }
+      -webkit-animation-delay: 1.77143s;
+      -moz-animation-delay: 1.77143s;
+      animation-delay: 1.77143s; }
   .cssanimations .introduction .map-points .floating-warnings li {
     opacity: 0; }
     .cssanimations .introduction .map-points .floating-warnings li.warning-1 {
@@ -10051,9 +10051,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.34464s;
-      -moz-animation-delay: 3.34464s;
-      animation-delay: 3.34464s; }
+      -webkit-animation-delay: 1.8s;
+      -moz-animation-delay: 1.8s;
+      animation-delay: 1.8s; }
     .cssanimations .introduction .map-points .floating-warnings li.warning-2 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10068,9 +10068,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.47571s;
-      -moz-animation-delay: 3.47571s;
-      animation-delay: 3.47571s; }
+      -webkit-animation-delay: 1.82s;
+      -moz-animation-delay: 1.82s;
+      animation-delay: 1.82s; }
     .cssanimations .introduction .map-points .floating-warnings li.warning-3 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10085,9 +10085,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.58057s;
-      -moz-animation-delay: 3.58057s;
-      animation-delay: 3.58057s; }
+      -webkit-animation-delay: 1.834s;
+      -moz-animation-delay: 1.834s;
+      animation-delay: 1.834s; }
     .cssanimations .introduction .map-points .floating-warnings li.warning-4 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10102,9 +10102,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.66446s;
-      -moz-animation-delay: 3.66446s;
-      animation-delay: 3.66446s; }
+      -webkit-animation-delay: 1.8438s;
+      -moz-animation-delay: 1.8438s;
+      animation-delay: 1.8438s; }
     .cssanimations .introduction .map-points .floating-warnings li.warning-5 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10119,9 +10119,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 3.73156s;
-      -moz-animation-delay: 3.73156s;
-      animation-delay: 3.73156s; }
+      -webkit-animation-delay: 1.85066s;
+      -moz-animation-delay: 1.85066s;
+      animation-delay: 1.85066s; }
   .cssanimations .introduction .map-points .chain-1 li {
     opacity: 0; }
     .cssanimations .introduction .map-points .chain-1 li.risk-1 {
@@ -10158,9 +10158,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 6.78525s;
-      -moz-animation-delay: 6.78525s;
-      animation-delay: 6.78525s; }
+      -webkit-animation-delay: 3.35546s;
+      -moz-animation-delay: 3.35546s;
+      animation-delay: 3.35546s; }
   @-webkit-keyframes chain1line1 {
     from {
       -webkit-transform: scale(0) rotate(16.20334deg);
@@ -10199,9 +10199,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 7.53525s;
-      -moz-animation-delay: 7.53525s;
-      animation-delay: 7.53525s; }
+      -webkit-animation-delay: 4.10546s;
+      -moz-animation-delay: 4.10546s;
+      animation-delay: 4.10546s; }
   @-webkit-keyframes chain1line2 {
     from {
       -webkit-transform: scale(0) rotate(10.2214deg);
@@ -10240,9 +10240,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 8.28525s;
-      -moz-animation-delay: 8.28525s;
-      animation-delay: 8.28525s; }
+      -webkit-animation-delay: 4.85546s;
+      -moz-animation-delay: 4.85546s;
+      animation-delay: 4.85546s; }
   @-webkit-keyframes chain1line3 {
     from {
       -webkit-transform: scale(0) rotate(50.12616deg);
@@ -10281,9 +10281,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 9.03525s;
-      -moz-animation-delay: 9.03525s;
-      animation-delay: 9.03525s; }
+      -webkit-animation-delay: 5.60546s;
+      -moz-animation-delay: 5.60546s;
+      animation-delay: 5.60546s; }
   @-webkit-keyframes chain1line4 {
     from {
       -webkit-transform: scale(0) rotate(30.7399deg);
@@ -10319,9 +10319,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 7.53525s;
-      -moz-animation-delay: 7.53525s;
-      animation-delay: 7.53525s; }
+      -webkit-animation-delay: 4.10546s;
+      -moz-animation-delay: 4.10546s;
+      animation-delay: 4.10546s; }
     .cssanimations .introduction .map-points .chain-1 li.point-2 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10336,9 +10336,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 8.28525s;
-      -moz-animation-delay: 8.28525s;
-      animation-delay: 8.28525s; }
+      -webkit-animation-delay: 4.85546s;
+      -moz-animation-delay: 4.85546s;
+      animation-delay: 4.85546s; }
     .cssanimations .introduction .map-points .chain-1 li.point-3 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10353,9 +10353,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 9.03525s;
-      -moz-animation-delay: 9.03525s;
-      animation-delay: 9.03525s; }
+      -webkit-animation-delay: 5.60546s;
+      -moz-animation-delay: 5.60546s;
+      animation-delay: 5.60546s; }
   .cssanimations .introduction .map-points .chain-2 li {
     opacity: 0; }
     .cssanimations .introduction .map-points .chain-2 li.risk-1 {
@@ -10372,9 +10372,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 1.5s;
-      -moz-animation-delay: 1.5s;
-      animation-delay: 1.5s; }
+      -webkit-animation-delay: 1.3s;
+      -moz-animation-delay: 1.3s;
+      animation-delay: 1.3s; }
     .cssanimations .introduction .map-points .chain-2 li.line-1 {
       -webkit-transform: scale(0) rotate(-29.81311deg);
       -moz-transform: scale(0) rotate(-29.81311deg);
@@ -10392,9 +10392,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 9.53525s;
-      -moz-animation-delay: 9.53525s;
-      animation-delay: 9.53525s; }
+      -webkit-animation-delay: 6.10546s;
+      -moz-animation-delay: 6.10546s;
+      animation-delay: 6.10546s; }
   @-webkit-keyframes chain2line1 {
     from {
       -webkit-transform: scale(0) rotate(-29.81311deg);
@@ -10433,9 +10433,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 10.28525s;
-      -moz-animation-delay: 10.28525s;
-      animation-delay: 10.28525s; }
+      -webkit-animation-delay: 6.85546s;
+      -moz-animation-delay: 6.85546s;
+      animation-delay: 6.85546s; }
   @-webkit-keyframes chain2line2 {
     from {
       -webkit-transform: scale(0) rotate(16.53138deg);
@@ -10474,9 +10474,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 11.03525s;
-      -moz-animation-delay: 11.03525s;
-      animation-delay: 11.03525s; }
+      -webkit-animation-delay: 7.60546s;
+      -moz-animation-delay: 7.60546s;
+      animation-delay: 7.60546s; }
   @-webkit-keyframes chain2line3 {
     from {
       -webkit-transform: scale(0) rotate(45.20762deg);
@@ -10512,9 +10512,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 9.53525s;
-      -moz-animation-delay: 9.53525s;
-      animation-delay: 9.53525s; }
+      -webkit-animation-delay: 6.10546s;
+      -moz-animation-delay: 6.10546s;
+      animation-delay: 6.10546s; }
     .cssanimations .introduction .map-points .chain-2 li.point-2 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10529,9 +10529,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 11.03525s;
-      -moz-animation-delay: 11.03525s;
-      animation-delay: 11.03525s; }
+      -webkit-animation-delay: 7.60546s;
+      -moz-animation-delay: 7.60546s;
+      animation-delay: 7.60546s; }
   .cssanimations .introduction .map-points .chain-3 li {
     opacity: 0; }
     .cssanimations .introduction .map-points .chain-3 li.risk-1 {
@@ -10548,9 +10548,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 2s;
-      -moz-animation-delay: 2s;
-      animation-delay: 2s; }
+      -webkit-animation-delay: 1.47s;
+      -moz-animation-delay: 1.47s;
+      animation-delay: 1.47s; }
     .cssanimations .introduction .map-points .chain-3 li.line-1 {
       -webkit-transform: scale(0) rotate(-8.51739deg);
       -moz-transform: scale(0) rotate(-8.51739deg);
@@ -10568,9 +10568,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 10.78525s;
-      -moz-animation-delay: 10.78525s;
-      animation-delay: 10.78525s; }
+      -webkit-animation-delay: 7.35546s;
+      -moz-animation-delay: 7.35546s;
+      animation-delay: 7.35546s; }
   @-webkit-keyframes chain3line1 {
     from {
       -webkit-transform: scale(0) rotate(-8.51739deg);
@@ -10609,9 +10609,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 11.53525s;
-      -moz-animation-delay: 11.53525s;
-      animation-delay: 11.53525s; }
+      -webkit-animation-delay: 8.10546s;
+      -moz-animation-delay: 8.10546s;
+      animation-delay: 8.10546s; }
   @-webkit-keyframes chain3line2 {
     from {
       -webkit-transform: scale(0) rotate(24.33524deg);
@@ -10650,9 +10650,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 12.28525s;
-      -moz-animation-delay: 12.28525s;
-      animation-delay: 12.28525s; }
+      -webkit-animation-delay: 8.85546s;
+      -moz-animation-delay: 8.85546s;
+      animation-delay: 8.85546s; }
   @-webkit-keyframes chain3line3 {
     from {
       -webkit-transform: scale(0) rotate(-82.5605deg);
@@ -10688,9 +10688,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 10.78525s;
-      -moz-animation-delay: 10.78525s;
-      animation-delay: 10.78525s; }
+      -webkit-animation-delay: 7.35546s;
+      -moz-animation-delay: 7.35546s;
+      animation-delay: 7.35546s; }
     .cssanimations .introduction .map-points .chain-3 li.point-2 {
       opacity: 0;
       /* make things invisible upon start */
@@ -10705,9 +10705,9 @@ a.arrows-down, a:visited.arrows-down {
       -webkit-animation-duration: 0.75s;
       -moz-animation-duration: 0.75s;
       animation-duration: 0.75s;
-      -webkit-animation-delay: 12.28525s;
-      -moz-animation-delay: 12.28525s;
-      animation-delay: 12.28525s; }
+      -webkit-animation-delay: 8.85546s;
+      -moz-animation-delay: 8.85546s;
+      animation-delay: 8.85546s; }
   .cssanimations .introduction .map-points:before {
     opacity: 0;
     opacity: 0;
@@ -10723,9 +10723,9 @@ a.arrows-down, a:visited.arrows-down {
     -webkit-animation-duration: 1.5s;
     -moz-animation-duration: 1.5s;
     animation-duration: 1.5s;
-    -webkit-animation-delay: 3.66446s;
-    -moz-animation-delay: 3.66446s;
-    animation-delay: 3.66446s; }
+    -webkit-animation-delay: 1.8438s;
+    -moz-animation-delay: 1.8438s;
+    animation-delay: 1.8438s; }
   .cssanimations .introduction .logo-holder {
     opacity: 0;
     opacity: 0;
@@ -10738,12 +10738,12 @@ a.arrows-down, a:visited.arrows-down {
     /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
     -moz-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
-    -webkit-animation-duration: 3s;
-    -moz-animation-duration: 3s;
-    animation-duration: 3s;
-    -webkit-animation-delay: 3.78525s;
-    -moz-animation-delay: 3.78525s;
-    animation-delay: 3.78525s; }
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-delay: 1.85546s;
+    -moz-animation-delay: 1.85546s;
+    animation-delay: 1.85546s; }
   .cssanimations .introduction .floating-risks:before {
     opacity: 0;
     opacity: 0;
@@ -10756,39 +10756,39 @@ a.arrows-down, a:visited.arrows-down {
     /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
     -moz-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
-    -webkit-animation-duration: 3s;
-    -moz-animation-duration: 3s;
-    animation-duration: 3s;
-    -webkit-animation-delay: 3.78525s;
-    -moz-animation-delay: 3.78525s;
-    animation-delay: 3.78525s; }
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-delay: 1.85546s;
+    -moz-animation-delay: 1.85546s;
+    animation-delay: 1.85546s; }
   .cssanimations .introduction .banner .strap-holder {
     animation-name: slidedown;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 13.53525s;
-    -moz-animation-delay: 13.53525s;
-    animation-delay: 13.53525s; }
+    -webkit-animation-delay: 10.10546s;
+    -moz-animation-delay: 10.10546s;
+    animation-delay: 10.10546s; }
   .cssanimations .introduction .banner .button-holder {
     animation-name: slidedown;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 14.28525s;
-    -moz-animation-delay: 14.28525s;
-    animation-delay: 14.28525s; }
+    -webkit-animation-delay: 10.85546s;
+    -moz-animation-delay: 10.85546s;
+    animation-delay: 10.85546s; }
   .cssanimations .introduction .next-arrow a {
     animation-name: slidedown;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 15.03525s;
-    -moz-animation-delay: 15.03525s;
-    animation-delay: 15.03525s; } }
+    -webkit-animation-delay: 11.60546s;
+    -moz-animation-delay: 11.60546s;
+    animation-delay: 11.60546s; } }
 .features-intro {
   text-align: center;
   clear: both;
