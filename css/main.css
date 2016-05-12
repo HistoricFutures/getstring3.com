@@ -10768,27 +10768,27 @@ a.arrows-down, a:visited.arrows-down {
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 10.10546s;
-    -moz-animation-delay: 10.10546s;
-    animation-delay: 10.10546s; }
+    -webkit-animation-delay: 3.35546s;
+    -moz-animation-delay: 3.35546s;
+    animation-delay: 3.35546s; }
   .cssanimations .introduction .banner .button-holder {
     animation-name: slidedown;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 10.85546s;
-    -moz-animation-delay: 10.85546s;
-    animation-delay: 10.85546s; }
+    -webkit-animation-delay: 4.10546s;
+    -moz-animation-delay: 4.10546s;
+    animation-delay: 4.10546s; }
   .cssanimations .introduction .next-arrow a {
     animation-name: slidedown;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
     opacity: 0;
     animation-fill-mode: forwards;
-    -webkit-animation-delay: 11.60546s;
-    -moz-animation-delay: 11.60546s;
-    animation-delay: 11.60546s; } }
+    -webkit-animation-delay: 4.85546s;
+    -moz-animation-delay: 4.85546s;
+    animation-delay: 4.85546s; } }
 .features-intro {
   text-align: center;
   clear: both;
