@@ -38,17 +38,21 @@ $( document ).ready(function() {
 
       function hasScrolled(object){
         var currentScroll = $(object).scrollTop();
+
          if ($(".header").hasClass("open")){
 
          } else {
            if (currentScroll > previousScroll){
+             if (currentScroll > 100){
                 $('.header').fadeOut();
+                };
 
            } else {
                 $('.header').fadeIn();
                 $('.header').addClass('fixed');
            };
          };
+
          previousScroll = currentScroll;
       };
 
