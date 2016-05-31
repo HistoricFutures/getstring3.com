@@ -4986,6 +4986,8 @@ legend {
     transition: width 1s ease; }
     .header.open .menu-toggle .fa:before {
       content: "\f00d"; }
+    .header.open .exposed {
+      display: none; }
 
 .side-nav {
   position: fixed;
@@ -5040,7 +5042,7 @@ legend {
   -o-transition: right 1s ease;
   transition: right 1s ease; }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 816px) {
   .header .exposed .secondary {
     display: none; } }
 @media only screen and (max-width: 550px) {
@@ -10791,30 +10793,29 @@ a.arrows-down, a:visited.arrows-down {
     animation-delay: 4.85546s; } }
 .features-intro {
   text-align: center;
-  clear: both;
   display: block;
   float: left;
-  margin-left: 0;
-  width: 100%;
-  padding-bottom: 5%;
-  margin-bottom: -89.09584px;
-  margin-bottom: -5.56849rem; }
+  margin-left: 17.16667%;
+  margin-right: -100%;
+  width: 65.66667%;
+  padding-top: 67.77282px;
+  padding-top: 4.2358rem;
+  padding-bottom: 67.77282px;
+  padding-bottom: 4.2358rem; }
   .features-intro h1 {
     vertical-align: middle;
     z-index: -1000;
-    position: relative; }
-    .features-intro h1:before {
+    position: relative;
+    /*&:before {
       background: url(/assets/img/S3-logo-mark--medium.png) top left no-repeat;
-      background-size: contain;
-      content: "";
-      width: 177.42408px;
-      width: 11.08901rem;
-      height: 177.42408px;
-      height: 11.08901rem;
-      margin-right: 25.888px;
-      margin-right: 1.618rem;
-      display: inline-block;
-      vertical-align: middle; }
+      background-size:contain;
+      content:"";
+      @include width($a-scale-6);
+      @include height($a-scale-6);
+      @include margin-right($a-scale-2);
+      display:inline-block;
+      vertical-align:middle;
+    }*/ }
 
 .svg .features-intro h1:before {
   background: url(/assets/img/S3-logo-mark.svg) top left no-repeat;
@@ -10825,8 +10826,17 @@ a.arrows-down, a:visited.arrows-down {
 
 @media only screen and (max-width: 767px) {
   .features-intro {
-    padding-bottom: 0;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    clear: both;
+    display: block;
+    float: left;
+    margin-left: 0;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 3%;
+    padding-right: 3%; }
     .features-intro h1 {
       position: relative;
       margin-bottom: 5%; }
