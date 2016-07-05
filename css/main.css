@@ -4530,8 +4530,6 @@ input[type='submit'], [class*=button] a, [class*=button] a:visited, button, [cla
   -webkit-box-shadow: 0 2 0 0 #FFFCF5 inset, 0 1 2 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2 0 0 #FFFCF5 inset, 0 1 2 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 2 0 0 #FFFCF5 inset, 0 1 2 0 rgba(0, 0, 0, 0.1);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
   line-height: 1.618;
   color: #FFFCF5;
   -webkit-transition: all 0.5s ease;
@@ -4639,8 +4637,6 @@ input[type='submit'].button--large {
   -webkit-border-radius: 6px;
   -ms-border-radius: 6px;
   border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
   display: block;
   text-align: center;
   background: transparent;
@@ -9444,21 +9440,29 @@ a.arrows-down, a:visited.arrows-down {
   .use:after {
     right: -100px; } }
 @media only screen and (max-width: 767px) {
-  .use .inner {
-    clear: both;
-    display: block;
-    float: left;
-    margin-left: 0;
-    width: 100%;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    padding-left: 3%;
-    padding-right: 3%;
-    margin-top: 199.60209px;
-    margin-top: 12.47513rem; }
-  .use:before, .use:after {
-    display: none; } }
+  .use {
+    text-align: center; }
+    .use .inner {
+      clear: both;
+      display: block;
+      float: left;
+      margin-left: 0;
+      width: 100%;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding-left: 3%;
+      padding-right: 3%;
+      margin-top: 199.60209px;
+      margin-top: 12.47513rem; }
+      .use .inner .button-holder {
+        display: block;
+        float: left;
+        margin-left: 17.16667%;
+        margin-right: -100%;
+        width: 65.66667%; }
+    .use:before, .use:after {
+      display: none; } }
 .introduction {
   margin-top: -123.36347px;
   margin-top: -7.71022rem;
