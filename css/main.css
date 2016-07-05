@@ -11393,12 +11393,13 @@ a.arrows-down, a:visited.arrows-down {
   float: left;
   margin-left: 0;
   width: 100%;
-  background: url(/assets/img/simple-introduction.jpg) bottom right no-repeat;
+  background: url(/assets/img/simple-introduction.jpg) bottom center no-repeat;
   background-size: cover;
-  height: 100vh;
+  text-align: center;
   position: relative;
   margin-top: -123.36347px;
-  margin-top: -7.71022rem; }
+  margin-top: -7.71022rem;
+  color: #FFFCF5; }
   .simple-introduction .next-arrow {
     position: absolute;
     bottom: 2vh;
@@ -11411,16 +11412,16 @@ a.arrows-down, a:visited.arrows-down {
 .simple-introduction__inner {
   display: block;
   float: left;
-  margin-left: 17.16667%;
+  margin-left: 8.58333%;
   margin-right: -100%;
-  width: 57.08333%;
+  width: 82.83333%;
   position: absolute;
   top: 25vh; }
 
 @media only screen and (max-width: 767px) {
   .simple-introduction {
     text-align: center;
-    background-size: contain; }
+    background-size: cover; }
     .simple-introduction .next-arrow {
       clear: both;
       display: block;
@@ -11461,6 +11462,22 @@ a.arrows-down, a:visited.arrows-down {
     padding-top: 7.71022rem;
     padding-bottom: 123.36347px;
     padding-bottom: 7.71022rem; } }
+.simple-introduction {
+  height: auto; }
+  .simple-introduction .next-arrow {
+    position: relative;
+    bottom: auto;
+    clear: left; }
+
+.simple-introduction__inner {
+  position: relative;
+  top: auto;
+  clear: left;
+  padding-top: 123.36347px;
+  padding-top: 7.71022rem;
+  padding-bottom: 47.12263px;
+  padding-bottom: 2.94516rem; }
+
 .about--new {
   clear: both;
   display: block;
