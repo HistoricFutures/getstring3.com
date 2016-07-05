@@ -5010,7 +5010,10 @@ legend {
   background: transparent;
   color: #FFFCF5;
   border: none;
-  position: absolute; }
+  position: absolute;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none; }
   .homepage .header a, .homepage .header a:visited {
     color: #FFFCF5; }
     .homepage .header a:hover, .homepage .header a:focus, .homepage .header a:visited:hover, .homepage .header a:visited:focus {
@@ -11417,8 +11420,8 @@ a.arrows-down, a:visited.arrows-down {
   position: relative;
   margin-top: -123.36347px;
   margin-top: -7.71022rem;
-  padding-top: 47.12263px;
-  padding-top: 2.94516rem;
+  padding-top: 76.24442px;
+  padding-top: 4.76528rem;
   color: #FFFCF5; }
   .simple-introduction .next-arrow {
     position: absolute;
