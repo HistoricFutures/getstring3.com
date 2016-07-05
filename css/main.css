@@ -4286,16 +4286,16 @@ a, a:visited {
   background: url(/assets/img/S3-logo-mark--large.png) center center no-repeat; }
 
 a.s3-logo-mark, a:visited.s3-logo-mark {
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none; }
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
   a.s3-logo-mark:hover, a.s3-logo-mark:focus, a:visited.s3-logo-mark:hover, a:visited.s3-logo-mark:focus {
     background: url(/assets/img/S3-logo-mark--hover.png) center center no-repeat;
-    -webkit-transition: none;
-    -moz-transition: none;
-    -o-transition: none;
-    transition: none; }
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease; }
 
 .s3-logo {
   background: url(/assets/img/S3-logo.png) center center no-repeat;
@@ -5005,6 +5005,20 @@ legend {
       content: "\f00d"; }
     .header.open .exposed {
       display: none; }
+
+.homepage .header {
+  background: transparent;
+  color: #FFFCF5;
+  border: none;
+  position: absolute; }
+  .homepage .header a, .homepage .header a:visited {
+    color: #FFFCF5; }
+    .homepage .header a:hover, .homepage .header a:focus, .homepage .header a:visited:hover, .homepage .header a:visited:focus {
+      color: #87b8b5; }
+  .homepage .header .commit a, .homepage .header .commit a:visited {
+    color: #1a1919; }
+    .homepage .header .commit a:hover, .homepage .header .commit a:focus, .homepage .header .commit a:visited:hover, .homepage .header .commit a:visited:focus {
+      color: #FFFCF5; }
 
 .side-nav {
   position: fixed;
@@ -11397,12 +11411,14 @@ a.arrows-down, a:visited.arrows-down {
   float: left;
   margin-left: 0;
   width: 100%;
-  background: url(/assets/img/simple-introduction.jpg) bottom center no-repeat;
+  background: url(/assets/img/simple-introduction.jpg) center center no-repeat;
   background-size: cover;
   text-align: center;
   position: relative;
   margin-top: -123.36347px;
   margin-top: -7.71022rem;
+  padding-top: 47.12263px;
+  padding-top: 2.94516rem;
   color: #FFFCF5; }
   .simple-introduction .next-arrow {
     position: absolute;

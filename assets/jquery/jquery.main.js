@@ -49,7 +49,7 @@ $( document ).ready(function() {
 
            } else {
                 $('.header').fadeIn();
-                $('.header').addClass('fixed');
+                //$('.header').addClass('fixed');
            };
          };
 
