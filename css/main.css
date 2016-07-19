@@ -5165,7 +5165,9 @@ legend {
   border: 1px solid #e6e3dd;
   border-left: 0;
   border-right: 0;
-  background: #FFFCF5; }
+  background: #FFFCF5;
+  position: relative;
+  z-index: 2; }
   .footer .primary {
     display: block;
     float: left;
@@ -5387,7 +5389,7 @@ legend {
   padding-bottom: 18px;
   padding-bottom: 1.125rem;
   position: relative;
-  z-index: 500;
+  z-index: 1;
   background: #FFFCF5;
   padding-top: 29.124px;
   padding-top: 1.82025rem; }
