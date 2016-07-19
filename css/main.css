@@ -5387,7 +5387,7 @@ legend {
   padding-bottom: 18px;
   padding-bottom: 1.125rem;
   position: relative;
-  z-index: -1;
+  z-index: 500;
   background: #FFFCF5;
   padding-top: 29.124px;
   padding-top: 1.82025rem; }
