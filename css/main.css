@@ -4178,6 +4178,21 @@ li ol.decimals > li {
 li ol.decimals > li:before {
   content: counters(item,".") " "; }
 
+.checks li {
+  list-style: none;
+  position: relative; }
+  .checks li:before {
+    content: "\f00c";
+    display: block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    left: -30px;
+    top: 4px; }
+
 /* ====================================================
 links.scss
 ==================================================== */
@@ -11562,3 +11577,104 @@ a.arrows-down, a:visited.arrows-down {
     box-sizing: border-box;
     padding-left: 3%;
     padding-right: 3%; } }
+.projects-brands {
+  background: #fdb731;
+  position: relative;
+  min-height: 440px;
+  margin-bottom: 47.12263px;
+  margin-bottom: 2.94516rem;
+  margin-top: 47.12263px;
+  margin-top: 2.94516rem; }
+
+.projects-brands__intro {
+  padding-top: 29.124px;
+  padding-top: 1.82025rem;
+  clear: both;
+  display: block;
+  float: left;
+  margin-left: 0;
+  width: 100%; }
+
+.projects-brands__image {
+  width: 31.33333%;
+  position: absolute;
+  bottom: 0;
+  left: 5%; }
+  .projects-brands__image img {
+    display: table;
+    max-height: 400px;
+    max-width: 533.33333px; }
+
+.projects-brands__text {
+  display: block;
+  float: left;
+  margin-left: 42.91667%;
+  margin-right: -100%;
+  width: 48.5%;
+  clear: left; }
+
+.project {
+  clear: left;
+  clear: both;
+  display: block;
+  float: left;
+  margin-left: 0;
+  width: 100%;
+  margin-top: 47.12263px;
+  margin-top: 2.94516rem;
+  margin-bottom: 47.12263px;
+  margin-bottom: 2.94516rem; }
+
+.project__image {
+  display: block;
+  float: left;
+  margin-left: 0;
+  margin-right: -100%;
+  width: 34.64467%;
+  clear: left; }
+  .project__image a, .project__image a:visited {
+    display: block;
+    transition: transform 1s ease;
+    transform: rotate(0deg); }
+    .project__image a:hover, .project__image a:focus, .project__image a:visited:hover, .project__image a:visited:focus {
+      transform: rotate(360deg);
+      transition: transform 1s ease; }
+
+.project__text {
+  display: block;
+  float: left;
+  margin-left: 39.2132%;
+  margin-right: -100%;
+  width: 60.7868%; }
+
+@media only screen and (max-width: 767px) {
+  .projects-brands {
+    padding-bottom: 60%; }
+
+  .projects-brands__image {
+    width: 100%; }
+
+  .projects-brands__text {
+    clear: both;
+    display: block;
+    float: left;
+    margin-left: 0;
+    width: 100%;
+    clear: left; }
+
+  .project__image {
+    display: block;
+    float: left;
+    margin-left: 0;
+    margin-right: -100%;
+    width: 48.5%;
+    margin-bottom: 18px;
+    margin-bottom: 1.125rem; }
+
+  .project__text {
+    clear: both;
+    display: block;
+    float: left;
+    margin-left: 0;
+    width: 100%;
+    clear: left; } }
