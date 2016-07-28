@@ -11606,6 +11606,9 @@ a.arrows-down, a:visited.arrows-down {
     max-height: 500px;
     max-width: 666.66667px; }
 
+.oldie .projects-brands__image img {
+  display: block; }
+
 .projects-brands__text {
   display: block;
   float: left;
