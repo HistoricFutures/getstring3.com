@@ -11582,7 +11582,7 @@ a.arrows-down, a:visited.arrows-down {
 .projects-brands {
   background: #fdb731;
   position: relative;
-  min-height: 440px;
+  min-height: 540px;
   margin-bottom: 47.12263px;
   margin-bottom: 2.94516rem;
   margin-top: 47.12263px;
@@ -11598,14 +11598,14 @@ a.arrows-down, a:visited.arrows-down {
   width: 100%; }
 
 .projects-brands__image {
-  width: 31.33333%;
+  width: 40%;
   position: absolute;
   bottom: 0;
-  left: 5%; }
+  left: 2%; }
   .projects-brands__image img {
     display: table;
-    max-height: 400px;
-    max-width: 533.33333px; }
+    max-height: 500px;
+    max-width: 666.66667px; }
 
 .projects-brands__text {
   display: block;
@@ -11655,6 +11655,9 @@ a.arrows-down, a:visited.arrows-down {
 
   .projects-brands__image {
     width: 100%; }
+    .projects-brands__image img {
+      max-height: 100%;
+      max-width: 100%; }
 
   .projects-brands__text {
     clear: both;
@@ -11662,7 +11665,12 @@ a.arrows-down, a:visited.arrows-down {
     float: left;
     margin-left: 0;
     width: 100%;
-    clear: left; }
+    clear: left;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 3%;
+    padding-right: 3%; }
 
   .project__image {
     display: block;
