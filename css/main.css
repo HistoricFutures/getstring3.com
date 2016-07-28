@@ -11636,10 +11636,10 @@ a.arrows-down, a:visited.arrows-down {
   clear: left; }
   .project__image a, .project__image a:visited {
     display: block;
-    transition: transform 1s ease;
+    transition: transform 0.5s ease;
     transform: rotate(0deg); }
     .project__image a:hover, .project__image a:focus, .project__image a:visited:hover, .project__image a:visited:focus {
-      transform: rotate(2deg);
+      transform: rotate(1deg);
       transition: transform 0.3s ease; }
 
 .project__text {
