@@ -11582,7 +11582,6 @@ a.arrows-down, a:visited.arrows-down {
 .projects-brands {
   background: #fdb731;
   position: relative;
-  min-height: 540px;
   margin-bottom: 47.12263px;
   margin-bottom: 2.94516rem;
   margin-top: 47.12263px;
@@ -11649,6 +11648,12 @@ a.arrows-down, a:visited.arrows-down {
   margin-right: -100%;
   width: 60.7868%; }
 
+@media only screen and (min-width: 1340px) {
+  .projects-brands {
+    min-height: 490px; } }
+@media only screen and (min-width: 1580px) {
+  .projects-brands {
+    min-height: 540px; } }
 @media only screen and (max-width: 767px) {
   .projects-brands {
     padding-bottom: 60%; }
