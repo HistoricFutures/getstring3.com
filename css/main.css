@@ -4178,20 +4178,22 @@ li ol.decimals > li {
 li ol.decimals > li:before {
   content: counters(item,".") " "; }
 
-.checks li {
-  list-style: none;
-  position: relative; }
-  .checks li:before {
-    content: "\f00c";
-    display: block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    position: absolute;
-    left: -30px;
-    top: 4px; }
+.checks {
+  padding-left: 30px; }
+  .checks li {
+    list-style: none;
+    position: relative; }
+    .checks li:before {
+      content: "\f00c";
+      display: block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: absolute;
+      left: -30px;
+      top: 4px; }
 
 /* ====================================================
 links.scss
@@ -11637,8 +11639,8 @@ a.arrows-down, a:visited.arrows-down {
     transition: transform 1s ease;
     transform: rotate(0deg); }
     .project__image a:hover, .project__image a:focus, .project__image a:visited:hover, .project__image a:visited:focus {
-      transform: rotate(360deg);
-      transition: transform 1s ease; }
+      transform: rotate(2deg);
+      transition: transform 0.3s ease; }
 
 .project__text {
   display: block;
