@@ -210,10 +210,17 @@ United Kingdom <a href="tel:00443302210088" title="Dial in">+44 (0) 330 221 0088
 
       <script src="/assets/jquery/jquery.main.js"></script>
       <script src="/assets/jquery/vendor/jquery.matchHeight-min.js" type="text/javascript"></script>
+      <script src="/assets/jquery/vendor/jquery.fitvids.js" type="text/javascript"></script>
       <script type="text/javascript">
       $(function() {
           $('.equalheights').matchHeight();
       });
+      $(document).ready(function(){
+    // Target your .container, .wrapper, .post, etc.
+
+    $(".video").fitVids();
+    
+  });
       </script>
       <!-- Google Analytics -->
       <script>

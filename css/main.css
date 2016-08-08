@@ -4046,7 +4046,7 @@ h2, .ash2 {
   margin-bottom: 1.51688rem;
   font-weight: 300; }
 
-h3 {
+h3, .ash3 {
   font-size: 24.27px;
   font-size: 1.51688rem;
   line-height: 1.1;
@@ -11696,3 +11696,14 @@ a.arrows-down, a:visited.arrows-down {
     margin-left: 0;
     width: 100%;
     clear: left; } }
+.about-checklist {
+  background: #0e7375;
+  margin-bottom: 47.12263px;
+  margin-bottom: 2.94516rem;
+  margin-top: 18px;
+  margin-top: 1.125rem;
+  padding-top: 47.12263px;
+  padding-top: 2.94516rem;
+  padding-bottom: 29.124px;
+  padding-bottom: 1.82025rem;
+  color: #FFFCF5; }
