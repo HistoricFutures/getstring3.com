@@ -3,9 +3,8 @@ $( document ).ready(function() {
         $( ".main-nav" ).clone().insertAfter( ".header" ).addClass("side-nav");
 
         $( ".menu-toggle" ).click(function() {
-
-          $( ".header" ).toggleClass( "open" );
           $( ".side-nav" ).toggleClass( "open" );
+          $( ".header" ).toggleClass( "open" );
           return false;
 
         });
