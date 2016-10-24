@@ -11405,6 +11405,10 @@ a.arrows-down, a:visited.arrows-down {
   background: url(/assets/img/risk.jpeg) top left no-repeat;
   background-size: cover; }
 
+.world-stars {
+  background: url(/assets/img/world-stars.jpg) center center no-repeat;
+  background-size: cover; }
+
 .webinar-inner {
   display: block;
   float: left;
