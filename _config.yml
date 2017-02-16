@@ -1,0 +1,26 @@
+name: String3
+markdown: redcarpet
+highlighter: pygments
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      example1: "Textiles"
+      example1title: "Textiles"
+      example2: "Forestry"
+      example2title: "Forestry"
+      example3: "Mining"
+      example3title: "Mining and minerals"
+      email: "hello@getstring3.com"
+collections:
+  why:
+    output: false
+  examples:
+    output: true
+  faqs:
+    output: false
+  materials:
+    output: false
+sass:
+    sass_dir: _sass

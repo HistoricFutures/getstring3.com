@@ -1,0 +1,329 @@
+
+
+// design for individual issue landing pages
+a.arrows-down--with-text--on-dark, a:visited.arrows-down--with-text--on-dark {
+  background:url(#{$img-path}arrows-down--white.png) center bottom no-repeat;
+  background-size:189px auto;
+  display:block;
+  border:0;
+  padding-bottom:81px;
+  color:$off-white;
+  @include font-size($size-small);
+  z-index:$middle;
+  position:relative;
+  &:hover {
+    background:url(#{$img-path}arrows-down--pink.png) center bottom no-repeat;
+    background-size:189px auto;
+    @include transition($link-transition);
+    color:$link-color-hover;
+  }
+}
+a.arrows-down, a:visited.arrows-down {
+  background:url(#{$img-path}arrows-down--turquoise.png) center bottom no-repeat;
+  background-size:189px auto;
+  display:block;
+  border:0;
+  text-indent:-999em;
+  overflow:hidden;
+  height:0;
+  padding-bottom:91px;
+  position:relative;
+  @include transition($link-transition);
+  z-index:$middle;
+  &:hover {
+    background:url(#{$img-path}arrows-down--pink.png) center bottom no-repeat;
+    background-size:189px auto;
+    @include transition($link-transition);
+  }
+
+}
+
+/// magnifying glass
+
+.glass { // magnifying glass
+  background:url(#{$img-path}deforestation-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.msa {
+  background:url(#{$img-path}msa-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.conflict-minerals {
+  background:url(#{$img-path}conflict-minerals-glass.png) center top no-repeat;
+  background-size:contain;
+}
+
+.glass.large {
+  display:block;
+  width:319px;
+  padding-bottom:400px;
+  position:absolute;
+  right:2%;
+  @include top($b-scale-6);
+  z-index:$middle;
+}
+
+.glass.small {
+  position:relative;
+}
+
+
+.issue-top-section {
+  background: $grey40;
+  @include margin-top(-1 * $a-scale-5);
+  @include padding-top($a-scale-5);
+  @include padding-bottom($a-scale-3);
+  color:$off-white;
+  @include gs-span(l,all);
+  .inner {
+    background:$grey90;
+    background: rgba($grey90, .8);
+    border:1px solid $grey90;
+    @include box-shadow(0px 0px 5px 0px rgba(0,0,0,0.4));
+    @include padding-top($a-scale-3);
+    @include padding-bottom($a-scale-2);
+    padding-left:10%;
+    padding-right:10%;
+    @include box-sizing();
+    text-align:center;
+    @include margin-bottom($a-scale-3);
+    @include gs-span(l,3,10);
+    position:relative;
+    .arrows-down--with-text--on-dark {
+      @include margin-bottom(-1 * $a-scale-4);
+    }
+
+    .strap {
+      @include padding-left($a-scale-4);
+      @include padding-right($a-scale-4);
+    }
+
+
+  }
+  &.deforestation {
+    background: url(#{$img-path}deforestation-back.jpg) center center no-repeat;
+    background-size:cover;
+  }
+  &.msa {
+    background: url(#{$img-path}msa-back.jpg) center center no-repeat;
+    background-size:cover;
+    .glass {
+      background:url(#{$img-path}msa-glass.png) center top no-repeat;
+      background-size:contain;
+    }
+  }
+  &.conflict-minerals {
+    background: url(#{$img-path}conflict-minerals-back.jpg) center center no-repeat;
+    background-size:cover;
+    .glass {
+      background:url(#{$img-path}conflict-minerals-glass.png) center top no-repeat;
+      background-size:contain;
+    }
+  }
+}
+
+.issue {
+  background:$grey90;
+  color:$off-white;
+  @include gs-span(l,all);
+  position:relative;
+  @include padding-top($a-scale-3);
+  li {
+    list-style:none;
+    position:relative;
+    &:before {
+      content: "\f054";
+      display: block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position:absolute;
+      @include left(-1 * $a-scale-2);
+      top:4px;
+    }
+  }
+  z-index:1;
+  .arrows-down {
+    @include margin-bottom(-1 * $a-scale-3);
+  }
+  .inner {
+    @include gs-span(l,3,10);
+  }
+  &:before { // diagonal http://jsfiddle.net/jme11/D9M2L/
+    position: absolute;
+    content:'';
+    -webkit-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    -webkit-transform-origin: 3% 0;
+    transform-origin: 3% 0;
+    top: 0;
+    left: -25%;
+    z-index: -1;
+    width: 150%;
+    height: 75%;
+    background: inherit;
+  }
+}
+
+.solution {
+  @include gs-span(l,all);
+  @include padding-bottom($a-scale-3);
+  position:relative;
+
+
+  &:before, &:after { // decorative logos
+    content:"";
+    display:block;
+    background:url(#{$img-path}s3-decorative.png) center top no-repeat;
+    width:300px;
+    padding-bottom:300px;
+    position:absolute;
+    left:-150px;
+    top:-60px;
+    background-size:contain;
+    z-index:$middle;
+  }
+  &:after {
+    right:-150px;
+    bottom:-60px;
+    top:auto;
+    left:auto;
+  }
+  .inner {
+    @include gs-span(l,3,10);
+    .register-button {
+      @include gs-span(l,3,5,(3,10));
+    }
+    .register-text {
+      @include gs-span(l,6,10,(3,10));
+      @include font-size($b-scale-2);
+    }
+  }
+}
+
+
+
+/// larger screens
+@media only screen and (min-width: 1399px) {
+  .issue-top-section, .issue, .solution {
+    .inner {
+      @include gs-span(l,4,9);
+    }
+  }
+  .issue-top-section {
+    @include padding-bottom($a-scale-5);
+  }
+  .issue {
+    padding-top:0;
+  }
+  .glass.large {
+    right:20%;
+  }
+}
+
+/// small medium
+@media only screen and (max-width: 900px) {
+  .issue-top-section .inner {
+    &:after {
+      width:250px;
+      padding-bottom:300px;
+      right:-90px;
+      top:auto;
+      bottom:-100px;
+    }
+  }
+  .solution {
+    &:before, &:after {
+      width:200px;
+    }
+    &:before {
+      left:-100px;
+    }
+    &:after {
+      right:-100px;
+    }
+  }
+  .glass.large {
+    right:-3%;
+  }
+
+}
+
+
+
+
+/// smaller screens
+@include gs-media(s,max){
+  .issue-top-section, .issue, .solution {
+    @include gs-span(s,all);
+    @include gs-pad(s,padinfull);
+    .inner {
+      @include gs-span(s,all);
+      .register-button {
+        @include gs-span(s,all);
+      }
+      .register-text {
+        @include gs-span(s,all);
+
+      }
+    }
+  }
+  .issue-top-section .inner {
+    padding-left: 10%;
+    padding-right:10%;
+    .strap {
+      padding-left:0;
+      padding-right: 0;
+    }
+    h1 {
+      //@include margin-bottom($b-scale);
+    }
+
+  }
+  .solution {
+    &:before, &:after {
+      display:none;
+    }
+  }
+  .glass.large {
+    display:none;
+  }
+  .glass.small {
+    display:block;
+    width:40%;
+    padding-bottom:40%;
+    margin-left:30%;
+  }
+}
+
+
+//// Animations
+
+.cssanimations {
+  .glass {
+    @include fadein(1s);
+    @include fadeindelay(2s);
+  }
+  .issue-top-section .inner {
+    @include fadein(1s);
+    @include fadeindelay(1s);
+
+    h1 {
+      @include fadein(1s);
+      @include fadeindelay(1.5s);
+    }
+
+    .strap {
+      @include fadein(1s);
+      @include fadeindelay(2.5s);
+    }
+    .arrows-down--with-text--on-dark {
+      @include fadein(1s);
+      @include fadeindelay(3s);
+    }
+  }
+}

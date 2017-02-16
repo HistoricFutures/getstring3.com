@@ -1,0 +1,95 @@
+.s3-logo-mark {
+	background:url(#{$img-path}S3-logo-mark--small.png) center center no-repeat;
+	width:100%;
+	height:0;
+	padding-bottom:100%;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+}
+
+.introduction-old {
+	.s3-logo-mark {
+		background:url(#{$img-path}S3-logo-mark--large.png) center center no-repeat;
+	}
+}
+
+a.s3-logo-mark, a:visited.s3-logo-mark {
+	@include transition($link-transition);
+	&:hover, &:focus {
+		background:url(#{$img-path}S3-logo-mark--hover.png) center center no-repeat;
+
+		@include transition($link-transition );
+	}
+}
+
+.s3-logo {
+	background:url(#{$img-path}S3-logo.png) center center no-repeat;
+	width:100%;
+	height:0;
+	padding-bottom:120%;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+}
+
+a.s3-logo, a:visited.s3-logo {
+	@include transition(none);
+	&:hover, &:focus {
+		background:url(#{$img-path}S3-logo--hover.png) center center no-repeat;
+		@include transition(none);
+	}
+}
+
+.hf-logo {
+	background:url(#{$img-path}hf-logo.png) center center no-repeat;
+	width:100%;
+	height:0;
+	padding-bottom:100%;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+	text-align:left;
+}
+
+.s3-logo-query {
+	background:url(#{$img-path}S3-logo-query.png) center center no-repeat;
+	width:100%;
+	height:0;
+	padding-bottom:85%;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+}
+
+.svg {
+	.s3-logo-mark, .introduction-old .s3-logo-mark {
+		background:url(#{$img-path}S3-logo-mark.svg) center center no-repeat;
+		background-size:contain;
+	}
+	a.s3-logo-mark, a:visited.s3-logo-mark {
+		&:hover, &:focus {
+			background:url(#{$img-path}S3-logo-mark--hover.svg) center center no-repeat;
+			background-size:contain;
+		}
+	}
+	.s3-logo {
+		background:url(#{$img-path}S3-logo.svg) center center no-repeat;
+		background-size:contain;
+	}
+
+	a.s3-logo, a:visited.s3-logo {
+		&:hover, &:focus {
+			background:url(#{$img-path}S3-logo--hover.svg) center center no-repeat;
+			background-size:contain;
+		}
+	}
+	.hf-logo {
+		background:url(#{$img-path}hf-logo.svg) center center no-repeat;
+		background-size:contain;
+	}
+	.s3-logo-query {
+		background:url(#{$img-path}S3-logo-query.svg) center center no-repeat;
+		background-size:contain;
+	}
+}

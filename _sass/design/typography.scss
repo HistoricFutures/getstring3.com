@@ -1,0 +1,209 @@
+/* ====================================================
+typography.scss
+
+
+==================================================== */
+
+/* == Set up bases on body == */
+
+body {
+	font-family:$base-font;
+	font-weight:$base-font-weight;
+	@include font-size($size-p);
+	line-height:$base-line-height;
+	color:$text-color;
+}
+
+/* == Heading styling == */
+// Note margins only included on bottom of elements to keep consistency
+
+h1 {
+	@include font-size($size-h1);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h1);
+	font-weight:$base-font-weight;
+}
+
+h2, .ash2 {
+	@include font-size($size-h2);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h2);
+	font-weight:$base-font-weight;
+}
+
+h3, .ash3 {
+	@include font-size($size-h3);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h3);
+	font-weight:$base-font-weight;
+}
+
+h4, .ash4 {
+	@include font-size($size-h4);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h4);
+	font-weight:$base-font-weight;
+	@extend .uppercase;
+}
+
+/* == Paragraphs == */
+
+p {
+	font-size:inherit;
+	line-height:$base-line-height;
+	@include margin-bottom($margin-p);
+}
+
+p.large {
+	@include font-size($b-scale-2);
+}
+
+p.small {
+	@include font-size($b-scale);
+}
+
+/* == Lists == */
+
+li {
+	@include margin-bottom($margin-li);
+	font-size:inherit;
+	line-height:$base-line-height;
+	list-style-position: outside;
+}
+
+ol, ul {
+	@include margin-bottom($margin-ul);
+	@include padding-left($padding-ul);
+}
+
+/* == Blockquotes == */
+blockquote {
+	@include padding-left($a-scale-2);
+	border-left:6px solid $grey10;
+	display:block;
+	footer p {
+		font-style:italic;
+		@include font-size($b-scale);
+	}
+}
+
+
+abbr[title] {
+	border-bottom:none;
+}
+
+
+::selection {
+	background:lighten($lightturquoise,10%);
+}
+
+
+/* Responsive */
+
+@include gs-media(s,max) {
+	h1 {
+		@include font-size($size-h2);
+	}
+
+	h2 {
+		@include font-size($size-h3);
+	}
+	h3 {
+		@include font-size($size-p);
+	}
+}
+
+/* Additional classes */
+.uppercase {
+	text-transform:uppercase;
+	letter-spacing:$letter-spacing;
+}
+
+.no-uppercase {
+	text-transform:none !important;
+	letter-spacing:normal !important;
+}
+
+//// Article typography
+
+.article {
+	h2 {
+		@include margin-top($a-scale-4);
+		@include margin-bottom($b-scale);
+
+	}
+}
+
+.detail {
+	font-style:italic;
+	@include font-size($size-small);
+}
+
+.subtitle {
+	font-style:italic;
+	@include font-size($b-scale-2);
+	@include margin-top(-1 * $a-scale);
+	@include margin-bottom($a-scale-3);
+}
+
+///// Fix text size in ios safari
+
+
+  body{
+    -webkit-text-size-adjust: none;
+  }
+
+	////////// DECIMALS LIST //////////
+
+	// Source: http://stackoverflow.com/questions/4098195/can-ordered-list-produce-result-that-looks-like-1-1-1-2-1-3-instead-of-just-1 //
+
+	ol.decimals {
+	  list-style-type: none;
+	  counter-reset: item;
+	  margin: 0;
+	  padding: 0;
+	}
+
+	ol.decimals > li {
+	  display: table;
+	  counter-increment: item;
+	  @include margin-top($a-scale-2);
+	}
+
+	ol.decimals > li:before {
+	  content: counters(item, ".") ". ";
+	  display: table-cell;
+	  padding-right: 0.6em;
+	}
+
+	li ol.decimals > li {
+	  margin: 0;
+		@include margin-bottom($a-scale);
+	}
+
+	li ol.decimals > li:before {
+	  content: counters(item, ".") " ";
+	}
+
+
+	/// checks list
+
+	.checks {
+		padding-left:30px;
+		li {
+			list-style: none;
+			position: relative;
+			&:before {
+				content: "\f00c";
+				display: block;
+			  font: normal normal normal 14px/1 FontAwesome;
+			  font-size: inherit;
+			  text-rendering: auto;
+			  -webkit-font-smoothing: antialiased;
+			  -moz-osx-font-smoothing: grayscale;
+				position:absolute;
+				left:-30px;
+				top:4px;
+			}
+		}
+	}

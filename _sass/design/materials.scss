@@ -1,0 +1,63 @@
+.materials {
+	@include gs-span(l,3,10);
+	clear:left;
+
+	@include margin-bottom($a-scale-3);
+	ul {
+		padding:0;
+		li {
+			list-style:none;
+			width:100%;
+			border:1px solid $grey70;
+			float:left;
+			clear:left;
+			overflow:hidden;
+			@include box-shadow-standard();
+			.material-name {
+				@include gs-span(l,3,5,(3,10));
+				display:block;
+				background:$grey70;
+				color:$off-white;
+				@include padding($a-scale);
+				@include box-sizing();
+				text-align:center;
+				clear:left;
+				@include faux-column();
+				@include font-size($b-scale-2);
+				line-height: $a-scale * $base-line-height / $b-scale-2;
+			}
+			.material-information {
+				@include gs-span(l,6,10,(3,10));
+				@include padding($a-scale);
+				@include padding-bottom($a-scale - $b-scale--2);
+				@include box-sizing();
+				display:block;
+				p {
+					@include margin-bottom($b-scale--2);
+				}
+				
+			}
+		}
+	}
+}
+
+.register {
+	border-top: 1px solid $grey10;
+	@include padding-top($a-scale-2);
+}
+
+@include gs-media(s,max){
+	.materials {
+		@include gs-span(s,all);
+		@include gs-pad(s,padinfull);
+		ul li {
+			.material-name {
+				@include gs-span(s,1,2);
+				@include font-size($a-scale);
+			}
+			.material-information {
+				@include gs-span(s,3,6);
+			}
+		}
+	}
+}

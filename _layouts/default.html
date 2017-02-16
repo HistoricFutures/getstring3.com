@@ -1,0 +1,11 @@
+{% include head.html %}
+
+          {{ content }}
+{% if page.nextLink %}
+<div class="next-page--holder">
+	<div class="next-page--holder__inner">
+		<a href="{{ page.nextLink }}">{{ page.nextText }}&nbsp;<i class="fa fa-arrow-right"></i></a>
+	</div>
+</div>
+{% endif %}
+{% include foot.html %}

@@ -1,0 +1,180 @@
+/* ====================================================
+variables.scss
+
+Notes: Should only include variables
+==================================================== */
+
+$domain: "http://getstring3.com";
+
+/* ====================================================
+Colours
+==================================================== */
+
+$turquoise:#0e7375; // #128C8F
+$brand-turquoise: #128C8F;
+$orange:#c74d27; // #D75B36
+$blue:#466E8C;
+$red:#9E1C10;
+$green:#627a5a; // #819C79
+$bluegrey:#E5EFF0;
+$pink: #902b59; // #CA4D85
+$yellow: #fdb731;
+
+
+/* == Additional colours == */
+$off-white:#FFFCF5;
+$grey90:mix(#000000,$off-white,90%);
+$grey80:mix(#000000,$off-white,80%);
+$grey70:mix(#000000,$off-white,70%);
+$grey60:mix(#000000,$off-white,60%);
+$grey40:mix(#000000,$off-white,40%);
+$grey20:mix(#000000,$off-white,20%);
+$grey10:mix(#000000,$off-white,10%);
+$grey5:mix(#000000,$off-white,5%);
+$grey3:mix(#000000,$off-white,3%);
+
+$lightturquoise:mix($turquoise,$off-white,50%);
+
+/* Colour use */
+$background-color:$off-white;
+$text-color:$grey80;
+
+$warning-color:$orange;
+$progression-color:$yellow;
+$error-color:$red;
+$success-color:$green;
+$info-color:$blue;
+$highlight-color:$pink;
+$active-color:$pink;
+
+$subtle-color:$bluegrey;
+
+/* ====================================================
+Modular Scale
+==================================================== */
+
+/* http://modularscale.com/scale/?px1=17&px2=13&ra1=1.618&ra2=0 */
+$ratio:1.618;
+$default:16; /* current accepted 'default' pixel size browsers use */
+$base-number:18;
+$important-number:15;
+
+/* $a-scale is based on $base-number */
+$a-scale:$base-number/$default; /* this is the base font size */
+$a-scale-2:$a-scale*$ratio;
+$a-scale-3:$a-scale-2*$ratio;
+$a-scale-4:$a-scale-3*$ratio;
+$a-scale-5:$a-scale-4*$ratio;
+$a-scale-6:$a-scale-5*$ratio;
+$a-scale-7:$a-scale-6*$ratio;
+$a-scale-8:$a-scale-7*$ratio;
+
+/* $a-scale-- is based on $a-scale and gives smaller numbers */
+$a-scale-:$a-scale;
+$a-scale--2:$a-scale-/$ratio;
+$a-scale--3:$a-scale--2/$ratio;
+$a-scale--4:$a-scale--3/$ratio;
+$a-scale--5:$a-scale--4/$ratio;
+$a-scale--6:$a-scale--5/$ratio;
+
+/* b-scale is based on $important-number */
+$b-scale:$important-number/$default; /* these are additional numbers based on $important-number */
+$b-scale-2:$b-scale*$ratio;
+$b-scale-3:$b-scale-2*$ratio;
+$b-scale-4:$b-scale-3*$ratio;
+$b-scale-5:$b-scale-4*$ratio;
+$b-scale-6:$b-scale-5*$ratio;
+$b-scale-7:$b-scale-6*$ratio;
+$b-scale-8:$b-scale-7*$ratio;
+
+/* $b-scale- is based on $important-number and gives smaller numbers */
+$b-scale-:$b-scale;
+$b-scale--2:$b-scale-/$ratio;
+$b-scale--3:$b-scale--2/$ratio;
+$b-scale--4:$b-scale--3/$ratio;
+$b-scale--5:$b-scale--4/$ratio;
+$b-scale--6:$b-scale--5/$ratio;
+
+
+/* ====================================================
+Typography
+==================================================== */
+
+/* == Font stack == */
+$base-font:'Muli', Helvetica, Arial, sans-serif;
+$base-font-weight:300;
+
+/* == Font sizes == */
+$size-p: $a-scale;
+$size-h1: $b-scale-3;
+$size-h2: $a-scale-2;
+$size-h3: $b-scale-2;
+$size-h4: $b-scale;
+$size-small: $b-scale;
+
+/* == Line heights == */
+$base-line-height: $ratio;
+$small-line-height:1.2;
+$heading-line-height: 1.1;
+
+/* == Typogarphy margins - == */
+$margin-p: $b-scale-2;
+$margin-h1: $b-scale-3;
+$margin-h2: $b-scale-2;
+$margin-h3: $a-scale;
+$margin-h4: $b-scale;
+$margin-li: $b-scale;
+$margin-ul: $a-scale-2;
+$padding-ul: $a-scale-4;
+
+/* == Standard letter spacing == */
+$letter-spacing: 0.15em;
+
+
+/* ====================================================
+Links
+==================================================== */
+$link-color:$turquoise;
+$link-color-hover:$pink;
+$link-transition:all 0.5s ease;
+$link-border:1px dotted $link-color;
+
+/* ====================================================
+Paths
+==================================================== */
+
+$img-path: "/assets/img/";
+// To use specify e.g. url(#{$img-path}image-name.svg)
+
+$font-path: "/assets/fonts/";
+// To use specify e.g. url(#{$font-path}font-name.ttf)
+
+
+/* ====================================================
+Borders
+==================================================== */
+
+$default-border-width: 1px;
+$default-border-style: solid;
+
+/* ====================================================
+Padding
+==================================================== */
+
+$default-padding: $a-scale--2;
+
+
+/* Utility */
+$root-3: 1.73205080757;
+
+/* ====================================================
+z-index
+==================================================== */
+
+$top:1000;
+$secondtop:900;
+$middle:500;
+$secondlow:2;
+$low:1;
+$bottom:-1;
+$below:-2;

@@ -1,0 +1,110 @@
+/* ====================================================
+links.scss
+==================================================== */
+
+a, a:visited {
+	color:$link-color;
+	@include transition($link-transition);
+	text-decoration:none;
+	border-bottom:$link-border;
+	&:hover, &:focus {
+		color:$link-color-hover;
+		@include transition($link-transition);
+		border-color:$link-color-hover;
+	}
+}
+
+
+[class*=action-link], a[class*=action-link], input[type='submit'][class*=action-link] {
+		display:block;
+		background:$link-color;
+		@include padding($default-padding);
+		color:$background-color;
+		border:none;
+		@include border-radius(0);
+		@include transition($link-transition);
+		@include box-sizing();
+		width:100%;
+		margin:0;
+		text-align:center;
+		color: $background-color;
+		letter-spacing: 0;
+		text-transform:none;
+		&:hover {
+			background:$link-color-hover;
+			@include transition($link-transition);
+			color:$background-color;
+		}
+}
+
+.action-link--warning, a.action-link--warning {
+	background-color:$warning-color;
+	&:hover {
+		background-color:$error-color;
+	}
+
+}
+.borderless, .borderless:visited {
+	border-bottom:none;
+}
+
+.action-link--primary, a.action-link--primary {
+	background-color:$grey5;
+	color:$link-color !important;
+	&:hover {
+		background-color:$grey10;
+		color:$link-color-hover !important;
+	}
+
+}
+
+.action-link--emphasis, a.action-link--emphasis {
+	background-color:$grey80;
+	color:$lightturquoise;
+	&:hover {
+		background-color:$link-color;
+		color:$off-white;
+	}
+}
+
+.standalone-link {
+	@include margin-top($b-scale-3);
+	a {
+		border:none;
+	}
+}
+
+.blob-links {
+	p {line-height:2;}
+	a, a:visited {
+		background:$link-color;
+		color:$off-white;
+		padding:5px;
+		border:0;
+		&:hover {
+			background:$link-color-hover;
+		}
+	}
+	a.error {
+		background:$error-color;
+		&:hover {
+			background:$link-color-hover;
+		}
+	}
+}
+
+.subtle-links {
+	a, a:visited {
+		color:$grey90;
+		border-bottom:1px dotted $grey40;
+		&:hover, &:focus {
+			color:$link-color-hover;
+			border-color:$link-color-hover;
+		}
+	}
+}
+
+.img-link {
+	border:none;
+	padding-bottom:0;
+}

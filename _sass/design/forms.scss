@@ -1,0 +1,173 @@
+/* ====================================================
+forms.scss
+
+Notes: Basic form styles (no classes)
+==================================================== */
+
+
+form {
+	text-align:left;
+	clear:left;
+	li {
+		list-style:none;
+	}
+	ul {
+		padding-left:0;
+		@include padding-top($b-scale);
+	}
+}
+
+.form-field {
+	@include margin-bottom($b-scale-2);
+}
+
+label, input, select, textarea {
+	width:100%;
+	outline:none;
+}
+
+label {
+	color:$grey60;
+}
+
+input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea, input[type='url'], input[type='phone'] {
+	font-family:$base-font;
+	@include font-size($size-p);
+	@include padding($b-scale);
+	background:$off-white;
+	border:1px solid $grey20;
+	@include border-radius(3px);
+	@include box-shadow(0 1px 3px 0 $grey20 inset);
+	@include box-sizing();
+	@include margin-bottom($margin-p);
+	display:block;
+	line-height:$base-line-height;
+	outline:none;
+	&:focus {
+		background:$subtle-color;
+	}
+	&[disabled] {
+		background:$grey20;
+		cursor:not-allowed;
+	}
+}
+
+textarea {
+	overflow:visible;
+	height:auto;
+}
+
+
+
+/* == Checkboxes & radio buttons == */
+
+// Requires a class of "check" on the wrapping label for a single checkbox, requires .options on the fieldset for multiple
+
+input[type='checkbox'], input[type='radio'] {
+	width:auto;
+	outline:none;
+}
+
+label.check {
+	width:100%;
+	display:block;
+	@include box-sizing();
+	@include margin-bottom($margin-p);
+}
+
+.options ul {
+	border:1px dotted $grey20;
+	@include padding($b-scale);
+	padding-bottom:0;
+	@include border-radius(3px);
+	li {
+		list-style:none;
+	}
+}
+
+/* == Help text == */
+
+p.help {
+	@include font-size($b-scale);
+	color:$grey60;
+	font-style:italic;
+	@include margin-top(-1 * $b-scale);
+}
+
+
+/* == Legends == */
+legend {
+	@include font-size($size-p);
+	line-height:$heading-line-height;
+	@include margin-bottom($margin-h3);
+	font-weight:$base-font-weight;
+	position:relative;
+
+}
+
+
+
+
+/* == erroring == */
+
+// default Django error representation. Handy to have it covered
+.errorlist {
+	padding-left:0px;
+	li {
+		list-style:none;
+		color:$error-color;
+	}
+}
+.error {
+	input, textarea {
+		border-color:$error-color;
+		background:lighten($error-color,60%);
+		@include margin-bottom($a-scale--2);
+	}
+	label {
+		color:$error-color;
+	}
+}
+
+.field-error {
+	@include margin-bottom($margin-p);
+	color:$error-color;
+	@include font-size($b-scale);
+	display:block;
+}
+
+
+/* == optional == */
+.optional {
+	color:$grey40;
+}
+
+
+/* == search form == */
+
+.search-form {
+	@extend .clearfix !optional;
+	input {
+		width:70%;
+		float:left;
+		@include border-radius(3px 0px 0px 3px);
+		height:53px;
+	}
+
+	input[type="submit"] {
+		width:30%;
+		float:left;
+		@include border-radius(0px 3px 3px 0px);
+
+	}
+}
+
+/* Styling for doorbell form */
+#doorbell form {
+	background: $off-white;
+	@include box-shadow(2px 2px 2px 0 $grey20);
+}
+
+#doorbell-background {
+	background: rgba($grey40, 0.5);
+}

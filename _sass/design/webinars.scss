@@ -1,0 +1,53 @@
+.webinar-group {
+  @include gs-span(l,all);
+  clear:both;
+}
+
+.webinar-group + .webinar-group {
+  @include margin-top($a-scale-3);
+}
+
+.webinar-individual {
+  @include gs-span(l,all);
+  clear:both;
+  @include box-shadow-standard();
+  border:0;
+}
+
+.maps {
+  background: url(#{$img-path}maps.jpeg) top left no-repeat;
+  background-size:cover;
+}
+.supply-chain {
+  background: url(#{$img-path}supply-chain.jpeg) top left no-repeat;
+  background-size:cover;
+}
+.risk {
+  background: url(#{$img-path}risk.jpeg) top left no-repeat;
+  background-size:cover;
+}
+.world-stars {
+  background: url(#{$img-path}world-stars.jpg) center center no-repeat;
+  background-size:cover;
+}
+
+.webinar-inner {
+  @include gs-span(l,3,8);
+  clear:left;
+  background:rgba($off-white, 0.95);
+  @include padding($a-scale);
+  @include box-shadow-standard();
+  @include margin-top($a-scale-3);
+  @include margin-bottom($a-scale-3);
+  @include box-sizing();
+}
+
+
+@include gs-media(s,max){
+  .webinar-inner {
+    @include gs-span(s,all);
+  }
+  .webinar-individual {
+    @include gs-pad(s,padinfull);
+  }
+}

@@ -1,0 +1,368 @@
+/* ==========================================================================
+   Useful mixins
+   ========================================================================== */
+
+
+/* ==========================================================================
+    Typography mixins - all with + px and then + rem are fallbacks for
+    browsers that don't recognise rem
+   ========================================================================== */
+
+@mixin font-size($sizeValue) {
+  font-size: $sizeValue * 16 + px;
+  font-size: $sizeValue + rem;
+}
+
+/* ==========================================================================
+    Margin and padding mixins
+   ========================================================================== */
+
+@mixin margin-bottom($sizeValue) {
+  margin-bottom: $sizeValue * 16 + px;
+  margin-bottom: $sizeValue + rem;
+}
+
+@mixin margin-left($sizeValue) {
+  margin-left: $sizeValue * 16 + px;
+  margin-left: $sizeValue + rem;
+}
+
+@mixin margin-right($sizeValue) {
+  margin-right: $sizeValue * 16 + px;
+  margin-right: $sizeValue + rem;
+}
+
+@mixin margin-top($sizeValue) {
+  margin-top: $sizeValue * 16 + px;
+  margin-top: $sizeValue + rem;
+}
+
+@mixin padding-bottom($sizeValue) {
+  padding-bottom: $sizeValue * 16 + px;
+  padding-bottom: $sizeValue + rem;
+}
+@mixin padding-left($sizeValue) {
+  padding-left: $sizeValue * 16 + px;
+  padding-left: $sizeValue + rem;
+}
+
+@mixin padding-right($sizeValue) {
+  padding-right: $sizeValue * 16 + px;
+  padding-right: $sizeValue + rem;
+}
+@mixin padding-top($sizeValue) {
+  padding-top: $sizeValue * 16 + px;
+  padding-top: $sizeValue + rem;
+}
+
+@mixin padding($sizeValue) {
+  padding: $sizeValue * 16 + px;
+  padding: $sizeValue + rem;
+}
+
+@mixin width($sizeValue) {
+  width: $sizeValue * 16 + px;
+  width: $sizeValue + rem;
+}
+
+@mixin min-width($sizeValue) {
+  min-width: $sizeValue * 16 + px;
+  min-width: $sizeValue + rem;
+}
+
+@mixin height($sizeValue) {
+  height: $sizeValue * 16 + px;
+  height: $sizeValue + rem;
+}
+
+@mixin min-height($sizeValue) {
+  min-height: $sizeValue * 16 + px;
+  min-height: $sizeValue + rem;
+}
+
+@mixin right($sizeValue) {
+  right: $sizeValue * 16 + px;
+  right: $sizeValue + rem;
+}
+
+@mixin left($sizeValue) {
+  left: $sizeValue * 16 + px;
+  left: $sizeValue + rem;
+}
+
+@mixin top($sizeValue) {
+  top: $sizeValue * 16 + px;
+  top: $sizeValue + rem;
+}
+
+@mixin bottom($sizeValue) {
+  bottom: $sizeValue * 16 + px;
+  bottom: $sizeValue + rem;
+}
+
+/* ==========================================================================
+    Box shadow
+   ========================================================================== */
+
+@mixin box-shadow($args...) {
+  -webkit-box-shadow:$args;
+  -moz-box-shadow:$args;
+  box-shadow: $args;
+}
+
+@mixin box-shadow-standard() {
+  -webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+  border:1px solid $grey10;
+}
+
+/* ==========================================================================
+    Transitions
+   ========================================================================== */
+/* to use: @include transition(property time effect); (can take multiple arguments e.g. color 0.3s ease, border-color 0.3s ease) */
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+/* ==========================================================================
+    Border radius
+   ========================================================================== */
+
+/* to use: @include border-radius(radius); (can take multiple arguments e.g. 2em 0 for different radius on different corners) */
+@mixin border-radius($args...) {
+  -moz-border-radius: $args;
+  -webkit-border-radius: $args;
+  -ms-border-radius: $args;
+  border-radius: $args;
+}
+
+
+/* ==========================================================================
+    Box sizing
+   ========================================================================== */
+
+  @mixin box-sizing() {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+  }
+
+/* transform */
+  @mixin transform($args...) {
+    -webkit-transform: $args;
+    -moz-transform:    $args;
+    -ms-transform:     $args;
+    -o-transform:      $args;
+    transform:         $args;
+  }
+
+  /* transform-origin */
+    @mixin transform-origin($args...) {
+      -webkit-transform-origin: $args;
+      -moz-transform-origin:    $args;
+      -ms-transform-origin:     $args;
+      -o-transform-origin:      $args;
+      transform-origin:         $args;
+    }
+
+/* ==========================================================================
+    Gradients
+   ========================================================================== */
+
+  @mixin linear-gradient() {
+  /* Safari 4-5, Chrome 1-9 */
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.3)), to(transparent));
+
+  /* Safari 5.1, Chrome 10+ */
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.3), transparent);
+
+  /* Firefox 3.6+ */
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,0.3), transparent);
+
+  /* IE 10 */
+  background-image: -ms-linear-gradient(top, rgba(255,255,255,0.3), transparent);
+
+  /* Opera 11.10+ */
+  background-image: -o-linear-gradient(top, rgba(255,255,255,0.3), transparent);
+  }
+
+
+
+/* ==========================================================================
+    Faux Columns
+   ========================================================================== */
+
+
+   @mixin faux-column() {
+        padding-bottom:1000%;
+    margin-bottom:-1000%; // bringing column to end of page
+    overflow:hidden;
+
+   }
+
+   @mixin faux-column-top() {
+        padding-top:1000%;
+    margin-top:-1000%; // bringing column to end of page
+    overflow:hidden;
+
+   }
+
+
+
+/* ==========================================================================
+    Hexagons
+   ========================================================================== */
+   // $s = length of one side
+
+    @mixin hex($s, $background) {
+        $root-3: 1.73205080757;
+        $h: $s * $root-3;
+        $d: 2 * $s;
+        $x: $h / 2;
+        $y: ($d - $s) / 2;
+
+
+        background:$background;
+        @include width($h); //h
+        @include height($s); //s
+        text-align:center;
+        position: relative;
+        @include margin-top($y);
+        @include margin-bottom($y);
+
+        &:before {
+            content: " ";
+            width: 0; height: 0;
+            border-bottom: ($y * 16) + px solid $background;
+            border-left: ($x * 16) + px solid transparent;
+            border-right: ($x * 16) + px solid transparent;
+            position: absolute;
+            @include top(-1 * $y + 0.05);
+            left:0;
+            @include transition($link-transition);
+        }
+
+        &:after {
+            content: "";
+            width: 0;
+            position: absolute;
+            @include bottom(-1 * $y + 0.05);
+            border-top: ($y * 16) + px solid $background;
+            border-left: ($x * 16) + px solid transparent;
+            border-right: ($x * 16) + px solid transparent;
+            left:0;
+            @include transition($link-transition);
+        }
+    }
+
+/// ANIMATION
+
+///// FADEIN
+// Fade in definitions
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+@mixin fadein($duration) {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:$duration;
+  -moz-animation-duration:$duration;
+  animation-duration:$duration;
+}
+
+@mixin fadeindelay($delay) {
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+  animation-delay: $delay;
+}
+
+///// DELAY
+
+@mixin animationdelay($delay) {
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+  animation-delay: $delay;
+}
+
+///// KNOCKBACK
+
+// Knockback definitions
+@-webkit-keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+@-moz-keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+@keyframes knockback { from { opacity:1; } to { opacity:0.5; } }
+
+@mixin knockback($duration) {
+
+  -webkit-animation:knockback ease-in 1;
+  -moz-animation:knockback ease-in 1;
+  animation:knockback ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0.5)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:$duration;
+  -moz-animation-duration:$duration;
+  animation-duration:$duration;
+}
+
+/// SEE introduction.scss for lineanimation
+
+
+// Slideup
+
+@mixin slideup($duration) {
+  animation-name: slideup;
+	animation-duration: $duration;
+	animation-timing-function: ease-in;
+  opacity:0;
+  animation-fill-mode:forwards;
+}
+
+@keyframes slideup {
+  from {
+    transform:translateY(100%);
+    opacity:0;
+  }
+  to {
+    transform:translateY(0%);
+    opacity:1;
+  }
+}
+
+// Slidedown
+
+@mixin slidedown($duration) {
+  animation-name: slidedown;
+	animation-duration: $duration;
+	animation-timing-function: ease-out;
+  opacity:0;
+  animation-fill-mode:forwards;
+}
+
+@keyframes slidedown {
+  0% {
+    transform:translateY(-300%);
+    opacity:0;
+  }
+  75% {
+
+    opacity:0.5;
+  }
+  100% {
+    transform:translateY(0%);
+    opacity:1;
+  }
+}

@@ -1,0 +1,103 @@
+// styles for simple introduction and other styles for new homepage june 2016
+
+.simple-introduction {
+  @include gs-span(l,all);
+  background:url(#{$img-path}simple-introduction.jpg) center center no-repeat;
+  background-size:cover;
+  text-align:center;
+  position:relative;
+  @include margin-top(-1 * $a-scale-5);
+  @include padding-top($a-scale-4);
+  color:$off-white;
+  .next-arrow {
+    position:absolute;
+    bottom:2vh;
+    @include gs-span(l,5,8);
+  }
+}
+
+.simple-introduction__inner {
+  @include gs-span(l,2,11);
+  position:absolute;
+  top:25vh;
+}
+
+@include gs-media(s,max){
+  .simple-introduction {
+    text-align:center;
+    background-size:cover;
+    .next-arrow {
+      @include gs-span(s,all);
+    }
+  }
+  .simple-introduction__inner {
+    @include gs-span(s,all);
+    @include gs-pad(s,padinfull);
+
+    @include padding-top($a-scale);
+    @include padding-bottom($a-scale);
+    @include top($a-scale-5);
+  }
+}
+
+@media only screen and (max-height:570px) {
+  .simple-introduction {
+    height:auto;
+
+    .next-arrow {
+      position:relative;
+      bottom:auto;
+      clear:left;
+    }
+  }
+  .simple-introduction__inner {
+    position:relative;
+    top:auto;
+    clear:left;
+    @include padding-top($a-scale-5);
+    @include padding-bottom($a-scale-5);
+  }
+}
+
+.simple-introduction {
+  height:auto;
+
+  .next-arrow {
+    position:relative;
+    bottom:auto;
+    clear:left;
+  }
+}
+.simple-introduction__inner {
+  position:relative;
+  top:auto;
+  clear:left;
+  @include padding-top($a-scale-5);
+  @include padding-bottom($a-scale-3);
+}
+
+// ABOUT NEW
+
+.about--new {
+  @include gs-span(l,all);
+  @include padding-top($a-scale-4);
+  padding-bottom:7%;
+  @include box-shadow-standard();
+  border-left:none;
+  border-right:none;
+  .img-holder {
+    @include gs-span(l,2,6);
+  }
+  .text-holder {
+    @include gs-span(l,7,11);
+  }
+}
+
+@include gs-media(s,max){
+  .about--new {
+    .img-holder, .text-holder {
+      @include gs-span(s,all);
+      @include gs-pad(s,padinfull);
+    }
+  }
+}
