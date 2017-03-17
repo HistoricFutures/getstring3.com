@@ -1,7 +1,7 @@
 <h3>Not sure if it will work for your organsiation?</h3>
-<p>Book a live demo to talk it through with us.</p>
+<p>We'd love to talk through how String3 can work for your business.</p>
 <p class="faux-button commit register-button">
-	<a href="/demo/" title="Book a demo">
-		Book a demo
-	</a>
-</p>
+		<a href="/get-in-touch/" title="Get in touch">
+			Get in touch
+		</a>
+	</p>
