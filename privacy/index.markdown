@@ -5,7 +5,7 @@ nextText: "Will my data be safe in String3?"
 nextLink: "/security"
 ---
 
-Historic Futures Ltd (we / us) collect certain information or data about you when you use our websites - which can be found at [http://historicfutures.com](http://historicfutures.com) and [https://getstring3.com](http://getstring3.com) (and includes https://app.getstring3.com).
+3P Strategy Ltd (we / us) collect certain information or data about you when you use our websites - which can be found at [http://threep.uk](http://threep.uk) and [https://getstring3.com](http://getstring3.com) (and includes https://app.getstring3.com).
 
 This may include:
 
